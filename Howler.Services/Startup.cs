@@ -31,34 +31,47 @@ namespace Howler.Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
-            {
-                options.AddPolicy("defaultPolicy", builder => 
                 {
-                   builder.WithOrigins("https://localhost:5001")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+                    options.AddPolicy("defaultPolicy", builder => 
+                    {
+                    builder.WithOrigins("https://localhost:5001")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                    });
                 });
-            });
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.Authority = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_8ZX6GevSf";
-                //x.Audience = "6b75ooll3b86ugauhu22vj39ra";
-                x.TokenValidationParameters = new TokenValidationParameters
+
+            services.AddAuthentication(options =>
                 {
-                    ValidateAudience = false
-                };
-                x.RequireHttpsMetadata = false;
-            });
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.Authority = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_8ZX6GevSf";
+                    x.Audience = "6b75ooll3b86ugauhu22vj39ra";
+                    x.RequireHttpsMetadata = false;
+                    x.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                (context.HttpContext.Request.Path.StartsWithSegments("/examplehub")))
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Howler.Services", Version = "v1" });
-            });
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Howler.Services", Version = "v1" });
+                });
             services.AddSignalR();
         }
 
