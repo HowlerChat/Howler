@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Howler.Services.Hubs;
+using Howler.Services.InteractionServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,7 +59,7 @@ namespace Howler.Services
                             var accessToken = context.Request.Query["access_token"];
 
                             if (!string.IsNullOrEmpty(accessToken) &&
-                                (context.HttpContext.Request.Path.StartsWithSegments("/examplehub")))
+                                (context.HttpContext.Request.Path.StartsWithSegments("/howler")))
                             {
                                 context.Token = accessToken;
                             }
@@ -66,7 +67,7 @@ namespace Howler.Services
                         }
                     };
                 });
-
+            services.AddScoped<ISpaceInteractionService, SpaceInteractionService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
                 {
@@ -97,7 +98,7 @@ namespace Howler.Services
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ExampleHub>("/examplehub");
+                endpoints.MapHub<HowlerHub>("/howler");
             });
         }
     }

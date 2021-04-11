@@ -2,20 +2,20 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as signalR from '@microsoft/signalr';
 
-class Home extends React.Component<{}, {connection: signalR.HubConnection | null, loginToken: string, error: string | null, user: string, message: string, otherUser: string, otherMessage: string}> {
+class Home extends React.Component<{}, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
   
   constructor(props: {}) {
     super(props);
-    this.displayMessage = this.displayMessage.bind(this);
+    this.getSpaceResponse = this.getSpaceResponse.bind(this);
+    this.noSpaceFound = this.noSpaceFound.bind(this);
     
     this.state = {
       connection: null,
       loginToken: "",
+      space: null,
+      flashError: null,
       error: null,
-      user: "",
-      message: "",
-      otherUser: "",
-      otherMessage: ""
+      spaceId: ""
     };
   }
 
@@ -26,10 +26,11 @@ class Home extends React.Component<{}, {connection: signalR.HubConnection | null
     // This is a really bad example for illustration only, we won't
     // be doing signalR like this in the actual client.
     let connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:8000/examplehub", { accessTokenFactory: () => this.state.loginToken }).build();
+      .withUrl("http://localhost:8000/howler", { accessTokenFactory: () => this.state.loginToken }).build();
     try {
       await connection.start();
-      connection.on("ReceiveMessage", this.displayMessage);
+      connection.on("GetSpaceResponse", this.getSpaceResponse);
+      connection.on("NoSpaceFound", this.noSpaceFound);
 
       this.setState({connection, error: null});
     } catch (e) {
@@ -38,13 +39,17 @@ class Home extends React.Component<{}, {connection: signalR.HubConnection | null
     }
   }
 
-  public displayMessage(user: string, message: string) {
-    this.setState({ otherUser: user, otherMessage: message });
+  public getSpaceResponse(space: any) {
+    this.setState({ space: space, flashError: null });
   }
 
-  public sendMessage() {
+  public noSpaceFound() {
+    this.setState({ space: null, flashError: "No space found, sorry bruh." });
+  }
+
+  public getSpace() {
     if (this.state.connection != null) {
-      this.state.connection.send("SendMessage", this.state.user, this.state.message);
+      this.state.connection.send("GetSpace", this.state.spaceId);
     }
   }
 
@@ -56,15 +61,15 @@ class Home extends React.Component<{}, {connection: signalR.HubConnection | null
       {(() => {
         if (this.state.connection != null && this.state.connection.state == signalR.HubConnectionState.Connected) {
           return <><div>
-            <label>Username:</label>
-            <input type="text" value={this.state.user} onChange={(e) => this.setState({user: e.target.value})}></input>
-            <label>Message:</label>
-            <input type="text" value={this.state.message} onChange={(e) => this.setState({message: e.target.value})}></input>
-            <button onClick={() => this.sendMessage()}>Send</button>
+            {(!!this.state.flashError ? <div>{this.state.flashError}</div> : <></>)}
+            <label>SpaceId:</label>
+            <input type="text" value={this.state.spaceId} onChange={(e) => this.setState({spaceId: e.target.value})}></input>
+            <button onClick={() => this.getSpace()}>Send</button>
           </div>
-          <div><b>{this.state.otherUser}: </b>{this.state.otherMessage}</div></>;
+          <div><b>{JSON.stringify(this.state.space)}</b></div></>;
         } else {
           return <div>
+            <a href="https://howler.auth.us-west-2.amazoncognito.com/login?client_id=6b75ooll3b86ugauhu22vj39ra&response_type=token&scope=email+openid+profile&redirect_uri=http://localhost:8000">Sign in here</a>
             <label>Token:</label>
             <input type="text" value={this.state.loginToken} onChange={(e) => this.setState({loginToken: e.target.value})}></input>
             <button onClick={async () => await this.connect()}>Connect</button>
