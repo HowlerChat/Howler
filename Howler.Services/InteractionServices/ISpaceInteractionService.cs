@@ -1,3 +1,10 @@
+// <copyright file="ISpaceInteractionService.cs" company="Howler Team">
+// Copyright (c) Howler Team. All rights reserved.
+// Licensed under the Server Side Public License.
+// See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Cassandra A. Heart</author>
+
 namespace Howler.Services.InteractionServices
 {
     using System.Collections.Generic;
@@ -19,7 +26,7 @@ namespace Howler.Services.InteractionServices
         /// Returns a <see cref="SpaceResponse"/> if found, null otherwise.
         /// </returns>
         SpaceResponse? GetSpaceBySpaceId(string spaceId);
-        
+
         /// <summary>
         /// Creates a space.
         /// </summary>
@@ -29,7 +36,7 @@ namespace Howler.Services.InteractionServices
         /// </returns>
         Either<SpaceResponse, ValidationError> CreateSpace(
             CreateOrUpdateSpaceRequest request);
-        
+
         /// <summary>
         /// Updates a space.
         /// </summary>
@@ -39,7 +46,7 @@ namespace Howler.Services.InteractionServices
         /// </returns>
         Either<SpaceResponse?, ValidationError> UpdateSpace(
             CreateOrUpdateSpaceRequest request);
-        
+
         /// <summary>
         /// Deletes a space.
         /// </summary>
@@ -48,7 +55,7 @@ namespace Howler.Services.InteractionServices
         /// Returns null if successful, or a validation error.
         /// </returns>
         ValidationError? DeleteSpaceBySpaceId(string spaceId);
-        
+
         /// <summary>
         /// Retrieves channels for a space.
         /// </summary>

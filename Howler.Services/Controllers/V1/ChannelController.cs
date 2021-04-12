@@ -1,23 +1,30 @@
+// <copyright file="ChannelController.cs" company="Howler Team">
+// Copyright (c) Howler Team. All rights reserved.
+// Licensed under the Server Side Public License.
+// See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Cassandra A. Heart</author>
+
 namespace Howler.Services.Controllers.V1
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Howler.Services.InteractionServices;
+    using Howler.Services.Models.V1.Channel;
+    using Howler.Services.Models.V1.Errors;
+    using Howler.Services.Models.V1.Space;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using Howler.Services.Models.V1.Space;
-    using Howler.Services.Models.V1.Errors;
-    using Howler.Services.InteractionServices;
-    using Howler.Services.Models.V1.Channel;
 
     /// <summary>
     /// Provides actions to retrieve and configure Channels.
     /// </summary>
     [ApiController]
     [Route("v1/spaces/{spaceId}/channels")]
-    //[Authorize]
+    [Authorize]
     public class ChannelController : ControllerBase
     {
         private readonly ILogger<ChannelController> _logger;
@@ -36,8 +43,8 @@ namespace Howler.Services.Controllers.V1
             ILogger<ChannelController> logger,
             ISpaceInteractionService spaceInteractionService)
         {
-            _logger = logger;
-            _spaceInteractionService = spaceInteractionService;
+            this._logger = logger;
+            this._spaceInteractionService = spaceInteractionService;
         }
 
         /// <summary>

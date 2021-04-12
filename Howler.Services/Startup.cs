@@ -29,20 +29,21 @@ namespace Howler.Services
     using Microsoft.OpenApi.Models;
 
     /// <summary>
-    /// A startup configuration class for the ASP.NET host builder
+    /// A startup configuration class for the ASP.NET host builder.
     /// </summary>
     public class Startup
     {
         /// <summary>
-        /// Initializes an instance of the <see cref="Startup"/> class.
+        /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
+        /// <param name="configuration">The supplied configuration.</param>
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         /// <summary>
-        /// Configuration data
+        /// Gets the configuration data.
         /// </summary>
         public IConfiguration Configuration { get; }
 

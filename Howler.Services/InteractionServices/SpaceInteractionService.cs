@@ -1,3 +1,10 @@
+// <copyright file="SpaceInteractionService.cs" company="Howler Team">
+// Copyright (c) Howler Team. All rights reserved.
+// Licensed under the Server Side Public License.
+// See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Cassandra A. Heart</author>
+
 namespace Howler.Services.InteractionServices
 {
     using System;
@@ -13,7 +20,7 @@ namespace Howler.Services.InteractionServices
     public class SpaceInteractionService : ISpaceInteractionService
     {
         private ILogger<SpaceInteractionService> _logger;
-        
+
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="SpaceInteractionService"/> class.
@@ -25,7 +32,8 @@ namespace Howler.Services.InteractionServices
         }
 
         /// <inheritdoc/>
-        public Models.Either<SpaceResponse, ValidationError> CreateSpace(CreateOrUpdateSpaceRequest request)
+        public Models.Either<SpaceResponse, ValidationError> CreateSpace(
+            CreateOrUpdateSpaceRequest request)
         {
             if (request.SpaceId == "asdf")
             {
@@ -39,7 +47,8 @@ namespace Howler.Services.InteractionServices
             }
             else
             {
-                return new Models.Either<SpaceResponse, ValidationError>(new ValidationError("spaceId", "INVALID_SPACE_ID"));
+                return new Models.Either<SpaceResponse, ValidationError>(
+                    new ValidationError("spaceId", "INVALID_SPACE_ID"));
             }
         }
 
@@ -75,7 +84,8 @@ namespace Howler.Services.InteractionServices
         }
 
         /// <inheritdoc/>
-        public Models.Either<SpaceResponse?, ValidationError> UpdateSpace(CreateOrUpdateSpaceRequest request)
+        public Models.Either<SpaceResponse?, ValidationError> UpdateSpace(
+            CreateOrUpdateSpaceRequest request)
         {
             if (request.SpaceId == "asdf")
             {
@@ -89,12 +99,14 @@ namespace Howler.Services.InteractionServices
             }
             else
             {
-                return new Models.Either<SpaceResponse?, ValidationError>((SpaceResponse?)null);
+                return new Models.Either<SpaceResponse?, ValidationError>(
+                    (SpaceResponse?)null);
             }
         }
 
         /// <inheritdoc/>
-        public IEnumerable<ChannelInfoResponse>? GetChannelsForSpace(string spaceId)
+        public IEnumerable<ChannelInfoResponse>? GetChannelsForSpace(
+            string spaceId)
         {
             return new List<ChannelInfoResponse>();
         }

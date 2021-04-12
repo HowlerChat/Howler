@@ -1,3 +1,10 @@
+// <copyright file="Either.cs" company="Howler Team">
+// Copyright (c) Howler Team. All rights reserved.
+// Licensed under the Server Side Public License.
+// See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Cassandra A. Heart</author>
+
 namespace Howler.Services.Models
 {
     /// <summary>
@@ -5,6 +12,8 @@ namespace Howler.Services.Models
     /// <typeparamref name="TLeft"/> type or the <typeparamref name="TRight"/>
     /// type, but not both.
     /// </summary>
+    /// <typeparam name="TLeft">The type of the left value.</typeparam>
+    /// <typeparam name="TRight">The type of the right value.</typeparam>
     public class Either<TLeft, TRight>
     {
         /// <summary>
@@ -35,10 +44,12 @@ namespace Howler.Services.Models
 
         /// <summary>Implicit conversion to the left value.</summary>
         /// <param name="either">The value to convert.</param>
-        public static implicit operator TLeft? (Either<TLeft, TRight> either) => either.Left;
+        public static implicit operator TLeft?(
+            Either<TLeft, TRight> either) => either.Left;
 
         /// <summary>Implicit conversion to the right value.</summary>
         /// <param name="either">The value to convert.</param>
-        public static implicit operator TRight? (Either<TLeft, TRight> either) => either.Right;
+        public static implicit operator TRight?(
+            Either<TLeft, TRight> either) => either.Right;
     }
 }

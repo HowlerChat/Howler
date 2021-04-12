@@ -1,3 +1,10 @@
+// <copyright file="ChannelInfoResponse.cs" company="Howler Team">
+// Copyright (c) Howler Team. All rights reserved.
+// Licensed under the Server Side Public License.
+// See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Cassandra A. Heart</author>
+
 namespace Howler.Services.Models.V1.Channel
 {
     using System;
@@ -14,8 +21,12 @@ namespace Howler.Services.Models.V1.Channel
         /// <param name="channelId">The channel identifier.</param>
         /// <param name="channelName">The channel name.</param>
         /// <param name="createdDate">The creation date of the channel.</param>
-        /// <param name="modifiedDate">The last modified date of the channel.</param>
-        /// <param name="channelDescription">The optional description for the channel.</param>
+        /// <param name="modifiedDate">
+        /// The last modified date of the channel.
+        /// </param>
+        /// <param name="channelDescription">
+        /// The optional description for the channel.
+        /// </param>
         public ChannelInfoResponse(
             string channelId,
             string channelName,
@@ -32,7 +43,7 @@ namespace Howler.Services.Models.V1.Channel
 
         /// <summary>
         /// Gets the channel identifier.
-        /// </summary> 
+        /// </summary>
         public string ChannelId { get; }
 
         /// <summary>
@@ -49,7 +60,7 @@ namespace Howler.Services.Models.V1.Channel
         /// Gets the channel's creation date.
         /// </summary>
         public DateTime CreatedDate { get; }
-        
+
         /// <summary>
         /// Gets the channel's last modified date.
         /// </summary>
