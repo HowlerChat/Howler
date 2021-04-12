@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Menees.Analyzers.Settings>
+	<TabSize>4</TabSize>
+	<!-- Note: The rest of these values are intentionally set small for unit testing.  Production values should be larger. -->
+	<MaxLineColumns>80</MaxLineColumns>
+	<MaxPropertyAccessorLines>5</MaxPropertyAccessorLines>
+
+	<UnitTestAttributes>
+		<!-- From MSTest -->
+		<Class>TestClass</Class>
+		<Method>TestMethod</Method>
+
+		<!-- From NUnit -->
+		<Class>TestFixture</Class>
+		<Method>Test</Method>
+	</UnitTestAttributes>
+</Menees.Analyzers.Settings>
