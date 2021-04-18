@@ -14,6 +14,7 @@ namespace Howler.Services
     using System.Net;
     using System.Reflection;
     using System.Threading.Tasks;
+    using Howler.Database;
     using Howler.Services.Hubs;
     using Howler.Services.InteractionServices;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -95,6 +96,7 @@ namespace Howler.Services
                         },
                     };
                 });
+            services.AddSingleton<IDatabaseClient, CassandraClient>();
             services.AddScoped<
                 ISpaceInteractionService,
                 SpaceInteractionService>();

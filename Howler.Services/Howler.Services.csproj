@@ -26,4 +26,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Howler.Database\Howler.Database.csproj" />
+  </ItemGroup>
+
 </Project>

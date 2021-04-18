@@ -11,6 +11,7 @@ namespace Howler.Services.Controllers.V1
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Howler.Database.Models;
     using Howler.Services.InteractionServices;
     using Howler.Services.Models.V1.Errors;
     using Howler.Services.Models.V1.Space;
@@ -150,6 +151,31 @@ namespace Howler.Services.Controllers.V1
             {
                 return this.Ok();
             }
+        }
+
+        /// <summary>
+        /// Adds a federated server to the Howler indexing service.
+        /// </summary>
+        /// <param name="serverUrl">The url of the server to index.</param>
+        /// <returns>OK.</returns>
+        [HttpPut("federation/index")]
+        [ProducesResponseType(200)]
+        public IActionResult AddFederatedServer(string serverUrl)
+        {
+            // Validate request object
+            var uri = new Uri(serverUrl);
+            var isUnsafeUri = uri.Scheme != "https" ||
+            uri.Host.EndsWith(".howler.chat");
+
+            // TODO: Validate /.well-known/howler.json
+
+            // TODO: Pull through howler.json and deserialize it
+            // and enumerate over its info
+
+            // Pre-store it in our space table
+            // Add federated server to auxillary federated servers list
+            // to be indexed in the background
+            return this.Ok();
         }
     }
 }
