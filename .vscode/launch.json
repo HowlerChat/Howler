@@ -20,7 +20,10 @@
                 "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "HOWLER_CASSANDRA_ENDPOINT": "127.0.0.1",
+                "HOWLER_KEYSPACE": "howler",
+                "HOWLER_ENVIRONMENT": "dev"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

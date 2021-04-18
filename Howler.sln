@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howler.Services", "Howler.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howler.WebsocketTest", "Howler.WebsocketTest\Howler.WebsocketTest.csproj", "{A1B62872-5CD6-4B5C-96B3-0E526E00DA3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howler.Database", "Howler.Database\Howler.Database.csproj", "{39A80063-5507-432F-B2FD-D5AFA83E5A20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{A1B62872-5CD6-4B5C-96B3-0E526E00DA3F}.Release|x64.Build.0 = Release|Any CPU
 		{A1B62872-5CD6-4B5C-96B3-0E526E00DA3F}.Release|x86.ActiveCfg = Release|Any CPU
 		{A1B62872-5CD6-4B5C-96B3-0E526E00DA3F}.Release|x86.Build.0 = Release|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Debug|x64.Build.0 = Debug|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Debug|x86.Build.0 = Debug|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Release|x64.ActiveCfg = Release|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Release|x64.Build.0 = Release|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Release|x86.ActiveCfg = Release|Any CPU
+		{39A80063-5507-432F-B2FD-D5AFA83E5A20}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
