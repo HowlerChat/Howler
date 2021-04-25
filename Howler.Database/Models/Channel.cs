@@ -1,4 +1,4 @@
-// <copyright file="Space.cs" company="Howler Team">
+// <copyright file="Channel.cs" company="Howler Team">
 // Copyright (c) Howler Team. All rights reserved.
 // Licensed under the Server Side Public License.
 // See LICENSE file in the project root for full license information.
@@ -10,34 +10,29 @@ namespace Howler.Database.Models
     using System;
 
     /// <summary>
-    /// The Space data model.
+    /// The Channel data model.
     /// </summary>
-    public class Space
+    public class Channel
     {
+        /// <summary>
+        /// Gets or sets the channel identifier hash.
+        /// </summary>
+        public string? ChannelId { get; set; }
+
         /// <summary>
         /// Gets or sets the space identifier hash.
         /// </summary>
         public string? SpaceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the space name.
+        /// Gets or sets the channel name.
         /// </summary>
-        public string? SpaceName { get; set; }
+        public string? ChannelName { get; set; }
 
         /// <summary>
-        /// Gets or sets the optional space description.
+        /// Gets or sets the optional channel description.
         /// </summary>
         public string? Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the optional vanity URL for the space.
-        /// </summary>
-        public string? VanityUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets the hosting server URL.
-        /// </summary>
-        public string? ServerUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the policy document.

@@ -23,7 +23,8 @@
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "HOWLER_CASSANDRA_ENDPOINT": "127.0.0.1",
                 "HOWLER_KEYSPACE": "howler",
-                "HOWLER_ENVIRONMENT": "dev"
+                "HOWLER_ENVIRONMENT": "dev",
+                "HOWLER_SCOPE": "openid"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

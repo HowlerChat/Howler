@@ -78,6 +78,12 @@ namespace Howler.Services
                     x.Authority = this.Configuration["JWT:Authority"];
                     x.Audience = this.Configuration["JWT:Audience"];
                     x.RequireHttpsMetadata = false;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false,
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                    };
                     x.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
@@ -100,6 +106,13 @@ namespace Howler.Services
             services.AddScoped<
                 ISpaceInteractionService,
                 SpaceInteractionService>();
+            services.AddScoped<
+                IFederationDatabaseContext,
+                FederationDatabaseContext>();
+            services.AddScoped<
+                IAuthorizationService,
+                FederatedAuthorizationService>();
+            services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddSwaggerGen(c =>
                 {
@@ -110,6 +123,33 @@ namespace Howler.Services
                             Title = "Howler.Services",
                             Version = "v1",
                         });
+                    c.AddSecurityDefinition(
+                        "Bearer",
+                        new OpenApiSecurityScheme
+                        {
+                            Description = "Bearer [access_token]",
+                            Name = "Authorization",
+                            In = ParameterLocation.Header,
+                            Type = SecuritySchemeType.ApiKey,
+                            Scheme = "Bearer",
+                        });
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer",
+                                },
+                                Scheme = "oauth2",
+                                Name = "Bearer",
+                                In = ParameterLocation.Header,
+                            },
+                            new List<string>()
+                        },
+                    });
                     var xmlFile = Assembly
                         .GetExecutingAssembly()
                         .GetName()

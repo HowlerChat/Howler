@@ -8,6 +8,7 @@
 namespace Howler.Services.InteractionServices
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Howler.Services.Models;
     using Howler.Services.Models.V1.Channel;
     using Howler.Services.Models.V1.Errors;
@@ -34,7 +35,7 @@ namespace Howler.Services.InteractionServices
         /// <returns>
         /// A completed <see cref="Either{SpaceResponse, ValidationError}"/>.
         /// </returns>
-        Either<SpaceResponse, ValidationError> CreateSpace(
+        Task<Either<SpaceResponse, ValidationError>> CreateSpaceAsync(
             CreateOrUpdateSpaceRequest request);
 
         /// <summary>

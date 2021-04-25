@@ -9,6 +9,7 @@ namespace Howler.Services.InteractionServices
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Howler.Services.Models.V1.Channel;
     using Howler.Services.Models.V1.Errors;
     using Howler.Services.Models.V1.Space;
@@ -21,20 +22,35 @@ namespace Howler.Services.InteractionServices
     {
         private ILogger<SpaceInteractionService> _logger;
 
+        private IAuthorizationService _authorizationService;
+
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="SpaceInteractionService"/> class.
         /// </summary>
         /// <param name="logger">An injected logger instance.</param>
-        public SpaceInteractionService(ILogger<SpaceInteractionService> logger)
+        /// <param name="authorizationService">
+        /// An injected authorization service.
+        /// </param>
+        public SpaceInteractionService(
+            ILogger<SpaceInteractionService> logger,
+            IAuthorizationService authorizationService)
         {
             this._logger = logger;
+            this._authorizationService = authorizationService;
         }
 
         /// <inheritdoc/>
-        public Models.Either<SpaceResponse, ValidationError> CreateSpace(
-            CreateOrUpdateSpaceRequest request)
+        public async Task<Models.Either<SpaceResponse, ValidationError>>
+            CreateSpaceAsync(CreateOrUpdateSpaceRequest request)
         {
+            if (!await this._authorizationService
+                .IsAuthorizedAsync("create_space"))
+            {
+                return new Models.Either<SpaceResponse, ValidationError>(
+                    new ValidationError("authorization", "INVALID_SCOPE"));
+            }
+
             if (request.SpaceId == "asdf")
             {
                 return new Models.Either<SpaceResponse, ValidationError>(

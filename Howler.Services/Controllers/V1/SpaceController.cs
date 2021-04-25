@@ -80,9 +80,11 @@ namespace Howler.Services.Controllers.V1
         [ProducesResponseType(typeof(SpaceResponse), 200)]
         [ProducesResponseType(typeof(ValidationError), 400)]
         [ProducesResponseType(401)]
-        public ActionResult Create(CreateOrUpdateSpaceRequest request)
+        public async Task<ActionResult> CreateAsync(
+            CreateOrUpdateSpaceRequest request)
         {
-            var space = this._spaceInteractionService.CreateSpace(request);
+            var space = await this._spaceInteractionService
+                .CreateSpaceAsync(request);
 
             if (space.Left != null)
             {
