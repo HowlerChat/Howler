@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as signalR from '@microsoft/signalr';
 
-class Home extends React.Component<{}, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
+class Home extends React.Component<{user: any}, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
   
-  constructor(props: {}) {
+  constructor(props: {user: any}) {
     super(props);
     this.getSpaceResponse = this.getSpaceResponse.bind(this);
     this.noSpaceFound = this.noSpaceFound.bind(this);
@@ -20,13 +20,16 @@ class Home extends React.Component<{}, {connection: signalR.HubConnection | null
   }
 
   public componentDidMount() {
+    if (!!this.props.user && (this.state.connection == null || this.state.connection.state == signalR.HubConnectionState.Disconnected)) {
+      this.connect(this.props.user.signInUserSession.accessToken.jwtToken);
+    }
   }
 
-  public async connect() {
+  public async connect(token: string) {
     // This is a really bad example for illustration only, we won't
     // be doing signalR like this in the actual client.
     let connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:8000/howler", { accessTokenFactory: () => this.state.loginToken }).build();
+      .withUrl("http://localhost:5000/howler", { accessTokenFactory: () => token }).build();
     try {
       await connection.start();
       connection.on("GetSpaceResponse", this.getSpaceResponse);

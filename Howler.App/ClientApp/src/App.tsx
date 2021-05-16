@@ -23,7 +23,7 @@ const App = () => {
     return <>
         <AmplifySignOut />
         <Layout>
-            <Route exact path='/' component={Home} />
+            <Route exact path='/' component={() => <Home user={user} />} />
             <Route path='/counter' component={Counter} />
             <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
         </Layout>
