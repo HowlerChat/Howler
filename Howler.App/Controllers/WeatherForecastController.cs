@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Howler.WebsocketTest.Controllers
+namespace Howler.App.Controllers
 {
     [ApiController]
     [Route("[controller]")]

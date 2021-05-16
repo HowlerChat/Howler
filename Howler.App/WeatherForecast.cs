@@ -1,6 +1,6 @@
 using System;
 
-namespace Howler.WebsocketTest
+namespace Howler.App
 {
     public class WeatherForecast
     {

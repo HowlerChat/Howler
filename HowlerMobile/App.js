@@ -71,7 +71,7 @@ const App: () => Node = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
+            Edit any file in the dependency chain to change this
             screen and then come back to see your edits.
           </Section>
           <Section title="See Your Changes">

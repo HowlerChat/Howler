@@ -5,7 +5,7 @@ VisualStudioVersion = 16.6.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howler.Services", "Howler.Services\Howler.Services.csproj", "{11A0E505-423A-44B6-BA2A-F6362908C8A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howler.WebsocketTest", "Howler.WebsocketTest\Howler.WebsocketTest.csproj", "{A1B62872-5CD6-4B5C-96B3-0E526E00DA3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howler.App", "Howler.App\Howler.App.csproj", "{A1B62872-5CD6-4B5C-96B3-0E526E00DA3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howler.Database", "Howler.Database\Howler.Database.csproj", "{39A80063-5507-432F-B2FD-D5AFA83E5A20}"
 EndProject
