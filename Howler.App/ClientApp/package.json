@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/ui-react": "^1.2.0",
     "@microsoft/signalr": "^5.0.4",
+    "aws-amplify": "^4.0.2",
     "bootstrap": "^4.3.1",
     "connected-react-router": "6.5.2",
     "history": "4.10.1",
