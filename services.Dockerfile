@@ -2,13 +2,19 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS howlerbuild
 WORKDIR /source
 
-# copy csproj and restore as distinct layers
-COPY *.csproj .
-RUN dotnet restore -r linux-musl-x64
-
 # copy and publish app and libraries
-COPY . .
-RUN ls -l
+COPY ./Howler.Database Howler.Database
+COPY ./Howler.Services Howler.Services
+
+# prevent binary and object files from getting copied downstream
+RUN rm -rf ./Howler.Database/bin/
+RUN rm -rf ./Howler.Database/obj/
+RUN rm -rf ./Howler.Services/bin/
+RUN rm -rf ./Howler.Services/obj/
+
+# restore and publish
+WORKDIR /source/Howler.Services
+RUN dotnet restore -r linux-musl-x64
 RUN dotnet publish -c release -o /app -r linux-musl-x64 --self-contained false --no-restore
 
 # final stage/image

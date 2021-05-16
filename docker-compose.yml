@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  services:
+    build:
+      context: .
+      dockerfile: services.Dockerfile
+    ports:
+      - "5000:5000"
+    links:
+      - redis
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "HOWLER_CASSANDRA_ENDPOINT=cassandra"
+      - "HOWLER_KEYSPACE=howler"
+      - "HOWLER_ENVIRONMENT=dev"
+      - "HOWLER_SCOPE=openid"
+  ui:
+    build:
+      context: .
+      dockerfile: ui.Dockerfile
+    ports:
+      - "8000:8000"
+  redis:
+    image: redis
+  cassandra:
+    image: cassandra
+    container_name: cassandra
+    hostname: cassandra
+    # mem_limit: 2g
+    healthcheck:
+        test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+        interval: 5s
+        timeout: 5s
+        retries: 60
+    ports:
+      - "9042:9042"
