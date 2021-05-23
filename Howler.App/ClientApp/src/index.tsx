@@ -6,12 +6,12 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import Amplify, { Auth } from 'aws-amplify';
-import { COGNITO } from './aws-exports';
 import configureStore from './store/configureStore';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import { getConfig } from './config/config';
 
-Amplify.configure(COGNITO);
+Amplify.configure(getConfig().cognito);
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href') as string;

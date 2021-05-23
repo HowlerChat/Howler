@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -26,31 +26,33 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+class Section extends Component {
+  render() {
+    let {children, title, isDarkMode} = this.props;
+    return (
+      <View style={styles.sectionContainer}>
+        <p>
+          style={[
+            styles.sectionTitle,
+            {
+              color: isDarkMode ? Colors.white : Colors.black,
+            },
+          ]}>
+          {title}
+        </p>
+        <Text
+          style={[
+            styles.sectionDescription,
+            {
+              color: isDarkMode ? Colors.light : Colors.dark,
+            },
+          ]}>
+          {children}
+        </Text>
+      </View>
+    );
+  }
+}
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -70,17 +72,17 @@ const App: () => Node = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
+          <Section isDarkMode={isDarkMode} title="Step One">
             Edit any file in the dependency chain to change this
             screen and then come back to see your edits.
           </Section>
-          <Section title="See Your Changes">
+          <Section isDarkMode={isDarkMode} title="See Your Changes">
             <ReloadInstructions />
           </Section>
-          <Section title="Debug">
+          <Section isDarkMode={isDarkMode} title="Debug">
             <DebugInstructions />
           </Section>
-          <Section title="Learn More">
+          <Section isDarkMode={isDarkMode}  title="Learn More">
             Read the docs to discover what to do next:
           </Section>
           <LearnMoreLinks />

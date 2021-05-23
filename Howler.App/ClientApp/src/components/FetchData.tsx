@@ -15,11 +15,13 @@ type WeatherForecastProps =
 class FetchData extends React.PureComponent<WeatherForecastProps> {
   // This method is called when the component is first added to the document
   public componentDidMount() {
+    console.log("did mount");
     this.ensureDataFetched();
   }
 
   // This method is called when the route parameters change
   public componentDidUpdate() {
+    console.log("did update");
     this.ensureDataFetched();
   }
 

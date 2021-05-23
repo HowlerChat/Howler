@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as signalR from '@microsoft/signalr';
+import { ApplicationState } from '../store';
+import * as Spaces from '../store/Spaces';
 
-class Home extends React.Component<{user: any}, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
+type HomeProps = {user: any} & typeof Spaces.actionCreators & Spaces.SpacesState;
+
+class Home extends React.Component<HomeProps, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
   
-  constructor(props: {user: any}) {
+  constructor(props: HomeProps) {
     super(props);
     this.getSpaceResponse = this.getSpaceResponse.bind(this);
     this.noSpaceFound = this.noSpaceFound.bind(this);
@@ -51,9 +55,10 @@ class Home extends React.Component<{user: any}, {connection: signalR.HubConnecti
   }
 
   public getSpace() {
-    if (this.state.connection != null) {
-      this.state.connection.send("GetSpace", this.state.spaceId);
-    }
+    // if (this.state.connection != null) {
+    //   this.state.connection.send("GetSpace", this.state.spaceId);
+    // }
+    this.props.requestSpace(this.state.spaceId, this.props.user.signInUserSession.accessToken.jwtToken);
   }
 
   public render() {
@@ -69,7 +74,7 @@ class Home extends React.Component<{user: any}, {connection: signalR.HubConnecti
             <input type="text" value={this.state.spaceId} onChange={(e) => this.setState({spaceId: e.target.value})}></input>
             <button onClick={() => this.getSpace()}>Send</button>
           </div>
-          <div><b>{JSON.stringify(this.state.space)}</b></div></>;
+          <div><b>{JSON.stringify(this.props.spaces)}</b></div></>;
         } else {
           return <div>
             <a href="https://howler.auth.us-west-2.amazoncognito.com/login?client_id=6b75ooll3b86ugauhu22vj39ra&response_type=token&scope=email+openid+profile&redirect_uri=http://localhost:8000">Sign in here</a>
@@ -83,4 +88,7 @@ class Home extends React.Component<{user: any}, {connection: signalR.HubConnecti
   }
 };
 
-export default connect()(Home);
+export default connect(
+  (state: ApplicationState) => state.spaces,
+  Spaces.actionCreators
+)(Home);
