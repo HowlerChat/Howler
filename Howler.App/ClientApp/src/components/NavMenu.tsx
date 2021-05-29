@@ -1,7 +1,10 @@
+import { AmplifySignOut } from '@aws-amplify/ui-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Auth } from 'aws-amplify';
 import * as React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import {faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import './NavMenu.css';
+import './NavMenu.scss';
 
 export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }> {
     public state = {
@@ -11,25 +14,9 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
     public render() {
         return (
             <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                    <Container>
-                        <NavbarBrand tag={Link} to="/">Howler</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle} className="mr-2"/>
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
-                            <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                                </NavItem>
-                            </ul>
-                        </Collapse>
-                    </Container>
-                </Navbar>
+                <img src="/howler.png" className="logo"/>
+                <div className="space-icon" style={{ backgroundImage: `url('/shipyard.png')` }}></div>
+                <div className="sign-out" onClick={async () => await this.signOut()}><FontAwesomeIcon icon={faSignOutAlt}/></div>
             </header>
         );
     }
@@ -38,5 +25,13 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
         this.setState({
             isOpen: !this.state.isOpen
         });
+    }
+
+    private async signOut() {
+        try {
+            await Auth.signOut();
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
     }
 }

@@ -1,0 +1,11 @@
+@import '../sass/variables.scss';
+
+.container-unit {
+    position: absolute;
+    width: calc(100vw - 72px);
+    height: calc(100vh - 42px);
+    left: 72px;
+    top: 42px;
+    border-top-left-radius: 10px;
+    background-color: $tertiary-brand-color;
+}

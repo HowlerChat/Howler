@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 import * as signalR from '@microsoft/signalr';
 import { ApplicationState } from '../store';
 import * as Spaces from '../store/Spaces';
+import ChannelList from './ChannelList';
+import Channel from './Channel';
 
-type HomeProps = {user: any} & typeof Spaces.actionCreators & Spaces.SpacesState;
+import './Space.scss';
 
-class Home extends React.Component<HomeProps, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
+type SpaceProps = {user: any} & typeof Spaces.actionCreators & Spaces.SpacesState;
+
+class Space extends React.Component<SpaceProps, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
   
-  constructor(props: HomeProps) {
+  constructor(props: SpaceProps) {
     super(props);
     this.getSpaceResponse = this.getSpaceResponse.bind(this);
     this.noSpaceFound = this.noSpaceFound.bind(this);
@@ -62,33 +66,36 @@ class Home extends React.Component<HomeProps, {connection: signalR.HubConnection
   }
 
   public render() {
-    return <div>
-      <h1>Ephemeral Chat Example</h1>
-      {(this.state.error != null ? <div>Error: {this.state.error}</div> : <></>)}
-      <div>State: {(this.state.connection || { state: signalR.HubConnectionState.Disconnected}).state}</div>
-      {(() => {
-        if (this.state.connection != null && this.state.connection.state == signalR.HubConnectionState.Connected) {
-          return <><div>
-            {(!!this.state.flashError ? <div>{this.state.flashError}</div> : <></>)}
-            <label>SpaceId:</label>
-            <input type="text" value={this.state.spaceId} onChange={(e) => this.setState({spaceId: e.target.value})}></input>
-            <button onClick={() => this.getSpace()}>Send</button>
-          </div>
-          <div><b>{JSON.stringify(this.props.spaces)}</b></div></>;
-        } else {
-          return <div>
-            <a href="https://howler.auth.us-west-2.amazoncognito.com/login?client_id=6b75ooll3b86ugauhu22vj39ra&response_type=token&scope=email+openid+profile&redirect_uri=http://localhost:8000">Sign in here</a>
-            <label>Token:</label>
-            <input type="text" value={this.state.loginToken} onChange={(e) => this.setState({loginToken: e.target.value})}></input>
-            <button onClick={async () => await this.connect()}>Connect</button>
-          </div>;
-        }
-      })()}
+    return <div className="space-container">
+      <ChannelList/>
+      <Channel/>
     </div>;
   }
+  /*old:
+  {(this.state.error != null ? <div>Error: {this.state.error}</div> : <></>)}
+            <div>State: {(this.state.connection || { state: signalR.HubConnectionState.Disconnected}).state}</div>
+            {(() => {
+            if (this.state.connection != null && this.state.connection.state == signalR.HubConnectionState.Connected) {
+                return <><div>
+                {(!!this.state.flashError ? <div>{this.state.flashError}</div> : <></>)}
+                <label>SpaceId:</label>
+                <input type="text" value={this.state.spaceId} onChange={(e) => this.setState({spaceId: e.target.value})}></input>
+                <button onClick={() => this.getSpace()}>Send</button>
+                </div>
+                <div><b>{JSON.stringify(this.props.spaces)}</b></div></>;
+            } else {
+                return <div>
+                <a href="https://howler.auth.us-west-2.amazoncognito.com/login?client_id=6b75ooll3b86ugauhu22vj39ra&response_type=token&scope=email+openid+profile&redirect_uri=http://localhost:8000">Sign in here</a>
+                <label>Token:</label>
+                <input type="text" value={this.state.loginToken} onChange={(e) => this.setState({loginToken: e.target.value})}></input>
+                <button onClick={async () => await this.connect("")}>Connect</button>
+                </div>;
+            }
+            })()}
+            */
 };
 
 export default connect(
   (state: ApplicationState) => state.spaces,
   Spaces.actionCreators
-)(Home);
+)(Space);

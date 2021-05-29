@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+@import './variables.scss';
+
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: $brand-color;
+  background-color: #fff;
+  border-color: #fff;
+}
+
+body, html {
+  background: $brand-color;
+  color: #fff;
+  font-family: 'Fira Sans', sans-serif;
+}

@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@microsoft/signalr": "^5.0.4",
     "aws-amplify": "^4.0.2",
     "bootstrap": "^4.3.1",
@@ -11,6 +14,8 @@
     "history": "4.10.1",
     "jquery": "^3.5.1",
     "merge": "^2.1.1",
+    "moment-timezone": "^0.5.33",
+    "node-sass": "^6.0.0",
     "popper.js": "^1.16.0",
     "query-string": "^7.0.0",
     "react": "16.11.0",
