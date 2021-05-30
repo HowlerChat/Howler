@@ -4,7 +4,7 @@ import {faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment-timezone';
 import './Channel.scss';
 
-export default class Channel extends React.PureComponent<{}, { pendingMessage: string, messages: { senderId: string, timestamp: string, id: string, type: "post"|"event", content: {text: string}}[]}> {
+export default class Channel extends React.PureComponent<{}, { pendingMessage: string, messages: { senderId: string, timestamp: string, id: string, type: "post"|"embed"|"event", content: {text: string}|{videoUrl: string, width?: string, height?: string}}[]}> {
     mapSenderToUser(senderId: string) {
         return {
             "@<00000000-0000-0000-0000-000000000000>": {
@@ -50,6 +50,77 @@ export default class Channel extends React.PureComponent<{}, { pendingMessage: s
             pendingMessage: "",
             // This is a no-good, very bad approach to message management, and only for prototyping
             messages: [
+// 00000000-0000-0000-0000-000000000000
+/*
+POST /spaces/{spaceId}/channels/{channelId}/messages
+{
+    "senderId": "@<00000000-0000-0000-0000-0000000000000>",
+    "algorithm": "sha3-256",
+    "id": "F0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
+    "nonce": "new Date().getLongMillis()",
+    "type": "embed" | "post" | "event" | "share",
+    "content": {
+        "videoUrl": "One thing that defines me is I",
+        "width": "640",
+        "height": "480"
+    },
+    // only supplied by server:
+    "timestamp": "45678",
+    "lastModifiedTimestamp": "3456789"|undefined
+    "lastModifiedHash": "d3456789076"
+    "reactions": [
+        {
+            "emojiId": "678"
+            "spaceId": "03902923-0000...",
+            "emojiName": ":howler:",
+            "count": 3,
+            "userIds": [
+                "@<00000000-0000-0000-0000-0000000000000>",
+                "@<00000000-0000-0000-0000-0000000000001>",
+                "@<00000000-0000-0000-0000-0000000000002>"
+            ]
+        }
+    ],
+    "mentions": {
+        "users": ["@<00000000-0000-0000-0000-0000000000000>"],
+        "roles": ["@<00000000-0000-0000-0000-0000000000000>"],
+        "channels": ["@<00000000-0000-0000-0000-0000000000000>"]
+    },
+    "messageReplyId": "F0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B"
+}
+PATCH /spaces/{spaceId}/channels/{channelId}/messages/{messageId}
+{
+    "type": "post",
+    "content": {
+        "text": "Oops"
+    }
+    "nonce": "some nonce value"
+    "lastModifiedHash": ""
+}
+{
+    "senderId": "@<00000000-0000-0000-0000-0000000000000>",
+    "algorithm": "sha3-256",
+    "id": "A0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
+    "referenceId": "F0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B"
+    "type": "post",
+    "content": {
+        "text": "really really don't"
+    }
+}
+{
+    "senderId": "@<00000000-0000-0000-0000-0000000000000>",
+    "algorithm": "sha3-256",
+    "id": "D0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
+    "referenceId": "A0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B"
+    "type": "post",
+    "content": {
+        "text": "kick puppies"
+    }
+}
+
+POST /spaces/{spaceId}/channels/{channelId}/messages/{messageId}/attachments
+
+*/
                 {
                     "senderId": "@<00000000-0000-0000-0000-000000000000>",
                     "timestamp": "1622272285000",
@@ -86,6 +157,15 @@ export default class Channel extends React.PureComponent<{}, { pendingMessage: s
                         "text": "In theory this will get grouped with glomming"
                     }
                 },
+                {
+                    "senderId": "@<00000000-0000-0000-0000-000000000000>",
+                    "timestamp": "1622272999000",
+                    "id": "A345678909865678",
+                    "type": "embed",
+                    "content": {
+                        "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    }
+                }
             ]
         }
     }
@@ -103,7 +183,21 @@ export default class Channel extends React.PureComponent<{}, { pendingMessage: s
                         <div className="message-sender-icon" style={{ backgroundImage: `url(${sender.userIcon})` }}/>
                         <div className="message-content">
                             <span className="message-sender-name">{sender.displayName}</span><span className="message-timestamp">{time.format('h:ma')}</span>
-                            <div className="message-post-content">{message.content.text}</div>
+                            {(() => {
+                                if (message.type == "post") {
+                                    let content = (message.content as {text: string});
+                                    return <div className="message-post-content">{content.text}</div>;
+                                } else if (message.type == "embed") {
+                                    let content = (message.content as {videoUrl: string, width?: string, height?: string});
+                                    return <div className="message-post-content">
+                                        <iframe
+                                            width={content.width || "560"}
+                                            height={content.height || "315"}
+                                            src={content.videoUrl} allow="autoplay; encrypted-media"></iframe>
+                                    </div>;
+                                }
+                            })()}
+                            
                         </div>
                     </div>
                 })}
