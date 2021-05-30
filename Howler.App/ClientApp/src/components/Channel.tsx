@@ -163,7 +163,7 @@ POST /spaces/{spaceId}/channels/{channelId}/messages/{messageId}/attachments
                     "id": "A345678909865678",
                     "type": "embed",
                     "content": {
-                        "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
                     }
                 }
             ]
@@ -193,7 +193,9 @@ POST /spaces/{spaceId}/channels/{channelId}/messages/{messageId}/attachments
                                         <iframe
                                             width={content.width || "560"}
                                             height={content.height || "315"}
-                                            src={content.videoUrl} allow="autoplay; encrypted-media"></iframe>
+                                            src={content.videoUrl} 
+                                            frameBorder="0"
+                                            allow="autoplay; encrypted-media"></iframe>
                                     </div>;
                                 }
                             })()}
