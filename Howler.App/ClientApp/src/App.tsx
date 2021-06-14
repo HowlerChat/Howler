@@ -2,6 +2,8 @@ import React from 'react';
 import { Route } from 'react-router';
 import { AmplifyAuthenticator, AmplifySignIn, AmplifySignOut, AmplifySignUp } from '@aws-amplify/ui-react';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import QRLogin from './components/QRLogin';
+import QRScan from './components/QRScan';
 import Layout from './components/Layout';
 import Space from './components/Space';
 
@@ -20,35 +22,44 @@ const App = () => {
     }, []);
 
     return authState === AuthState.SignedIn && user ? (<>
-        <Layout>
-            <Route exact path='/' component={() => <Space user={user} />} />
+        <Layout setAuthState={setAuthState}>
+            <Route exact path='/spaces/:spaceId/:channelId' component={(props: any) => <Space {...props} user={user} />} />
+            <Route exact path='/qrauth/:id' component={(props: any) => <QRScan {...props}/>} />
         </Layout>
-    </>) : <AmplifyAuthenticator usernameAlias="email">
-        <AmplifySignUp
-            slot="sign-up"
-            usernameAlias="email"
-            formFields={[
-            {
-                type: "email",
-                label: "Custom Email Label",
-                placeholder: "Custom email placeholder",
-                inputProps: { required: true, autocomplete: "username" },
-            },
-            {
-                type: "password",
-                label: "Custom Password Label",
-                placeholder: "Custom password placeholder",
-                inputProps: { required: true, autocomplete: "new-password" },
-            },
-            {
-                type: "phone_number",
-                label: "Custom Phone Label",
-                placeholder: "Custom phone placeholder",
-            },
-            ]} 
-        />
-        <AmplifySignIn slot="sign-in" usernameAlias="email" />
-    </AmplifyAuthenticator>;
+    </>) : <div className="login-pane">
+        <div/>
+        <div className="sign-in">
+            <AmplifyAuthenticator usernameAlias="email">
+                <AmplifySignUp
+                    slot="sign-up"
+                    usernameAlias="email"
+                    formFields={[
+                    {
+                        type: "email",
+                        label: "Custom Email Label",
+                        placeholder: "Custom email placeholder",
+                        inputProps: { required: true, autocomplete: "username" },
+                    },
+                    {
+                        type: "password",
+                        label: "Custom Password Label",
+                        placeholder: "Custom password placeholder",
+                        inputProps: { required: true, autocomplete: "new-password" },
+                    },
+                    {
+                        type: "phone_number",
+                        label: "Custom Phone Label",
+                        placeholder: "Custom phone placeholder",
+                    },
+                    ]} 
+                />
+                <AmplifySignIn slot="sign-in" usernameAlias="email" />
+            </AmplifyAuthenticator>
+        </div>
+        <div className="vertical-divider"/>
+        <QRLogin />
+        <div/>
+    </div>;
 };
 
 export default App;

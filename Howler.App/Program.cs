@@ -20,6 +20,10 @@ namespace Howler.App
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel((options) =>
+                    {
+                       options.ConfigureEndpointDefaults(lo => lo.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1); 
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import * as signalR from '@microsoft/signalr';
 import { ApplicationState } from '../store';
 import * as Spaces from '../store/Spaces';
@@ -8,19 +9,19 @@ import Channel from './Channel';
 
 import './Space.scss';
 
-type SpaceProps = {user: any} & typeof Spaces.actionCreators & Spaces.SpacesState;
+type SpaceProps = {user: any} & typeof Spaces.actionCreators & Spaces.SpacesState & RouteComponentProps<{ spaceId: string, channelId: string }>;
 
 class Space extends React.Component<SpaceProps, {connection: signalR.HubConnection | null, loginToken: string, space: any, flashError: string | null, error: string | null, spaceId: string }> {
   
   constructor(props: SpaceProps) {
     super(props);
-    this.getSpaceResponse = this.getSpaceResponse.bind(this);
-    this.noSpaceFound = this.noSpaceFound.bind(this);
-    
+    // this.getSpaceResponse = this.getSpaceResponse.bind(this);
+    // this.noSpaceFound = this.noSpaceFound.bind(this);
+
     this.state = {
       connection: null,
       loginToken: "",
-      space: null,
+      space: this.props.spaces.find(s => s.spaceId === props.match.params.spaceId),
       flashError: null,
       error: null,
       spaceId: ""
@@ -40,8 +41,8 @@ class Space extends React.Component<SpaceProps, {connection: signalR.HubConnecti
       .withUrl("http://localhost:5000/howler", { accessTokenFactory: () => token }).build();
     try {
       await connection.start();
-      connection.on("GetSpaceResponse", this.getSpaceResponse);
-      connection.on("NoSpaceFound", this.noSpaceFound);
+      // connection.on("GetSpaceResponse", this.getSpaceResponse);
+      // connection.on("NoSpaceFound", this.noSpaceFound);
 
       this.setState({connection, error: null});
     } catch (e) {
@@ -50,25 +51,10 @@ class Space extends React.Component<SpaceProps, {connection: signalR.HubConnecti
     }
   }
 
-  public getSpaceResponse(space: any) {
-    this.setState({ space: space, flashError: null });
-  }
-
-  public noSpaceFound() {
-    this.setState({ space: null, flashError: "No space found, sorry bruh." });
-  }
-
-  public getSpace() {
-    // if (this.state.connection != null) {
-    //   this.state.connection.send("GetSpace", this.state.spaceId);
-    // }
-    this.props.requestSpace(this.state.spaceId, this.props.user.signInUserSession.accessToken.jwtToken);
-  }
-
   public render() {
     return <div className="space-container">
-      <ChannelList/>
-      <Channel/>
+      <ChannelList space={this.state.space} channelId={this.props.match.params.channelId} />
+      <Channel space={this.state.space} channelId={this.props.match.params.channelId} />
     </div>;
   }
   /*old:

@@ -2,21 +2,39 @@
 @import './variables.scss';
 
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 code {
-  color: #E01A76;
+    color: #E01A76;
 }
 
 .btn-primary {
-  color: $brand-color;
-  background-color: #fff;
-  border-color: #fff;
+    color: $brand-color;
+    background-color: #fff;
+    border-color: #fff;
 }
 
 body, html {
-  background: $brand-color;
-  color: #fff;
-  font-family: 'Fira Sans', sans-serif;
+    background: $brand-color;
+    color: #fff;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 65vh;
+    background: $tertiary-brand-color;
+}
+
+.login-pane {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+:root {
+    --amplify-background-color: $brand-color !important;
+    --amplify-secondary-color: #fff !important;
+    --amplify-grey: #fff !important;
 }

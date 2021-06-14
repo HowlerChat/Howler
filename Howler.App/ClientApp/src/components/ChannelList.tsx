@@ -5,8 +5,10 @@ import ChannelGroup from './ChannelGroup';
 import './ChannelList.scss';
 import { isFunction } from 'util';
 
-export default class ChannelList extends React.PureComponent<{}, { groups: { groupName: string, channels: { channelName: string, isFocused?: boolean, mentionCount?: number, mentions?: string }[] }[] }> {
-    constructor(props: { }) {
+type ChannelListProps = { space: any, channelId: string };
+
+export default class ChannelList extends React.PureComponent<ChannelListProps, { groups: { groupName: string, channels: { channelId: string, channelName: string, mentionCount?: number, mentions?: string }[] }[] }> {
+    constructor(props: ChannelListProps) {
         super(props);
 
         this.state = {
@@ -15,26 +17,31 @@ export default class ChannelList extends React.PureComponent<{}, { groups: { gro
                     groupName: "General",
                     channels: [
                         {
+                            channelId: "00000000-0000-0000-0000-000000000000",
                             channelName: "#build-logs",
                             mentionCount: 20,
                             mentions: "role"
                         },
                         {
+                            channelId: "00000000-0000-0000-0000-000000000001",
                             channelName: "#build-breakers"
                         },
                         {
+                            channelId: "00000000-0000-0000-0000-000000000002",
                             channelName: "#yell-at-us",
                             mentionCount: 1,
                             mentions: "you"
                         },
                         {
-                            channelName: "#general-en",
-                            isFocused: true
+                            channelId: "00000000-0000-0000-0000-000000000003",
+                            channelName: "#general-en"
                         },
                         {
+                            channelId: "00000000-0000-0000-0000-000000000004",
                             channelName: "#general-es"
                         },
                         {
+                            channelId: "00000000-0000-0000-0000-000000000005",
                             channelName: "#complete-nonsense"
                         },
                     ]
@@ -43,9 +50,11 @@ export default class ChannelList extends React.PureComponent<{}, { groups: { gro
                     groupName: "Botmasters",
                     channels: [
                         {
+                            channelId: "00000000-0000-0000-0000-000000000006",
                             channelName: "#terminator-thunderdome"
                         },
                         {
+                            channelId: "00000000-0000-0000-0000-000000000007",
                             channelName: "#api-development"
                         },
                     ]
@@ -54,9 +63,11 @@ export default class ChannelList extends React.PureComponent<{}, { groups: { gro
                     groupName: "Townhall",
                     channels: [
                         {
+                            channelId: "00000000-0000-0000-0000-000000000008",
                             channelName: "#may-08-townhall"
                         },
                         {
+                            channelId: "00000000-0000-0000-0000-000000000009",
                             channelName: "#may-01-townhall"
                         },
                     ]
@@ -70,7 +81,7 @@ export default class ChannelList extends React.PureComponent<{}, { groups: { gro
                 <span className="space-header-name">Shipyard!</span>
                 <span className="space-context-menu-toggle-button"><FontAwesomeIcon icon={faChevronDown}/></span>
             </div>
-            {this.state.groups.map(group => <ChannelGroup key={group.groupName} group={group}/>)}
+            {this.state.groups.map(group => <ChannelGroup key={group.groupName} selectedChannelId={this.props.channelId} group={group}/>)}
         </div>;
     }
 }

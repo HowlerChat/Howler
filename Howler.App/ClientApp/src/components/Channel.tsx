@@ -4,7 +4,9 @@ import {faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment-timezone';
 import './Channel.scss';
 
-export default class Channel extends React.PureComponent<{}, { pendingMessage: string, messages: { senderId: string, timestamp: string, id: string, type: "post"|"embed"|"event", content: {text: string}|{videoUrl: string, width?: string, height?: string}}[]}> {
+type ChannelProps = { space: any, channelId: string };
+
+export default class Channel extends React.PureComponent<ChannelProps, { pendingMessage: string, messages: { senderId: string, timestamp: string, id: string, type: "post"|"embed"|"event", content: {text: string}|{videoUrl: string, width?: string, height?: string}}[]}> {
     mapSenderToUser(senderId: string) {
         return {
             "@<00000000-0000-0000-0000-000000000000>": {
@@ -41,7 +43,7 @@ export default class Channel extends React.PureComponent<{}, { pendingMessage: s
         }]), pendingMessage: ""} });
     }
 
-    constructor(props: {}) {
+    constructor(props: ChannelProps) {
         super(props);
 
         this.submitMessage = this.submitMessage.bind(this);
