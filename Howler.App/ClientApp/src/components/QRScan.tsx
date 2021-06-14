@@ -113,9 +113,8 @@ export default class QRScan extends React.PureComponent<QRScanProps, { keyPair?:
     }
 
     public render() {
-        return <div className="sign-in-qr">
-            <span>{this.props.match.params.id}</span><br/>
-            <span>{this.state.confirmValue}</span>
+        return <div className="qr-scan">
+            <span>Confirm match: {this.state.confirmValue}</span>
         </div>
     }
 }

@@ -92,6 +92,7 @@ export default class QRLogin extends React.PureComponent<QRLoginProps, { keyPair
                                     for (let i = 0; i < len; i++)        {
                                         bytes[i] = binary_string.charCodeAt(i);
                                     }
+                                    // TODO: other than the obvious refactoring, don't just let this come through, make the user confirm.
                                     crypto.subtle.decrypt({name: "AES-CTR", counter: new Uint8Array(16), length: 128}, k, bytes.buffer).then(v =>  {
                                         let dec = new TextDecoder();
                                         let output = dec.decode(v);
@@ -99,6 +100,7 @@ export default class QRLogin extends React.PureComponent<QRLoginProps, { keyPair
                                         for (let k in obj) {
                                             window.localStorage.setItem(k, obj[k]);
                                         }
+                                        window.location.reload();
                                     })
                                 }
                             })
@@ -118,6 +120,7 @@ export default class QRLogin extends React.PureComponent<QRLoginProps, { keyPair
             <div className="sign-in-qr">
                 <QRCode value={"http://localhost:8000/qrauth/" + this.state.identifier} level="H"/>
             </div>
+            <span>Confirm value: {this.state.confirmValue}</span>
         </div> : <div className="sign-in-qr-loading"></div>;
     }
 }
