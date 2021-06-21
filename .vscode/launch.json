@@ -34,7 +34,7 @@
             "name": "React App",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-app",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Howler.App/bin/Debug/net5.0/Howler.App.dll",
             "args": [],
@@ -53,6 +53,32 @@
             }
         },
         {
+            "name": "Auth Gateway",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-authgateway",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/Howler.AuthGateway/bin/Debug/net5.0/Howler.AuthGateway.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Howler.AuthGateway",
+            "stopAtEntry": false,
+            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "HOWLER_CASSANDRA_ENDPOINT": "127.0.0.1",
+                "HOWLER_KEYSPACE": "howler",
+                "HOWLER_ENVIRONMENT": "dev",
+                "HOWLER_SCOPE": "openid"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
@@ -61,8 +87,8 @@
     ],
     "compounds": [
         {
-            "name": "API and React App",
-            "configurations": [".NET Core Launch (web)", "React App"]
+            "name": "Howler Core Services",
+            "configurations": [".NET Core Launch (web)", "React App", "Auth Gateway"]
         }
     ]
 }

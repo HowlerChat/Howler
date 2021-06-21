@@ -54,10 +54,9 @@ namespace Howler.Services
                 {
                     options.AddPolicy("defaultPolicy", builder =>
                     {
-                    builder.WithOrigins(
+                    builder.WithOrigins(    
                         "http://localhost:8000",
-                        "https://localhost:8001",
-                        "https://192.168.0.131:8001")
+                        "https://localhost:8001")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

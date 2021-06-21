@@ -25,5 +25,10 @@ namespace Howler.Database
         /// Gets the Spaces.
         /// </summary>
         IQueryable<Space> Spaces { get; }
+
+        /// <summary>
+        /// Gets the Servers.
+        /// </summary>
+        IQueryable<Server> Servers { get; }
     }
 }

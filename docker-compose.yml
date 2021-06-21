@@ -20,6 +20,12 @@ services:
       dockerfile: ui.Dockerfile
     ports:
       - "8000:8000"
+  auth_gateway:
+    build:
+      context: .
+      dockerfile: authgateway.Dockerfile
+    ports:
+      - "7000:7000"
   redis:
     image: redis
   cassandra:
