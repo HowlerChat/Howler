@@ -23,6 +23,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Howler.AuthGateway\Howler.AuthGateway.csproj" />
+    <ProjectReference Include="..\Howler.AuthGateway\Howler.AuthGateway.csproj" />
   </ItemGroup>
 </Project>

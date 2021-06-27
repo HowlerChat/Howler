@@ -53,16 +53,13 @@ namespace Howler.Services
             services.AddCors(options =>
                 {
                     options.AddPolicy("defaultPolicy", builder =>
-                    {
-                    builder.WithOrigins(    
-                        "http://localhost:8000",
-                        "https://localhost:8001")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                    });
+                        builder.WithOrigins(
+                            "http://localhost:8000",
+                            "https://localhost:8001")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials());
                 });
-
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme =
@@ -121,14 +118,28 @@ namespace Howler.Services
                             Version = "v1",
                         });
                     c.AddSecurityDefinition(
-                        "Bearer",
+                        "oauth2",
                         new OpenApiSecurityScheme
                         {
-                            Description = "Bearer [access_token]",
-                            Name = "Authorization",
-                            In = ParameterLocation.Header,
-                            Type = SecuritySchemeType.ApiKey,
-                            Scheme = "Bearer",
+                            Type = SecuritySchemeType.OAuth2,
+                            Flows = new OpenApiOAuthFlows
+                            {
+                                Implicit = new OpenApiOAuthFlow()
+                                {
+                                    TokenUrl =
+                                        new Uri("https://auth.howler.chat/" +
+                                            "oauth2/token"),
+                                    AuthorizationUrl =
+                                        new Uri("https://auth.howler.chat/" +
+                                            "oauth2/authorize"),
+                                    Scopes = new Dictionary<string, string>
+                                    {
+                                        { "openid", "User Profile" },
+                                        { "email", "email" },
+                                        { "profile", "profile" },
+                                    },
+                                },
+                            },
                         });
                     c.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
@@ -138,7 +149,7 @@ namespace Howler.Services
                                 Reference = new OpenApiReference
                                 {
                                     Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer",
+                                    Id = "oauth2",
                                 },
                                 Scheme = "oauth2",
                                 Name = "Bearer",
@@ -147,11 +158,8 @@ namespace Howler.Services
                             new List<string>()
                         },
                     });
-                    var xmlFile = Assembly
-                        .GetExecutingAssembly()
-                        .GetName()
-                        .Name +
-                        ".xml";
+                    var xmlFile = Assembly.GetExecutingAssembly().GetName()
+                        .Name + ".xml";
                     var xmlPath = Path.Combine(
                         AppContext.BaseDirectory,
                         xmlFile);
@@ -174,9 +182,15 @@ namespace Howler.Services
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint(
+            app.UseSwaggerUI(c =>
+            {
+                c.OAuth2RedirectUrl("http://localhost:5000/" +
+                    "swagger/oauth2-redirect.html");
+                c.OAuthClientId("6b75ooll3b86ugauhu22vj39ra");
+                c.SwaggerEndpoint(
                 "/swagger/v1/swagger.json",
-                "Howler.Services v1"));
+                "Howler.Services v1");
+            });
             app.UseAuthentication();
             app.UseRouting();
             app.UseCors("defaultPolicy");
