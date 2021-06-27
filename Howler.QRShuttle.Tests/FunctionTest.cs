@@ -21,9 +21,6 @@ namespace Howler.QRShuttle.Tests
             var function = new Function();
             var context = new TestLambdaContext();
             var casing = function.FunctionHandler("hello world", context);
-
-            Assert.Equal("hello world", casing.Lower);
-            Assert.Equal("HELLO WORLD", casing.Upper);
         }
     }
 }

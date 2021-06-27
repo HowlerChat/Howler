@@ -4,25 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Xunit;
-using Amazon.Lambda.Core;
-using Amazon.Lambda.TestUtilities;
-using Amazon.Lambda.APIGatewayEvents;
-
-using Newtonsoft.Json;
-
-using Howler.AuthGateway;
-
-
 namespace Howler.AuthGateway.Tests
 {
+    using Xunit;
+
     public class ValuesControllerTests
     {
-
-
         [Fact]
-        public async Task TestGet()
+        public void TestGet()
         {/*
+            low hanging fruit: turn this into an actual valid test case
             var lambdaFunction = new LambdaEntryPoint();
 
             var requestStr = File.ReadAllText("./SampleRequests/ValuesController-Get.json");

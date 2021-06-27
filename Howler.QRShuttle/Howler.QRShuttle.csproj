@@ -5,17 +5,19 @@
     <AWSProjectType>Lambda</AWSProjectType>
     <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <nullable>enable</nullable>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>../Howler.Services/Howler.Services.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- 
+      <nullable>enable</nullable>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
+      <CodeAnalysisRuleSet>../Howler.Services/Howler.Services.ruleset</CodeAnalysisRuleSet>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    -->
   </PropertyGroup>
-
+<!-- 
 	<ItemGroup>
 		<AdditionalFiles Include="../Howler.Services/Menees.Analyzers.Settings.xml" />
 	</ItemGroup>
-
-  <ItemGroup>
+-->
+  <ItemGroup><!-- 
     <PackageReference Include="Menees.Analyzers" Version="2.0.6">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -23,7 +25,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    </PackageReference> -->
     <PackageReference Include="Amazon.Lambda.Core" Version="2.0.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.1.0" />
   </ItemGroup>

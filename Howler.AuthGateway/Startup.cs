@@ -1,44 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Howler.AuthGateway.KeyProviders;
-using Howler.AuthGateway.SigningAlgorithms;
-using Howler.Database;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+﻿// <copyright file="Startup.cs" company="Howler Team">
+// Copyright (c) Howler Team. All rights reserved.
+// Licensed under the Server Side Public License.
+// See LICENSE file in the project root for full license information.
+// </copyright>
+// <author>Cassandra A. Heart</author>
 
 namespace Howler.AuthGateway
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using Howler.AuthGateway.KeyProviders;
+    using Howler.AuthGateway.SigningAlgorithms;
+    using Howler.Database;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
+    using Microsoft.OpenApi.Models;
+
+    /// <summary>
+    /// The configuration bootstrap class.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/>
+        /// class.
+        /// </summary>
+        /// <param name="configuration">The application configuration.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public static IConfiguration Configuration { get; private set; }
+        /// <summary>
+        /// Gets the application configuration.
+        /// </summary>
+        public static IConfiguration? Configuration { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to
+        /// add services to the container.
+        /// </summary>
+        /// <param name="services">
+        /// The dependency collection container to configure.
+        /// </param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
                 {
                     options.AddPolicy("defaultPolicy", builder =>
                     {
-                    builder.WithOrigins(    
+                    builder.WithOrigins(
                         "http://localhost:8000",
                         "https://localhost:8001")
                         .AllowAnyHeader()
@@ -56,8 +75,8 @@ namespace Howler.AuthGateway
                 })
                 .AddJwtBearer(x =>
                 {
-                    x.Authority = Configuration["JWT:Authority"];
-                    x.Audience = Configuration["JWT:Audience"];
+                    x.Authority = Configuration?["JWT:Authority"];
+                    x.Audience = Configuration?["JWT:Audience"];
                     x.RequireHttpsMetadata = false;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -89,7 +108,7 @@ namespace Howler.AuthGateway
                             Type = SecuritySchemeType.ApiKey,
                             Name = "Authorization",
                             In = ParameterLocation.Header,
-                            Description = "Bearer [access_token]"
+                            Description = "Bearer [access_token]",
                         });
                     c.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
@@ -117,21 +136,24 @@ namespace Howler.AuthGateway
                 });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to
+        /// configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
+        /// <param name="env">The host environment.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            if (!env.IsDevelopment())
+            else
             {
                 app.UseHttpsRedirection();
             }
 
             app.UseRouting();
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -144,10 +166,6 @@ namespace Howler.AuthGateway
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Welcome to running ASP.NET Core on AWS Lambda");
-                });
             });
         }
     }

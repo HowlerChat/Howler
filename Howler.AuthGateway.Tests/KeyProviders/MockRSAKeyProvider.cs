@@ -1,10 +1,12 @@
 namespace Howler.AuthGateway.Tests.KeyProviders
 {
+    using System.Text;
+
     public class MockRSAKeyProvider : IKeyProvider
     {
-        public string Key {
+        public byte[] Key {
             get {
-                return @"-----BEGIN CERTIFICATE-----
+                return Encoding.UTF8.GetBytes(@"-----BEGIN CERTIFICATE-----
 MIIDETCCAfkCFFPyESRGRGw8DN52TEqlvq/S5L9JMA0GCSqGSIb3DQEBCwUAMEUx
 CzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRl
 cm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMjEwNjI3MDI0NTMxWhcNMjQwMzI0MDI0
@@ -50,7 +52,7 @@ r+50c4HlV8VKWmHzdgeA43LAE5gMN5+Q29C1MB/1/JLwlYGUCx5x/FH2IDBmxM77
 dcXfyxavhB7hOWaoWcfzi1YMUj4fM50/cju06Hnn8N1SrnZWeZmkC4HjmF2s/WYo
 0g2owaM/c7aSLZQuLdUMTbO8YWvm7KrU5wPOpGQeMFXQroMbblLESg==
 -----END RSA PRIVATE KEY-----
-";
+");
             }
         }
     }
