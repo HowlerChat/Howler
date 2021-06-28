@@ -28,22 +28,7 @@ namespace Howler.AuthGateway.Tests
                     "6b75ooll3b86ugauhu22vj39ra",
                     "4369d133-a36e-4a82-905d-89f620f53061"),
                 signingAlgo);
-            Assert.Null(jwt.ToString());
+            Assert.NotNull(jwt.ToString());
         }
     }
 }
-
-/*
-{
-    "D": "DEEAeVQLgAE0LHH1vwOegkSsenSoF2U4O+unyIpeHOhIy18//23caIQDVK9Ux8g7JbGb0uyjL94v8kdIF0tuo0p3Ei/li86vflgeCaNhgsoWl3BJiRa2vFLSHqJ+INgHCG9O9lMwwcJcnv3O0VRhH2reXNACu/u+wAUtqKtjaxk=",
-    "DP": "hCzbQw0Si4dexPbrUpFbW1mLZHS6iyXRglWl4VD7M0XZgaZI+dF66Y+RzpUCwOKyAPUujPJrh+UyZk2NQtc3lw==",
-    "DQ": "ei4r0JwTvIQ52d4kE2mqp9C26gTRvVzZqw+pHEAZM4thKibn6rqDJQuYQ9M6oluimtAEhaO9vOBS8Scuuzyf+w==",
-    "Exponent": "AQAB",
-    "InverseQ": "IUzr/RinHOVYQWajo3tiqC4660Z0YyuDxXnVQgVSiuU1kXsumlBmXXSsZxS1lZFpsHYog0u063LgyQj7yc0JJQ==",
-    "Modulus": "sR//rgvKef+O8VPNA1oWPWKDK1Bu5RXGBWoE+tBh+kNmLWXvcD0yKOcI9d/JS2C3RbeWjv0R+8lVgpwyDuEODMtwBPDE2AptOcboG2IbtyOeJ8OjAn+4DDnxA9xzvHlJA03NITQoS+yw4IgPD752R/tbYxPLZ9FQ13ydP/+mxzE=",
-    "P": "ykrhux6BVvqXYuwcleTVdMTfUPQy3P+v5AQjaOI/q9SsY7Gy8HoVMY7A+5xcRQXk3jkpi2RBFR0upXH8sLk/nw==",
-    "Q": "4CaRmFxjyYHvFpwF8d3GQ9TK8G0C46llZQg8OXtkSgRnuJE7U6ecTMjWH5l7nz5Cl45sqqUIyHga5frwlqFHLw=="
-}
-
-
-*/

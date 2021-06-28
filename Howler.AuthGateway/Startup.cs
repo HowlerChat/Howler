@@ -66,18 +66,12 @@ namespace Howler.AuthGateway
                     });
                 });
 
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme =
-                        JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme =
-                        JwtBearerDefaults.AuthenticationScheme;
-                })
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(x =>
                 {
                     x.Authority = Configuration?["JWT:Authority"];
                     x.Audience = Configuration?["JWT:Audience"];
-                    x.RequireHttpsMetadata = false;
+                    x.RequireHttpsMetadata = true;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false,

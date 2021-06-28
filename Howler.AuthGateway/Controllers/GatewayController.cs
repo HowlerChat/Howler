@@ -84,7 +84,8 @@ namespace Howler.AuthGateway.Controllers
             // TODO: Whitelist/blacklist
             return this.Ok(
                 new GatewayJWT(
-                    new GatewayJWTHeader(jwt.Kid),
+                    new GatewayJWTHeader(
+                        "XvcI95sskH6rV+L8necLpZT9KxCji2HwjQP\\/vMBxXfo="),
                     new GatewayJWTBody(
                         jwt.Subject,
                         jwt.GetClaim("device_key").Value,
