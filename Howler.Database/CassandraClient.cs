@@ -8,6 +8,7 @@
 namespace Howler.Database
 {
     using System;
+    using System.Security.Cryptography.X509Certificates;
     using Cassandra;
     using Microsoft.Extensions.Logging;
 
@@ -28,13 +29,37 @@ namespace Howler.Database
         public CassandraClient(ILogger<CassandraClient> logger)
         {
             this._logger = logger;
-            this._cluster = Cluster.Builder()
+            var port = Environment
+                .GetEnvironmentVariable("HOWLER_CASSANDRA_PORT");
+            var isProd = Environment
+                .GetEnvironmentVariable("HOWLER_ENVIRONMENT") == "prod";
+
+            var builder = Cluster.Builder()
                 .AddContactPoint(Environment.GetEnvironmentVariable(
                     "HOWLER_CASSANDRA_ENDPOINT") ??
                     throw new ArgumentNullException(
                     "HOWLER_CASSANDRA_ENDPOINT is null. Please define it in" +
                     "your environment variable."))
-                .Build();
+                .WithPort(port is null ? 9042 : int.Parse(port));
+
+            if (isProd)
+            {
+                var username = Environment
+                    .GetEnvironmentVariable("HOWLER_CASSANDRA_USERNAME");
+                var password = Environment
+                    .GetEnvironmentVariable("HOWLER_CASSANDRA_PASSWORD");
+                var certs = new X509Certificate2Collection();
+                var amazonRoot = new X509Certificate2(@"./AmazonRootCA1.pem");
+                certs.Add(amazonRoot);
+
+                builder.WithAuthProvider(
+                        new PlainTextAuthProvider(username, password))
+                    .WithSSL(new SSLOptions()
+                    .SetCertificateCollection(certs));
+            }
+
+            this._cluster = builder.Build();
+
             this.Session = this._cluster.Connect(
                 Environment.GetEnvironmentVariable("HOWLER_KEYSPACE") ??
                 throw new ArgumentNullException(
