@@ -3,25 +3,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBars, faCompressAlt, faPlus, faSearch} from '@fortawesome/free-solid-svg-icons';
 import './ExpandableNavMenu.scss';
 import { useState } from 'react';
-import { Button, Tooltip } from 'reactstrap';
 import { useHistory } from 'react-router';
+import Button from '../Button';
+import Tooltip from '../Tooltip';
 
 export default function ExpandableNavMenu() {
     let history = useHistory();
     const [isExpanded, setExpanded] = useState(false);
-    const [isSearchTooltipOpen, setSearchTooltipOpen] = useState(false);
-    const [isAddTooltipOpen, setAddTooltipLOpen] = useState(false);
-    const [isJoinTooltipOpen, setJoinTooltipOpen] = useState(false);
-    const toggleSearchTooltip = () => setSearchTooltipOpen(!isSearchTooltipOpen);
-    const toggleAddTooltip = () => setAddTooltipLOpen(!isAddTooltipOpen);
-    const toggleJoinTooltip = () => setJoinTooltipOpen(!isJoinTooltipOpen);
 
     return isExpanded ? 
         <div className="expanded-nav-menu">
             <div className="invisible-dismissal" onClick={() => setExpanded(false)}/>
-            <Button className="expanded-nav-search-spaces" id="expanded-nav-search-button" onClick={(e) => history.push("/spaces/search")}><FontAwesomeIcon icon={faSearch}/></Button><Tooltip target="expanded-nav-search-button" placement="right" isOpen={isSearchTooltipOpen} toggle={toggleSearchTooltip}>Search for Public Spaces</Tooltip>
-            <Button className="expanded-nav-search-spaces" id="expanded-nav-add-button" onClick={(e) => history.push("/spaces/add")}><FontAwesomeIcon icon={faPlus}/></Button><Tooltip target="expanded-nav-add-button" placement="right" isOpen={isAddTooltipOpen} toggle={toggleAddTooltip}>Add a Space</Tooltip>
-            <Button className="expanded-nav-search-spaces" id="expanded-nav-join-button" onClick={(e) => history.push("/spaces/join")}><FontAwesomeIcon icon={faCompressAlt}/></Button><Tooltip target="expanded-nav-join-button" placement="right" isOpen={isJoinTooltipOpen} toggle={toggleJoinTooltip}>Join an existing Space</Tooltip>
+            <Button className="expanded-nav-search-spaces" icon type="primary" onClick={(e) => history.push("/spaces/search")} tooltip="Search for Public Spaces"><FontAwesomeIcon icon={faSearch}/></Button>
+            <Button className="expanded-nav-add-spaces" icon type="primary" onClick={(e) => history.push("/spaces/add")} tooltip="Add a Space"><FontAwesomeIcon icon={faPlus}/></Button>
+            <Button className="expanded-nav-join-spaces" icon type="primary" onClick={(e) => history.push("/spaces/join")} tooltip="Join an existing Space"><FontAwesomeIcon icon={faCompressAlt}/></Button>
         </div> :
-        <div className="expand-button" onClick={() => setExpanded(true)}><FontAwesomeIcon icon={faBars}/></div>
+        <div className="expand-button" onClick={() => setExpanded(true)}><FontAwesomeIcon icon={faBars}/></div>;
 }
