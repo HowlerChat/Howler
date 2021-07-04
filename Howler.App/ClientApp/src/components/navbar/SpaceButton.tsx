@@ -5,9 +5,11 @@ import './SpaceButton.scss';
 
 type SpaceButtonProps = { space: any  };
 
-export default function SpaceButton(props: SpaceButtonProps) {
+const SpaceButton : React.FunctionComponent<SpaceButtonProps> = props => {
     let { spaceId } = useParams<{spaceId: string}>();
     return <Link to={`/spaces/${props.space.spaceId}/${props.space.defaultChannelId || "00000000-0000-0000-0000-000000000000"}`}>
         <div className={`space-icon ${(spaceId == props.space.spaceId ? "space-icon-selected" : "")}`} style={{ backgroundImage: `url(${props.space.iconUrl})` }}></div>
     </Link>;
 }
+
+export default SpaceButton;

@@ -1,0 +1,55 @@
+@import '../sass/variables.scss';
+
+.howler-tooltip {
+    background-color: $inaction-color;
+    color: #fff;
+    font-weight: 700;
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 8px;
+    margin-left: 11px;
+}
+
+.howler-tooltip-arrow-left::before {
+    content: '';
+    border-style: solid;
+    border-width: 8px 11px 8px 0;
+    border-color: transparent $inaction-color transparent transparent;
+    position: absolute;
+    left: -11px;
+    top: 11px;
+}
+
+.howler-tooltip-arrow-right::after {
+    content: '';
+    border-style: solid;
+    border-width: 8px 0px 8px 11px;
+    border-color: transparent transparent transparent $inaction-color;
+    position: absolute;
+    right: -11px;
+    top: 11px;
+}
+
+.howler-tooltip-arrow-up::before {
+    content: '';
+    border-style: solid;
+    border-width: 0px 8px 11px 8px;
+    border-color: transparent transparent $inaction-color transparent;
+    position: absolute;
+    left: calc(50% - 8px);
+    top: -11px;
+}
+
+.howler-tooltip-arrow-down::after {
+    content: '';
+    border-style: solid;
+    border-width: 11px 8px 0px 8px;
+    border-color: $inaction-color transparent transparent transparent;
+    position: absolute;
+    right: calc(50% - 8px);
+    bottom: -11px;
+}
+
+.howler-tooltip-invisible {
+    opacity: 0;
+}

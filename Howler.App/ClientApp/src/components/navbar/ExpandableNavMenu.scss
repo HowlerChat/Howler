@@ -12,6 +12,16 @@
     bottom: 0px;
     position: absolute;
     width: 57px;
+
+    .howler-button {
+        margin-bottom: 10px;
+    }
+    
+    .howler-tooltip {
+        position: fixed;
+        margin-top: 11px;
+        margin-left: 14px;
+    }
 }
 
 .invisible-dismissal {
@@ -23,7 +33,7 @@
     height: 100vh;
 }
 
-.expanded-nav-search-spaces {
+.expanded-nav-search-spaces, .expanded-nav-add-spaces, .expanded-nav-join-spaces {
     z-index: 1001;
     position: relative;
     left: 0px;
