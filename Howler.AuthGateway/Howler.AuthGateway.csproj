@@ -35,4 +35,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Howler.Database\Howler.Database.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ResolvedFileToPublish Include="../Howler.Database/AmazonRootCA1.pem">
+      <RelativePath>AmazonRootCA1.pem</RelativePath>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </ResolvedFileToPublish>
+  </ItemGroup>
 </Project>
