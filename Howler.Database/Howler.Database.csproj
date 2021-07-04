@@ -25,4 +25,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="CassandraCSharpEnhancedDriver" Version="3.17.0" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ResolvedFileToPublish Include="./AmazonRootCA1.pem">
+      <RelativePath>AmazonRootCA1.pem</RelativePath>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </ResolvedFileToPublish>
+  </ItemGroup>
 </Project>
