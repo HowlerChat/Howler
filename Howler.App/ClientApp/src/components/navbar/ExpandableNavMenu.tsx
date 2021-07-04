@@ -7,7 +7,11 @@ import { useHistory } from 'react-router';
 import Button from '../Button';
 import Tooltip from '../Tooltip';
 
-export default function ExpandableNavMenu() {
+type ExpandableNavMenuProps = {
+    showCreateSpaceModal: () => void
+};
+
+const ExpandableNavMenu : React.FunctionComponent<ExpandableNavMenuProps> = props => {
     let history = useHistory();
     const [isExpanded, setExpanded] = useState(false);
 
@@ -15,8 +19,10 @@ export default function ExpandableNavMenu() {
         <div className="expanded-nav-menu">
             <div className="invisible-dismissal" onClick={() => setExpanded(false)}/>
             <Button className="expanded-nav-search-spaces" icon type="primary" onClick={(e) => history.push("/spaces/search")} tooltip="Search for Public Spaces"><FontAwesomeIcon icon={faSearch}/></Button>
-            <Button className="expanded-nav-add-spaces" icon type="primary" onClick={(e) => history.push("/spaces/add")} tooltip="Add a Space"><FontAwesomeIcon icon={faPlus}/></Button>
+            <Button className="expanded-nav-add-spaces" icon type="primary" onClick={(e) => { setExpanded(false); props.showCreateSpaceModal(); }} tooltip="Add a Space"><FontAwesomeIcon icon={faPlus}/></Button>
             <Button className="expanded-nav-join-spaces" icon type="primary" onClick={(e) => history.push("/spaces/join")} tooltip="Join an existing Space"><FontAwesomeIcon icon={faCompressAlt}/></Button>
         </div> :
         <div className="expand-button" onClick={() => setExpanded(true)}><FontAwesomeIcon icon={faBars}/></div>;
-}
+};
+
+export default ExpandableNavMenu;

@@ -7,7 +7,7 @@ import SpaceButton from './SpaceButton';
 import ExpandableNavMenu from './ExpandableNavMenu';
 import './NavMenu.scss';
 
-export default class NavMenu extends React.PureComponent<{ setAuthState: React.Dispatch<React.SetStateAction<AuthState | undefined>> }, { isOpen: boolean }> {
+export default class NavMenu extends React.PureComponent<{ setAuthState: React.Dispatch<React.SetStateAction<AuthState | undefined>>, showCreateSpaceModal: () => void}, { isOpen: boolean }> {
     public state = {
         isOpen: false
     };
@@ -19,7 +19,7 @@ export default class NavMenu extends React.PureComponent<{ setAuthState: React.D
                 <img src="/howler.png" className="logo"/>
                 <SpaceButton space={{ spaceName: "Shipyard!", spaceId: "00000000-0000-0000-0000-000000000000", iconUrl: "/shipyard.png" }} />
                 <SpaceButton space={{ spaceName: "Other thing", spaceId: "00000000-0000-0000-0000-000000000001", iconUrl: "/howler.png" }} />
-                <ExpandableNavMenu/>
+                <ExpandableNavMenu showCreateSpaceModal={this.props.showCreateSpaceModal}/>
             </header>
         );
     }

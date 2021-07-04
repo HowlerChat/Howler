@@ -1,0 +1,26 @@
+@import '../sass/variables.scss';
+
+.howler-modal {
+    position: absolute;
+    background-color: $brand-color;
+    border-radius: 10px;
+    padding: 26px;
+}
+
+.howler-modal-close {
+    position: absolute;
+    right: 14px;
+    top: 10px;
+}
+
+.howler-modal-title {
+    font-size: 36px;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.howler-modal-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
