@@ -22,10 +22,8 @@ const App = () => {
     }, []);
 
     return authState === AuthState.SignedIn && user ? (<>
-        <Layout setAuthState={setAuthState}>
-            <Route exact path='/spaces/:spaceId/:channelId' component={(props: any) => <Space {...props} user={user} />} />
-            <Route exact path='/qrauth/:id' component={(props: any) => <QRScan {...props}/>} />
-        </Layout>
+        <Route exact path='/spaces/:spaceId/:channelId' component={(props: any) => <Layout setAuthState={setAuthState}><Space {...props} user={user} /></Layout>} />
+        <Route exact path='/qrauth/:id' component={(props: any) => <QRScan {...props}/>} />
     </>) : <div className="login-pane">
         <div/>
         <div className="sign-in">

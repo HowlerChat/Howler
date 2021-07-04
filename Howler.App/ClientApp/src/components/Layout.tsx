@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AuthState } from '@aws-amplify/ui-components';
-import NavMenu from './NavMenu';
+import NavMenu from './navbar/NavMenu';
 import CloseButton from './CloseButton';
 import Container from './Container';
 
