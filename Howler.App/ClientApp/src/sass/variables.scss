@@ -9,7 +9,29 @@ $secondary-action-color: #EF5DA8;
 $tertiary-action-color: #5D5FEF;
 $inaction-color: #2E2E2E;
 
+$primary-action-highlight-color: #10B3FF;
+$secondary-action-highlight-color: #FF6DB8;
+$tertiary-action-highlight-color: #6D6FFF;
+
 // Breakpoints
 $tablet: "(min-width: 450px)";
 $mid-point: "(min-width: 620px)";
 $desktop: "(min-width: 768px)";
+
+.invisible-dismissal {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 1001;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invisible-dark {
+    background-color: rgba(0,0,0,.6);
+}

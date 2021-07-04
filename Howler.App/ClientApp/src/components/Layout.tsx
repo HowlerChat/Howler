@@ -3,17 +3,21 @@ import { AuthState } from '@aws-amplify/ui-components';
 import NavMenu from './navbar/NavMenu';
 import CloseButton from './CloseButton';
 import Container from './Container';
+import CreateSpaceModal from './modals/CreateSpaceModal';
 
-export default class Layout extends React.PureComponent<{ children?: React.ReactNode, setAuthState: React.Dispatch<React.SetStateAction<AuthState | undefined>> }, {}> {
-    public render() {
-        return (
-            <React.Fragment>
-                <NavMenu setAuthState={this.props.setAuthState} />
-                <CloseButton />
-                <Container>
-                    {this.props.children}
-                </Container>
-            </React.Fragment>
-        );
-    }
-}
+const Layout : React.FunctionComponent<{ setAuthState: React.Dispatch<React.SetStateAction<AuthState | undefined>> }> = props => {
+    let [createSpaceVisible, setCreateSpaceVisible] = React.useState(false);
+
+    return (
+        <React.Fragment>
+            <CreateSpaceModal visible={createSpaceVisible} onClose={() => setCreateSpaceVisible(false)}/>
+            <NavMenu setAuthState={props.setAuthState} showCreateSpaceModal={() => setCreateSpaceVisible(true)}/>
+            <CloseButton />
+            <Container>
+                {props.children}
+            </Container>
+        </React.Fragment>
+    );
+};
+
+export default Layout;

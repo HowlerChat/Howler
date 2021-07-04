@@ -1,3 +1,5 @@
+@import '../../sass/variables.scss';
+
 .expand-button {
     font-size: 24px;
     text-align: center;
@@ -19,22 +21,14 @@
     
     .howler-tooltip {
         position: fixed;
+        z-index: 1002;
         margin-top: 11px;
         margin-left: 14px;
     }
 }
 
-.invisible-dismissal {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    z-index: 1000;
-    width: 100vw;
-    height: 100vh;
-}
-
 .expanded-nav-search-spaces, .expanded-nav-add-spaces, .expanded-nav-join-spaces {
-    z-index: 1001;
+    z-index: 1002;
     position: relative;
     left: 0px;
     bottom: 0px;

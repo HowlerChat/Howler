@@ -1,0 +1,43 @@
+@import '../../sass/variables.scss';
+
+.attachment-drop {
+    border: 2px dashed $tertiary-brand-color;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 10px;
+    color: rgba(255,255,255,.6);
+    padding: 20px;
+
+    .attachment-drop-icon {
+        font-size: 60px;
+    }
+}
+
+.modal-create-space-left {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-right: 20px;
+    
+    .attachment-drop {
+        flex-grow: 1;
+        vertical-align: middle;
+        margin: 20px 0px;
+    }
+}
+
+.modal-create-space-right {
+    width: 220px;
+
+    .howler-button {
+        width: 100%;
+    }
+
+    .howler-button-primary {
+        margin-bottom: 20px;
+    }
+
+    .attachment-drop {
+        margin-bottom: 20px;
+    }
+}
