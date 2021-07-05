@@ -30,7 +30,7 @@ const CreateSpaceModal : React.FunctionComponent<CreateSpaceModalProps> = props 
                 </span>
                 <div>Drag and drop or click to add a Space icon</div>
             </div>
-            <Button type="primary" onClick={()=>{}}>Create Account</Button>
+            <Button type="primary" onClick={()=>{}}>Create Space</Button>
             <Button type="secondary" onClick={()=>{}}>Advanced Settings</Button>
         </div>
     </Modal>;
