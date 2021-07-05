@@ -36,6 +36,10 @@
     background-color: $inaction-color;
 }
 
+.howler-button-disabled:hover {
+    background-color: $inaction-color;
+}
+
 .howler-button-icon {
     width: 57px;
     height: 57px;

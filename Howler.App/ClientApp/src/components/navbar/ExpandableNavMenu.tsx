@@ -8,7 +8,8 @@ import Button from '../Button';
 import Tooltip from '../Tooltip';
 
 type ExpandableNavMenuProps = {
-    showCreateSpaceModal: () => void
+    showCreateSpaceModal: () => void,
+    showJoinSpaceModal: () => void,
 };
 
 const ExpandableNavMenu : React.FunctionComponent<ExpandableNavMenuProps> = props => {
@@ -20,7 +21,7 @@ const ExpandableNavMenu : React.FunctionComponent<ExpandableNavMenuProps> = prop
             <div className="invisible-dismissal" onClick={() => setExpanded(false)}/>
             <Button className="expanded-nav-search-spaces" icon type="primary" onClick={(e) => history.push("/spaces/search")} tooltip="Search for Public Spaces"><FontAwesomeIcon icon={faSearch}/></Button>
             <Button className="expanded-nav-add-spaces" icon type="primary" onClick={(e) => { setExpanded(false); props.showCreateSpaceModal(); }} tooltip="Add a Space"><FontAwesomeIcon icon={faPlus}/></Button>
-            <Button className="expanded-nav-join-spaces" icon type="primary" onClick={(e) => history.push("/spaces/join")} tooltip="Join an existing Space"><FontAwesomeIcon icon={faCompressAlt}/></Button>
+            <Button className="expanded-nav-join-spaces" icon type="primary" onClick={(e) => { setExpanded(false); props.showJoinSpaceModal(); }} tooltip="Join an existing Space"><FontAwesomeIcon icon={faCompressAlt}/></Button>
         </div> :
         <div className="expand-button" onClick={() => setExpanded(true)}><FontAwesomeIcon icon={faBars}/></div>;
 };
