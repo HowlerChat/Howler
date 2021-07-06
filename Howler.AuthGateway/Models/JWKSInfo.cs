@@ -7,6 +7,7 @@
 
 namespace Howler.AuthGateway.Models
 {
+    using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -17,11 +18,13 @@ namespace Howler.AuthGateway.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="JWKSInfo"/> class.
         /// </summary>
+        /// <param name="provider">The key provider.</param>
         /// <remarks>
         /// Refactor friendly: pull this from config info.
         /// </remarks>
-        public JWKSInfo()
+        public JWKSInfo(IRSAProvider provider)
         {
+            var key = provider.GetPublicKeyAsync().Result;
             this.Keys = new object[]
             {
                 new
@@ -30,13 +33,7 @@ namespace Howler.AuthGateway.Models
                     E = "AQAB",
                     Kid = "XvcI95sskH6rV+L8necLpZT9KxCji2HwjQP\\/vMBxXfo=",
                     Kty = "RSA",
-                    N = "xKGrA9YbPpcmRxuITT256h2uY4A-1NjegGHZu2d_lBXq3Hpd9Lu" +
-                        "9_nwvYGgp8F692Yn3Ef1ySu3SESy7hdM5MMY0jW1ZVN4BjHmlKW" +
-                        "9O0pKr_9qtCNTThdO1c7zvZoZ_J_KScNFGVZ87oY0IBSPaz66pS" +
-                        "8c18aStnS-_CPcqv4GzIoZRkxfZrJZsDSA6YaahWPLCrfFTZtqY" +
-                        "ZpAgdUw1pNyIjrO2hQ_vJ2W5SsCB4c0KxScVpPwKYGhvRi3XlKB" +
-                        "b7b91_7nThd5FGo-miklbWRxslORlDb8RxNWzcdjo_zjTrItz5W" +
-                        "UzO8Q4PuzHIzorMs91OLBTKCOry2WeENcPRQ",
+                    N = Base64UrlEncoder.Encode(key.Modulus),
                     Use = "sig",
                 },
             };

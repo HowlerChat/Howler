@@ -9,6 +9,8 @@ namespace Howler.AuthGateway.SigningAlgorithms
 {
     using System.Security.Cryptography;
     using System.Text;
+    using System.Threading.Tasks;
+    using Howler.AuthGateway.CryptographyProviders;
     using Microsoft.IdentityModel.Tokens;
 
     /// <summary>
@@ -16,21 +18,16 @@ namespace Howler.AuthGateway.SigningAlgorithms
     /// </summary>
     public class RS256SigningAlgorithm : ISigningAlgorithm
     {
-        private RSACryptoServiceProvider _rsa;
+        private IRSAProvider _provider;
 
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="RS256SigningAlgorithm"/> class.
         /// </summary>
-        /// <param name="provider">the key provider.</param>
-        /// <remarks>
-        /// Refactor friendly: move the key into the sign method, or rename
-        /// this class and interface to something more sensible.
-        /// </remarks>
-        public RS256SigningAlgorithm(IKeyProvider provider)
+        /// <param name="provider">The rsa provider.</param>
+        public RS256SigningAlgorithm(IRSAProvider provider)
         {
-            this._rsa = new RSACryptoServiceProvider();
-            this._rsa.ImportFromPem(Encoding.UTF8.GetString(provider.Key));
+            this._provider = provider;
         }
 
         /// <summary>
@@ -40,11 +37,11 @@ namespace Howler.AuthGateway.SigningAlgorithms
         /// The payload to sign. Will be passed as UTF-8 encoding.
         /// </param>
         /// <returns>The Base64-URL-Encoded signature payload.</returns>
-        public string Sign(string payload)
+        public async Task<string> SignAsync(string payload)
         {
-            var bytes = this._rsa.SignData(
+            var bytes = await this._provider.SignAsync(
                 Encoding.UTF8.GetBytes(payload),
-                System.Security.Cryptography.SHA256.Create());
+                SignatureAlgorithm.RS256);
 
             return Base64UrlEncoder.Encode(bytes);
         }

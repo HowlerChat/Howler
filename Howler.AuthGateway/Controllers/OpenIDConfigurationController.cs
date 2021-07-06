@@ -20,7 +20,7 @@ namespace Howler.AuthGateway.Controllers
     [Route(".well-known")]
     public class OpenIDConfigurationController : ControllerBase
     {
-        private IKeyProvider _provider;
+        private IRSAProvider _provider;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -32,7 +32,7 @@ namespace Howler.AuthGateway.Controllers
         /// <remarks>
         /// Refactor friendly - needs support for additional key providers.
         /// </remarks>
-        public OpenIDConfigurationController(IKeyProvider provider)
+        public OpenIDConfigurationController(IRSAProvider provider)
         {
             this._provider = provider;
         }
@@ -60,7 +60,7 @@ namespace Howler.AuthGateway.Controllers
         [ProducesResponseType(typeof(JWKSInfo), 200)]
         public JWKSInfo JWKS()
         {
-            return new JWKSInfo();
+            return new JWKSInfo(this._provider);
         }
     }
 }

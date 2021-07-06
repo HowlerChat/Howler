@@ -11,7 +11,7 @@ namespace Howler.AuthGateway.Tests
         [Fact]
         public void TestName()
         {
-            var keyProvider = new MockRSAKeyProvider();
+            var keyProvider = new MockRSAProvider();
             var signingAlgo = new RS256SigningAlgorithm(keyProvider);
 
             var jwt = new GatewayJWT(

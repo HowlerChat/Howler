@@ -11,13 +11,13 @@ namespace Howler.AuthGateway
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
-    using Howler.AuthGateway.KeyProviders;
+    using Amazon.KeyManagementService;
+    using Howler.AuthGateway.CryptographyProviders;
     using Howler.AuthGateway.SigningAlgorithms;
     using Howler.Database;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -53,6 +53,9 @@ namespace Howler.AuthGateway
         /// </param>
         public void ConfigureServices(IServiceCollection services)
         {
+            var environment = Environment
+                .GetEnvironmentVariable("HOWLER_ENVIRONMENT");
+
             services.AddCors(options =>
                 {
                     options.AddPolicy("defaultPolicy", builder =>
@@ -80,7 +83,18 @@ namespace Howler.AuthGateway
                     };
                 });
             services.AddSingleton<IDatabaseClient, CassandraClient>();
-            services.AddScoped<IKeyProvider, RSAKeyProvider>();
+
+            if (environment == "prod")
+            {
+                services.AddScoped<IAmazonKeyManagementService,
+                    AmazonKeyManagementServiceClient>();
+                services.AddScoped<IRSAProvider, KMSRSAProvider>();
+            }
+            else
+            {
+                services.AddScoped<IRSAProvider, ConfigurationRSAProvider>();
+            }
+
             services.AddScoped<ISigningAlgorithm, RS256SigningAlgorithm>();
             services.AddScoped<
                 IFederationDatabaseContext,

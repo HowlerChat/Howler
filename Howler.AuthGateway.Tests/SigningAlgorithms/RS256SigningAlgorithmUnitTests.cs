@@ -1,7 +1,6 @@
 namespace Howler.AuthGateway.Tests.SigningAlgorithms
 {
-    using System;
-    using System.Security.Cryptography;
+    using System.Threading.Tasks;
     using Howler.AuthGateway.SigningAlgorithms;
     using Howler.AuthGateway.Tests.KeyProviders;
     using Xunit;
@@ -9,10 +8,10 @@ namespace Howler.AuthGateway.Tests.SigningAlgorithms
     public class RS256SigningAlgorithmUnitTests
     {
         [Fact]
-        public void RS256SigningAlgorithm_Successfully_SignsPayload()
+        public async Task RS256SigningAlgorithm_Successfully_SignsPayload()
         {
-            var signingAlgo = new RS256SigningAlgorithm(new MockRSAKeyProvider());
-            var payload = signingAlgo.Sign("hello world");
+            var signingAlgo = new RS256SigningAlgorithm(new MockRSAProvider());
+            var payload = await signingAlgo.SignAsync("hello world");
 
             Assert.NotNull(payload);
         }

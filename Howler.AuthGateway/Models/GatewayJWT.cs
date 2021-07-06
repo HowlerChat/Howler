@@ -59,7 +59,8 @@ namespace Howler.AuthGateway.Models
                 Base64UrlEncoder.Encode(
                     JsonConvert.SerializeObject(this.Body));
 
-            return payload + "." + this._algorithm.Sign(payload);
+            // TODO: this really needs a refactor now. Gross.
+            return payload + "." + this._algorithm.SignAsync(payload).Result;
         }
     }
 }
