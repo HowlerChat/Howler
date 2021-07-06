@@ -7,6 +7,8 @@
 
 namespace Howler.AuthGateway
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Describes a signing algorithm's methods.
     /// </summary>
@@ -18,6 +20,6 @@ namespace Howler.AuthGateway
         /// </summary>
         /// <param name="payload">The UTF-8 encoded payload.</param>
         /// <returns>The Base64-URL-Encoded signature payload.</returns>
-        string Sign(string payload);
+        Task<string> SignAsync(string payload);
     }
 }

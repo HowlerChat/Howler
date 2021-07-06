@@ -1,12 +1,15 @@
 namespace Howler.AuthGateway.Tests.KeyProviders
 {
+    using System;
+    using System.Security.Cryptography;
     using System.Text;
+    using System.Threading.Tasks;
+    using Howler.AuthGateway.CryptographyProviders;
 
-    public class MockRSAKeyProvider : IKeyProvider
+    public class MockRSAProvider : IRSAProvider
     {
-        public byte[] Key {
-            get {
-                return Encoding.UTF8.GetBytes(@"-----BEGIN CERTIFICATE-----
+        private string _key =
+            @"-----BEGIN CERTIFICATE-----
 MIIDETCCAfkCFFPyESRGRGw8DN52TEqlvq/S5L9JMA0GCSqGSIb3DQEBCwUAMEUx
 CzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRl
 cm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMjEwNjI3MDI0NTMxWhcNMjQwMzI0MDI0
@@ -52,8 +55,38 @@ r+50c4HlV8VKWmHzdgeA43LAE5gMN5+Q29C1MB/1/JLwlYGUCx5x/FH2IDBmxM77
 dcXfyxavhB7hOWaoWcfzi1YMUj4fM50/cju06Hnn8N1SrnZWeZmkC4HjmF2s/WYo
 0g2owaM/c7aSLZQuLdUMTbO8YWvm7KrU5wPOpGQeMFXQroMbblLESg==
 -----END RSA PRIVATE KEY-----
-");
-            }
+";
+
+        private RSACryptoServiceProvider _rsa;
+
+        public MockRSAProvider()
+        {
+            this._rsa = new RSACryptoServiceProvider();
+            this._rsa.ImportFromPem(this._key);
+        }
+
+        /// <inheritdoc/>
+        public async Task<RSAParameters> GetPublicKeyAsync()
+        {
+            return await Task.Run(() => this._rsa.ExportParameters(false));
+        }
+
+        /// <inheritdoc/>
+        public async Task<byte[]> SignAsync(
+            byte[] payload,
+            SignatureAlgorithm signatureAlgorithm)
+        {
+            var hashAlgorithm =
+                signatureAlgorithm == SignatureAlgorithm.RS256 ?
+                    System.Security.Cryptography.SHA256.Create() :
+                    throw new InvalidOperationException(
+                            $"Signature algorithm {signatureAlgorithm}" +
+                            " unsupported.");
+
+            return await Task.Run(
+                () => this._rsa.SignData(
+                    payload,
+                    hashAlgorithm));
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Howler.AuthGateway.Models
                 "https://auth.howler.chat/oauth2/authorize";
             this.IDTokenSigningAlgorithmValuesSupported = new string[]
             {
+                // TODO: This needs to be derived.
                 "RS256",
             };
             this.Issuer = "https://gateway.howler.chat";
