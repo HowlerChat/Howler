@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Route } from 'react-router';
 import { AmplifyAuthenticator, AmplifySignIn, AmplifySignOut, AmplifySignUp } from '@aws-amplify/ui-react';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
@@ -6,14 +7,17 @@ import QRLogin from './components/QRLogin';
 import QRScan from './components/QRScan';
 import Layout from './components/Layout';
 import Space from './components/Space';
+import { ApplicationState } from './store';
+import * as Localization from './store/Localization';
 
 import './sass/custom.scss';
 
-const App = () => {
+const App: React.FunctionComponent<typeof Localization.actionCreators> = (props) => {
     const [authState, setAuthState] = React.useState<AuthState>();
     const [user, setUser] = React.useState<any>();
 
     React.useEffect(() => {
+        props.requestLocalization("en-US");
         return onAuthUIStateChange((nextAuthState, authData) => {
             console.log(nextAuthState);
             setAuthState(nextAuthState);
@@ -60,4 +64,7 @@ const App = () => {
     </div>;
 };
 
-export default App;
+export default connect(
+    (state: ApplicationState) => state.localizations,
+    Localization.actionCreators
+)(App);
