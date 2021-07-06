@@ -1,0 +1,22 @@
+@import '../sass/variables.scss';
+
+.howler-toggle-switch {
+    width: 116px;
+    height: 58px;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 2px;
+    background-color: $tertiary-brand-color;
+}
+
+.howler-toggle-switch-active {
+    padding-left: 60px;
+}
+
+.howler-toggle-switch-flipper {
+    width: 54px;
+    height: 54px;
+    background-color: $primary-action-color;
+    display: inline-block;
+    border-radius: 8px;
+}
