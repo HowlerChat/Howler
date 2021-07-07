@@ -163,8 +163,8 @@ namespace Howler.AuthGateway.CryptographyProviders
                         MessageType = MessageType.RAW,
                         SigningAlgorithm =
                             signatureAlgorithm == SignatureAlgorithm.RS256 ?
-                                SigningAlgorithmSpec.RSASSA_PSS_SHA_256 :
-                                throw new InvalidOperationException(
+                                SigningAlgorithmSpec.RSASSA_PKCS1_V1_5_SHA_256
+                                : throw new InvalidOperationException(
                                     "Signature algorithm" +
                                     $" {signatureAlgorithm} unsupported."),
                     });

@@ -110,13 +110,28 @@ namespace Howler.AuthGateway
                             Version = "v1",
                         });
                     c.AddSecurityDefinition(
-                        "Bearer",
+                        "oauth2",
                         new OpenApiSecurityScheme
                         {
-                            Type = SecuritySchemeType.ApiKey,
-                            Name = "Authorization",
-                            In = ParameterLocation.Header,
-                            Description = "Bearer [access_token]",
+                            Type = SecuritySchemeType.OAuth2,
+                            Flows = new OpenApiOAuthFlows
+                            {
+                                Implicit = new OpenApiOAuthFlow()
+                                {
+                                    TokenUrl =
+                                        new Uri("https://auth.howler.chat/" +
+                                            "oauth2/token"),
+                                    AuthorizationUrl =
+                                        new Uri("https://auth.howler.chat/" +
+                                            "oauth2/authorize"),
+                                    Scopes = new Dictionary<string, string>
+                                    {
+                                        { "openid", "User Profile" },
+                                        { "email", "email" },
+                                        { "profile", "profile" },
+                                    },
+                                },
+                            },
                         });
                     c.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
@@ -126,7 +141,7 @@ namespace Howler.AuthGateway
                                 Reference = new OpenApiReference
                                 {
                                     Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer",
+                                    Id = "oauth2",
                                 },
                                 Scheme = "oauth2",
                                 Name = "Bearer",
@@ -165,6 +180,9 @@ namespace Howler.AuthGateway
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
+                c.OAuth2RedirectUrl("https://gateway.howler.chat/" +
+                    "swagger/oauth2-redirect.html");
+                c.OAuthClientId("6b75ooll3b86ugauhu22vj39ra");
                 c.SwaggerEndpoint(
                 "/swagger/v1/swagger.json",
                 "Howler.AuthGateway v1");

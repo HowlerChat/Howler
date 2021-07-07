@@ -23,6 +23,7 @@ namespace Howler.AuthGateway.Tests
                     Guid.NewGuid().ToString(),
                     DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                     "https://gateway.howler.chat",
+                    "",
                     DateTimeOffset.UtcNow.AddHours(2).ToUnixTimeSeconds(),
                     "08f1b19b-df39-4efd-bbde-8ce9d4424252",
                     "6b75ooll3b86ugauhu22vj39ra",

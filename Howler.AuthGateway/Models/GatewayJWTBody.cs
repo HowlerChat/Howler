@@ -30,6 +30,7 @@ namespace Howler.AuthGateway.Models
         /// <param name="scope">The scope.</param>
         /// <param name="authTime">The authTime.</param>
         /// <param name="issuer">The issuer.</param>
+        /// <param name="audience">The audience.</param>
         /// <param name="expiresAt">The expiresAt.</param>
         /// <param name="jti">The jti.</param>
         /// <param name="clientId">The clientId.</param>
@@ -41,6 +42,7 @@ namespace Howler.AuthGateway.Models
             string scope,
             long authTime,
             string issuer,
+            string audience,
             long expiresAt,
             string jti,
             string clientId,
@@ -52,6 +54,7 @@ namespace Howler.AuthGateway.Models
             this.Scope = scope;
             this.AuthTime = authTime;
             this.Issuer = issuer;
+            this.Audience = audience;
             this.ExpiresAt = expiresAt;
             this.IssuedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             this.JTI = jti;
@@ -100,6 +103,12 @@ namespace Howler.AuthGateway.Models
         /// </summary>
         [JsonProperty("iss")]
         public string Issuer { get; private set; }
+
+        /// <summary>
+        /// Gets the audience.
+        /// </summary>
+        [JsonProperty("aud")]
+        public string Audience { get; private set; }
 
         /// <summary>
         /// Gets the expiration time.

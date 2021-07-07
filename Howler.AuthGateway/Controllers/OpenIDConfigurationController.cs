@@ -18,6 +18,7 @@ namespace Howler.AuthGateway.Controllers
     /// OpenID Configuration Controller.
     /// </summary>
     [Route(".well-known")]
+    [ApiController]
     public class OpenIDConfigurationController : ControllerBase
     {
         private IRSAProvider _provider;
