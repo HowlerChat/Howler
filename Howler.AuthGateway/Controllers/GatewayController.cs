@@ -17,8 +17,9 @@ namespace Howler.AuthGateway.Controllers
     /// <summary>
     /// Core Authorization Gateway Controller.
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("oauth2")]
     [Authorize]
+    [ApiController]
     public class GatewayController : ControllerBase
     {
         private ISigningAlgorithm _signingAlgorithm;
@@ -50,18 +51,18 @@ namespace Howler.AuthGateway.Controllers
         /// <summary>
         /// Authorizes a user for the target federated server id.
         /// </summary>
-        /// <param name="serverId">The federated server id.</param>
+        /// <param name="request">The federated server id.</param>
         /// <returns>
         /// Returns an auth token for use with the federated server.
         /// </returns>
-        [HttpPost("auth")]
+        [HttpPost("token")]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(404)]
-        public IActionResult Post(string serverId)
+        public IActionResult Post([FromBody]TokenRequest request)
         {
             var tokens = this.HttpContext.Request.Headers["Authorization"];
 
-            if (tokens.Count != 1)
+            if (tokens.Count != 1 || request.ServerId == null)
             {
                 // Attempt at pushing multiple tokens, kick em out.
                 return this.Forbid();
@@ -71,7 +72,7 @@ namespace Howler.AuthGateway.Controllers
             var jwt = new Microsoft.IdentityModel.JsonWebTokens
                 .JsonWebToken(token);
             var validatedServerId = this._federatedDb.Servers
-                .Where(s => s.ServerId == serverId)
+                .Where(s => s.ServerId == request.ServerId)
                 .Select(s => s.ServerId)
                 .ToList()
                 .FirstOrDefault();
@@ -90,9 +91,10 @@ namespace Howler.AuthGateway.Controllers
                         jwt.Subject,
                         jwt.GetClaim("device_key").Value,
                         jwt.GetClaim("event_id").Value,
-                        serverId,
+                        request.ServerId,
                         long.Parse(jwt.GetClaim("auth_time").Value),
                         "https://gateway.howler.chat",
+                        request.ServerId,
                         DateTimeOffset.UtcNow.AddHours(2).ToUnixTimeSeconds(),
                         jwt.GetClaim("jti").Value,
                         jwt.GetClaim("client_id").Value,

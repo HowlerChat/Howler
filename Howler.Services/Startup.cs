@@ -10,7 +10,9 @@ namespace Howler.Services
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Net.Http;
     using System.Reflection;
+    using System.Text;
     using System.Threading.Tasks;
     using Howler.Database;
     using Howler.Services.Hubs;
@@ -23,6 +25,7 @@ namespace Howler.Services
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// A startup configuration class for the ASP.NET host builder.
@@ -60,22 +63,33 @@ namespace Howler.Services
                             .AllowAnyMethod()
                             .AllowCredentials());
                 });
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme =
-                        JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme =
-                        JwtBearerDefaults.AuthenticationScheme;
-                })
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(x =>
                 {
+                    var key = JsonConvert.DeserializeObject<
+                        Dictionary<string, Dictionary<string, string>[]>>(
+                            new HttpClient().GetAsync(
+                                this.Configuration["JWT:Authority"] +
+                                "/.well-known/jwks.json").Result.Content
+                                .ReadAsStringAsync().Result)["keys"][0];
                     x.Authority = this.Configuration["JWT:Authority"];
                     x.Audience = this.Configuration["JWT:Audience"];
                     x.RequireHttpsMetadata = false;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = false,
+                        ValidateAudience = true,
                         ValidateIssuer = true,
+                        IssuerSigningKey = new RsaSecurityKey(
+                            new System.Security.Cryptography.RSAParameters
+                            {
+                                Exponent = Convert.FromBase64String(key["e"]),
+                                Modulus = Convert.FromBase64String(key["n"]
+                                    .Replace("-", "+")
+                                    .Replace("_", "/")
+                                    .PadRight(
+                                        key["n"].Length +
+                                        (key["n"].Length % 4), '=')),
+                            }),
                         ValidateIssuerSigningKey = true,
                     };
                     x.Events = new JwtBearerEvents
@@ -118,28 +132,13 @@ namespace Howler.Services
                             Version = "v1",
                         });
                     c.AddSecurityDefinition(
-                        "oauth2",
+                        "Bearer",
                         new OpenApiSecurityScheme
                         {
-                            Type = SecuritySchemeType.OAuth2,
-                            Flows = new OpenApiOAuthFlows
-                            {
-                                Implicit = new OpenApiOAuthFlow()
-                                {
-                                    TokenUrl =
-                                        new Uri("https://auth.howler.chat/" +
-                                            "oauth2/token"),
-                                    AuthorizationUrl =
-                                        new Uri("https://auth.howler.chat/" +
-                                            "oauth2/authorize"),
-                                    Scopes = new Dictionary<string, string>
-                                    {
-                                        { "openid", "User Profile" },
-                                        { "email", "email" },
-                                        { "profile", "profile" },
-                                    },
-                                },
-                            },
+                            Type = SecuritySchemeType.ApiKey,
+                            Name = "Authorization",
+                            In = ParameterLocation.Header,
+                            Description = "Bearer [access_token]",
                         });
                     c.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
@@ -149,7 +148,7 @@ namespace Howler.Services
                                 Reference = new OpenApiReference
                                 {
                                     Type = ReferenceType.SecurityScheme,
-                                    Id = "oauth2",
+                                    Id = "Bearer",
                                 },
                                 Scheme = "oauth2",
                                 Name = "Bearer",
