@@ -4,14 +4,21 @@ $tertiary-brand-color: #010615;
 $quarternary-brand-color: #28365A;
 $middle-gradient-color: mix($brand-color, $secondary-brand-color, 95%);
 
+$brand-highlight-color: #253359;
+$secondary-brand-highlight-color: #556389;
+$tertiary-brand-highlight-color: #111625;
+$quarternary-brand-highlight-color: #38466A;
+
 $primary-action-color: #00A3FF;
 $secondary-action-color: #EF5DA8;
 $tertiary-action-color: #5D5FEF;
 $inaction-color: #2E2E2E;
+$danger-action-color: #A01919;
 
 $primary-action-highlight-color: #10B3FF;
 $secondary-action-highlight-color: #FF6DB8;
 $tertiary-action-highlight-color: #6D6FFF;
+$danger-action-highlight-color: #B02929;
 
 // Breakpoints
 $tablet: "(min-width: 450px)";
@@ -34,4 +41,8 @@ $desktop: "(min-width: 768px)";
 
 .invisible-dark {
     background-color: rgba(0,0,0,.6);
+}
+
+.right {
+    float: right;
 }

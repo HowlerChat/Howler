@@ -2,11 +2,12 @@ import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment-timezone';
+import { RouteComponentProps, withRouter } from 'react-router';
 import './Channel.scss';
 
-type ChannelProps = { space: any, channelId: string };
+type ChannelProps = { space: any, channelId: string } & RouteComponentProps<{ spaceId: string, channelId: string }>;
 
-export default class Channel extends React.PureComponent<ChannelProps, { pendingMessage: string, messages: { senderId: string, timestamp: string, id: string, type: "post"|"embed"|"event", content: {text: string}|{videoUrl: string, width?: string, height?: string}}[]}> {
+class Channel extends React.PureComponent<ChannelProps, { pendingMessage: string, messages: { timestamp: string, id: string, content: { senderId: string, type: "post"|"event", text: string | string[] }|{ senderId: string, type: "embed", videoUrl: string, width?: string, height?: string}}[]}> {
     mapSenderToUser(senderId: string) {
         return {
             "@<00000000-0000-0000-0000-000000000000>": {
@@ -33,11 +34,11 @@ export default class Channel extends React.PureComponent<ChannelProps, { pending
 
     submitMessage() {
         this.setState(prevState => { return {...prevState, messages: prevState.messages.concat([{
-            "senderId": "@<00000000-0000-0000-0000-000000000000>",
             "timestamp": "1622272285000",
             "id": Math.random().toString(16).substring(2, 8), // just need a random value for now
-            "type": "post",
             "content": {
+                "type": "post",
+                "senderId": "@<00000000-0000-0000-0000-000000000000>",
                 "text": prevState.pendingMessage
             }
         }]), pendingMessage: ""} });
@@ -124,50 +125,68 @@ POST /spaces/{spaceId}/channels/{channelId}/messages/{messageId}/attachments
 
 */
                 {
-                    "senderId": "@<00000000-0000-0000-0000-000000000000>",
-                    "timestamp": "1622272285000",
+                    "timestamp": "1622315285000",
                     "id": "F0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
-                    "type": "post",
                     "content": {
-                        "text": "Here is a message"
+                        "senderId": "@<00000000-0000-0000-0000-000000000000>",
+                        "type": "post",
+                        "text": ["I think I finally got message glomming working", "Here's the test case", "Well I'll be damned."]
                     }
                 },
                 {
-                    "senderId": "@<00000000-0000-0000-0000-000000000001>",
-                    "timestamp": "1622272825000",
-                    "id": "A0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
-                    "type": "post",
+                    "timestamp": "1622315295000",
+                    "id": "A0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13A",
                     "content": {
-                        "text": "Here is another"
+                        "senderId": "@<00000000-0000-0000-0000-000000000002>",
+                        "type": "post",
+                        "text": "Awesome, ok so let's alternate between users"
                     }
                 },
                 {
-                    "senderId": "@<00000000-0000-0000-0000-000000000002>",
-                    "timestamp": "1622272885000",
-                    "id": "B0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
-                    "type": "post",
+                    "timestamp": "1622315296000",
+                    "id": "F0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13C",
                     "content": {
-                        "text": "Here is yet another"
+                        "senderId": "@<00000000-0000-0000-0000-000000000000>",
+                        "type": "post",
+                        "text": "Shouldn't be contingent on other users, should be separated..."
                     }
                 },
                 {
-                    "senderId": "@<00000000-0000-0000-0000-000000000002>",
-                    "timestamp": "1622272888000",
-                    "id": "C0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
-                    "type": "post",
+                    "timestamp": "1622315396000",
+                    "id": "F0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13D",
                     "content": {
-                        "text": "In theory this will get grouped with glomming"
+                        "senderId": "@<00000000-0000-0000-0000-000000000000>",
+                        "type": "post",
+                        "text": "...by timestamps of sufficient distance"
                     }
                 },
-                {
-                    "senderId": "@<00000000-0000-0000-0000-000000000000>",
-                    "timestamp": "1622272999000",
-                    "id": "A345678909865678",
-                    "type": "embed",
-                    "content": {
-                        "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
-                    }
-                }
+                // {
+                //     "timestamp": "1622272885000",
+                //     "id": "B0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
+                //     "content": {
+                //         "senderId": "@<00000000-0000-0000-0000-000000000002>",
+                //         "type": "post",
+                //         "text": "Here is yet another"
+                //     }
+                // },
+                // {
+                //     "timestamp": "1622272888000",
+                //     "id": "C0E4C2F76C58916EC258F246851BEA091D14D4247A2FC3E18694461B1816E13B",
+                //     "content": {
+                //         "senderId": "@<00000000-0000-0000-0000-000000000002>",
+                //         "type": "post",
+                //         "text": "In theory this will get grouped with glomming"
+                //     }
+                // },
+                // {
+                //     "timestamp": "1622272999000",
+                //     "id": "A345678909865678",
+                //     "content": {
+                //         "senderId": "@<00000000-0000-0000-0000-000000000000>",
+                //         "type": "embed",
+                //         "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                //     }
+                // }
             ]
         }
     }
@@ -177,19 +196,26 @@ POST /spaces/{spaceId}/channels/{channelId}/messages/{messageId}/attachments
             <div className="channel-name">#general-en</div>
             <div className="message-list">
                 {this.state.messages.map(message => {
-                    let sender = this.mapSenderToUser(message.senderId);
+                    let sender = this.mapSenderToUser(message.content.senderId);
                     let time = moment.tz(parseInt(message.timestamp, 10), "America/Los_Angeles");
 
                     // todo: message glomming
                     return <div key={message.id} className="message">
                         <div className="message-sender-icon" style={{ backgroundImage: `url(${sender.userIcon})` }}/>
                         <div className="message-content">
-                            <span className="message-sender-name">{sender.displayName}</span><span className="message-timestamp">{time.format('h:ma')}</span>
+                            <span className="message-sender-name">{sender.displayName}</span><span className="message-timestamp">{time.format('h:mma')}</span>
                             {(() => {
-                                if (message.type == "post") {
-                                    let content = (message.content as {text: string});
-                                    return <div className="message-post-content">{content.text}</div>;
-                                } else if (message.type == "embed") {
+                                if (message.content.type == "post") {
+                                    if (Array.isArray(message.content.text)) {
+                                        let content = (message.content.text as string[]);
+                                        return content.map((c, i) =>
+                                            <div key={i} className="message-post-content">{c}</div>
+                                        );
+                                    } else {
+                                        let content = (message.content as {text: string});
+                                        return <div className="message-post-content">{content.text}</div>;
+                                    }
+                                } else if (message.content.type == "embed") {
                                     let content = (message.content as {videoUrl: string, width?: string, height?: string});
                                     return <div className="message-post-content">
                                         <iframe
@@ -221,3 +247,5 @@ POST /spaces/{spaceId}/channels/{channelId}/messages/{messageId}/attachments
         </div>;
     }
 }
+
+export default withRouter(Channel);

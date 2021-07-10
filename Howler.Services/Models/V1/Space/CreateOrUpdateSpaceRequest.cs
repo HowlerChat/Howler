@@ -13,7 +13,7 @@ namespace Howler.Services.Models.V1.Space
     public class CreateOrUpdateSpaceRequest
     {
         /// <summary>
-        /// Gets or sets the space identifier as a hash.
+        /// Gets or sets the space identifier.
         /// </summary>
         public string? SpaceId { get; set; }
 
@@ -36,5 +36,10 @@ namespace Howler.Services.Models.V1.Space
         /// Gets or sets the server URL.
         /// </summary>
         public string? ServerUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default channel id.
+        /// </summary>
+        public string? DefaultChannelId { get; set; }
     }
 }

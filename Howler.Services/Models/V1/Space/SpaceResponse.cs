@@ -8,6 +8,8 @@
 namespace Howler.Services.Models.V1.Space
 {
     using System;
+    using System.Text;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// A response class containing space information.
@@ -18,40 +20,33 @@ namespace Howler.Services.Models.V1.Space
         /// Initializes a new instance of the <see cref="SpaceResponse"/>
         /// class.
         /// </summary>
-        /// <param name="spaceId">The space identifier.</param>
-        /// <param name="spaceName">The space name.</param>
-        /// <param name="serverUrl">
-        /// The URL of the server hosting the space.
-        /// </param>
-        /// <param name="createdDate">
-        /// The creation date of the space.
-        /// </param>
-        /// <param name="modifiedDate">
-        /// The last modified date of the space.
-        /// </param>
-        public SpaceResponse(
-            string spaceId,
-            string spaceName,
-            string serverUrl,
-            DateTime createdDate,
-            DateTime modifiedDate)
+        /// <param name="space">The source space.</param>
+        public SpaceResponse(Database.Models.Space space)
         {
-            this.SpaceId = spaceId;
-            this.SpaceName = spaceName;
-            this.ServerUrl = serverUrl;
-            this.CreatedDate = createdDate;
-            this.ModifiedDate = modifiedDate;
+            this.SpaceId = space.SpaceId;
+            this.SpaceName = space.SpaceName;
+            this.Description = space.Description;
+            this.VanityUrl = space.VanityUrl;
+            this.ServerUrl = space.ServerUrl;
+            this.CreatedDate = space.CreatedDate;
+            this.ModifiedDate = space.ModifiedDate;
+            this.UserId = space.UserId;
+            this.DefaultChannelId = space.DefaultChannelId;
+            this.ChannelGroups = space.ChannelGroups != null ?
+                JsonConvert.DeserializeObject<ChannelGroupResponse>(
+                    Encoding.UTF8.GetString(space.ChannelGroups)) :
+                new ChannelGroupResponse();
         }
 
         /// <summary>
         /// Gets the space identifier hash.
         /// </summary>
-        public string SpaceId { get; }
+        public string? SpaceId { get; }
 
         /// <summary>
         /// Gets the space name.
         /// </summary>
-        public string SpaceName { get; }
+        public string? SpaceName { get; }
 
         /// <summary>
         /// Gets the optional space description.
@@ -66,7 +61,17 @@ namespace Howler.Services.Models.V1.Space
         /// <summary>
         /// Gets the hosting server URL.
         /// </summary>
-        public string ServerUrl { get; }
+        public string? ServerUrl { get; }
+
+        /// <summary>
+        /// Gets the server owner id.
+        /// </summary>
+        public string? UserId { get; }
+
+        /// <summary>
+        /// Gets the default channel id.
+        /// </summary>
+        public string? DefaultChannelId { get; }
 
         /// <summary>
         /// Gets the space's creation date.
@@ -77,5 +82,10 @@ namespace Howler.Services.Models.V1.Space
         /// Gets the space's last modified date.
         /// </summary>
         public DateTime ModifiedDate { get; }
+
+        /// <summary>
+        /// Gets the space's channel groups.
+        /// </summary>
+        public ChannelGroupResponse ChannelGroups { get; }
     }
 }

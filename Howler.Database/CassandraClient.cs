@@ -8,9 +8,11 @@
 namespace Howler.Database
 {
     using System;
+    using System.Linq;
     using System.Security.Cryptography.X509Certificates;
     using Cassandra;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// A client for accessing an active Cassandra session object.
@@ -60,11 +62,22 @@ namespace Howler.Database
 
             this._cluster = builder.Build();
 
-            this.Session = this._cluster.Connect(
-                Environment.GetEnvironmentVariable("HOWLER_KEYSPACE") ??
-                throw new ArgumentNullException(
-                    "HOWLER_KEYSPACE is null. Please define it in your" +
-                    " environment variables."));
+            try
+            {
+                this.Session = this._cluster.Connect(
+                    Environment.GetEnvironmentVariable("HOWLER_KEYSPACE") ??
+                    throw new ArgumentNullException(
+                        "HOWLER_KEYSPACE is null. Please define it in your" +
+                        " environment variables."));
+            }
+            catch (NoHostAvailableException e)
+            {
+                throw new Exception(e.ToString() +
+                    JsonConvert.SerializeObject(
+                        e.Errors.ToDictionary(
+                            k => k.Key.ToString(),
+                            v => v.Value.ToString())));
+            }
         }
 
         /// <inheritdoc/>

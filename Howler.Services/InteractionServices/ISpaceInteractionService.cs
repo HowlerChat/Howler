@@ -56,14 +56,5 @@ namespace Howler.Services.InteractionServices
         /// Returns null if successful, or a validation error.
         /// </returns>
         ValidationError? DeleteSpaceBySpaceId(string spaceId);
-
-        /// <summary>
-        /// Retrieves channels for a space.
-        /// </summary>
-        /// <param name="spaceId">The identifier of the space.</param>
-        /// <returns>
-        /// Returns a channel info list.
-        /// </returns>
-        IEnumerable<ChannelInfoResponse>? GetChannelsForSpace(string spaceId);
     }
 }

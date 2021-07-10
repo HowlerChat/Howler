@@ -2,9 +2,8 @@ import * as React from 'react';
 import './Tooltip.scss';
 
 type TooltipProps = {
-    arrow: "up" | "down" | "right" | "left",
+    arrow: "up" | "down" | "right" | "left" | "none",
     visible?: boolean,
-    icon?: boolean,
     className?: string | undefined,
 };
 

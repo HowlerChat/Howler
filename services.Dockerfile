@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/microsoft-dotnet
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS howlerbuild
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS howlerbuild
 WORKDIR /source
 
 # copy and publish app and libraries
@@ -14,11 +14,11 @@ RUN rm -rf ./Howler.Services/obj/
 
 # restore and publish
 WORKDIR /source/Howler.Services
-RUN dotnet restore -r linux-musl-x64
-RUN dotnet publish -c release -o /app -r linux-musl-x64 --self-contained false --no-restore
+RUN dotnet restore -r linux-x64
+RUN dotnet publish -c release -o /app -r linux-x64 --self-contained false --no-restore -p:PublishReadyToRun=true
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim-amd64
 WORKDIR /app
 COPY --from=howlerbuild /app .
 
@@ -28,6 +28,6 @@ COPY --from=howlerbuild /app .
 #RUN apk add --no-cache icu-libs
 #ENV LC_ALL=en_US.UTF-8
 #ENV LANG=en_US.UTF-8
-
+EXPOSE 5000
 
 ENTRYPOINT ["./Howler.Services"]

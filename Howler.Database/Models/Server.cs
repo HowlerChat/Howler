@@ -14,7 +14,7 @@ namespace Howler.Database.Models
     /// The Server data model.
     /// </summary>
     [Table("servers")]
-    public class Server
+    public class Server : IEntity<string>
     {
         /// <summary>
         /// Gets or sets the server identifier hash.
@@ -75,5 +75,8 @@ namespace Howler.Database.Models
         /// </summary>
         [Column("blacklisted_date")]
         public DateTime BlacklistedDate { get; set; }
+
+        /// <inheritdoc/>
+        public string Key { get => this.ServerId!; }
     }
 }

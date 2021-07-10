@@ -19,6 +19,20 @@ header {
     position: fixed;
     height: 100%;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-menu-spaces {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    flex-grow: 1;
+}
+
+.nav-menu-spaces::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 @media (min-width: 768px) {

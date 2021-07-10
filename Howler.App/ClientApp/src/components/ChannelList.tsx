@@ -81,7 +81,7 @@ export default class ChannelList extends React.PureComponent<ChannelListProps, {
                 <span className="space-header-name">Shipyard!</span>
                 <span className="space-context-menu-toggle-button"><FontAwesomeIcon icon={faChevronDown}/></span>
             </div>
-            {this.state.groups.map(group => <ChannelGroup key={group.groupName} selectedChannelId={this.props.channelId} group={group}/>)}
+            {this.state.groups.map(group => <ChannelGroup key={group.groupName} group={group}/>)}
         </div>;
     }
 }

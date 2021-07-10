@@ -20,8 +20,14 @@
 .message-list {
     border-top: 1px solid rgba(255, 255, 255, 0.25);
     flex: 1 0;
-    overflow: auto;
+    overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+.message-list::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 .message {

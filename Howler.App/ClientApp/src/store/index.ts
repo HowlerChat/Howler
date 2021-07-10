@@ -1,11 +1,13 @@
 import * as Spaces from './Spaces';
 import * as Localization from './Localization';
+import * as Connection from './Connection';
 import { all } from 'redux-saga/effects';
 
 // The top-level state object
 export interface ApplicationState {
     spaces: Spaces.SpacesState | undefined;
     localizations: Localization.LocalizationInfoState | undefined;
+    connections: Connection.ConnectionInfoState | undefined;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -14,11 +16,13 @@ export interface ApplicationState {
 export const reducers = {
     spaces: Spaces.reducer,
     localizations: Localization.reducer,
+    connections: Connection.reducer,
 };
 
 export const rootSaga = function*() {
     yield all([
         Spaces.spaceSagas.watchSpaceRequests(),
+        Connection.connectionSagas.watchConnectionRequests(),
         Localization.localizationSagas.watchLocalizationInfoRequests(),
     ]);
 };

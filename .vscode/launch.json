@@ -24,7 +24,7 @@
                 "HOWLER_CASSANDRA_ENDPOINT": "127.0.0.1",
                 "HOWLER_KEYSPACE": "howler",
                 "HOWLER_ENVIRONMENT": "dev",
-                "HOWLER_SCOPE": "openid"
+                "HOWLER_SCOPE": "3ec22786-bc0d-4adf-b1f7-69c65c00f162"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

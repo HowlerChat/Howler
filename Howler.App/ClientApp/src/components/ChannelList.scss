@@ -6,6 +6,16 @@
     width: 260px;
     z-index: 0;
     margin-right: -10px;
+    scrollbar-width: none;
+    flex-grow: 1;
+
+    a {
+        color: #fff;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
 }
 
 .channels-list::-webkit-scrollbar {

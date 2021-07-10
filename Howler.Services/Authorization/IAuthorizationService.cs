@@ -5,8 +5,9 @@
 // </copyright>
 // <author>Cassandra A. Heart</author>
 
-namespace Howler.Services.InteractionServices
+namespace Howler.Services.Authorization
 {
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -14,6 +15,11 @@ namespace Howler.Services.InteractionServices
     /// </summary>
     public interface IAuthorizationService
     {
+        /// <summary>
+        /// Gets the authorized user.
+        /// </summary>
+        AuthorizedUser? User { get; }
+
         /// <summary>
         /// Determines if the active user is authorized to perform the
         /// specified operation.

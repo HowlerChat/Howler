@@ -8,6 +8,7 @@
 namespace Howler.Database
 {
     using System.Linq;
+    using Cassandra.Data.Linq;
     using Howler.Database.Models;
     using Microsoft.Extensions.Logging;
 
@@ -36,10 +37,14 @@ namespace Howler.Database
 
         /// <inheritdoc/>
         public IQueryable<Space> Spaces =>
-            throw new System.NotSupportedException();
+            new Table<Space>(this._databaseClient.Session);
+
+        /// <inheritdoc/>
+        public IQueryable<SpaceVanityUrl> SpaceVanityUrls =>
+            new Table<SpaceVanityUrl>(this._databaseClient.Session);
 
         /// <inheritdoc/>
         public IQueryable<Channel> Channels =>
-            throw new System.NotSupportedException();
+            new Table<Channel>(this._databaseClient.Session);
     }
 }
