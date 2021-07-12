@@ -62,7 +62,7 @@ namespace Howler.AuthGateway
                     {
                     builder.WithOrigins(
                         "http://localhost:8000",
-                        "https://localhost:8001")
+                        "https://app.howler.chat")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
@@ -177,6 +177,7 @@ namespace Howler.AuthGateway
             }
 
             app.UseRouting();
+            app.UseCors("defaultPolicy");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

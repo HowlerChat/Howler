@@ -4,7 +4,12 @@ CREATE TABLE "howler"."spaces"(
 	"description" TEXT,
 	"vanity_url" TEXT,
 	"server_url" TEXT,
+	"icon_url" ASCII,
+	"banner_url" ASCII,
 	"created_date" TIMESTAMP,
 	"modified_date" TIMESTAMP,
-	PRIMARY KEY("space_id", "server_url"))
-WITH CLUSTERING ORDER BY("server_url" ASC)
+	"user_id" ASCII,
+	"default_channel_id" ASCII,
+	"space_policy" blob,
+	"channel_groups" blob,
+	PRIMARY KEY("space_id"))

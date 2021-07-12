@@ -36,15 +36,19 @@ namespace Howler.Database
         }
 
         /// <inheritdoc/>
-        public IQueryable<Scope> Scopes =>
-            throw new System.NotSupportedException();
+        public IQueryable<Space> Spaces =>
+            new Table<Space>(this._databaseClient.Session);
 
         /// <inheritdoc/>
-        public IQueryable<Space> Spaces =>
-            throw new System.NotSupportedException();
+        public IQueryable<SpaceVanityUrl> SpaceVanityUrls =>
+            new Table<SpaceVanityUrl>(this._databaseClient.Session);
 
         /// <inheritdoc/>
         public IQueryable<Server> Servers =>
             new Table<Server>(this._databaseClient.Session);
+
+        /// <inheritdoc/>
+        public IQueryable<UserSpaces> UserSpaces =>
+            new Table<UserSpaces>(this._databaseClient.Session);
     }
 }

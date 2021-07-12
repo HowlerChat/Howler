@@ -5,10 +5,11 @@
 // </copyright>
 // <author>Cassandra A. Heart</author>
 
-namespace Howler.Services.InteractionServices
+namespace Howler.Services.Authorization
 {
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Howler.Database;
     using Microsoft.AspNetCore.Authentication;
@@ -41,13 +42,20 @@ namespace Howler.Services.InteractionServices
         }
 
         /// <inheritdoc/>
+        public AuthorizedUser? User
+        {
+            get => this._contextAccessor.HttpContext?.User != null ?
+                new AuthorizedUser(this._contextAccessor.HttpContext.User)
+                : null;
+        }
+
+        /// <inheritdoc/>
         public async Task<bool> IsAuthorizedAsync(string operation)
         {
-            return await Task<bool>.Run(() => this._contextAccessor.HttpContext?
-                .User.Claims.Any(c => c.Type == "scope" &&
-                    (c.Value?.Split(' ').Any(
-                        cv => cv == System.Environment.GetEnvironmentVariable(
-                            "HOWLER_SCOPE")) ?? false)) ?? false);
+            return await Task<bool>.Run(() => this.User?.Scope
+                .Split(' ').Any(
+                    cv => cv == System.Environment.GetEnvironmentVariable(
+                        "HOWLER_SCOPE")) ?? false);
         }
     }
 }

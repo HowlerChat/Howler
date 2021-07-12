@@ -1,4 +1,4 @@
-CREATE TABLE "howler"."blacklist"(
+CREATE TABLE "howler_indexer"."blacklist"(
 	"howler_id" ASCII,
 	"entity_type" TEXT,
 	"reason" TEXT,

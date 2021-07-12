@@ -17,11 +17,6 @@ namespace Howler.Database
     public interface IFederationDatabaseContext
     {
         /// <summary>
-        /// Gets the Scopes.
-        /// </summary>
-        IQueryable<Scope> Scopes { get; }
-
-        /// <summary>
         /// Gets the Spaces.
         /// </summary>
         IQueryable<Space> Spaces { get; }
@@ -30,5 +25,15 @@ namespace Howler.Database
         /// Gets the Servers.
         /// </summary>
         IQueryable<Server> Servers { get; }
+
+        /// <summary>
+        /// Gets the UserSpaces.
+        /// </summary>
+        IQueryable<UserSpaces> UserSpaces { get; }
+
+        /// <summary>
+        /// Gets the SpaceVanityUrls.
+        /// </summary>
+        IQueryable<SpaceVanityUrl> SpaceVanityUrls { get; }
     }
 }

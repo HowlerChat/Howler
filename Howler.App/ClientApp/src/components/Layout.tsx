@@ -6,7 +6,7 @@ import Container from './Container';
 import CreateSpaceModal from './modals/CreateSpaceModal';
 import JoinSpaceModal from './modals/JoinSpaceModal';
 
-const Layout : React.FunctionComponent<{ setAuthState: React.Dispatch<React.SetStateAction<AuthState | undefined>> }> = props => {
+const Layout : React.FunctionComponent<{}> = props => {
     let [createSpaceVisible, setCreateSpaceVisible] = React.useState(false);
     let [joinSpaceVisible, setJoinSpaceVisible] = React.useState(false);
 
@@ -14,8 +14,8 @@ const Layout : React.FunctionComponent<{ setAuthState: React.Dispatch<React.SetS
         <React.Fragment>
             <CreateSpaceModal visible={createSpaceVisible} onClose={() => setCreateSpaceVisible(false)}/>
             <JoinSpaceModal visible={joinSpaceVisible} onClose={() => setJoinSpaceVisible(false)}/>
-            <NavMenu setAuthState={props.setAuthState} showCreateSpaceModal={() => setCreateSpaceVisible(true)} showJoinSpaceModal={() => setJoinSpaceVisible(true)}/>
-            <CloseButton />
+            <NavMenu showCreateSpaceModal={() => setCreateSpaceVisible(true)} showJoinSpaceModal={() => setJoinSpaceVisible(true)}/>
+            {(() => (typeof window !== 'undefined' && typeof window.process === 'object' && Object.keys(window.process).find(k => k == "type") !== undefined) ? <CloseButton /> : <></>)()}
             <Container>
                 {props.children}
             </Container>

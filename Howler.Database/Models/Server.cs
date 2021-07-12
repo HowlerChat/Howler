@@ -14,10 +14,10 @@ namespace Howler.Database.Models
     /// The Server data model.
     /// </summary>
     [Table("servers")]
-    public class Server
+    public class Server : IIncrementingCountEntity<string>
     {
         /// <summary>
-        /// Gets or sets the server identifier hash.
+        /// Gets or sets the server identifier.
         /// </summary>
         [Column("server_id")]
         public string? ServerId { get; set; }
@@ -75,5 +75,14 @@ namespace Howler.Database.Models
         /// </summary>
         [Column("blacklisted_date")]
         public DateTime BlacklistedDate { get; set; }
+
+        /// <inheritdoc/>
+        public string Key { get => this.ServerId!; }
+
+        /// <inheritdoc/>
+        public string CounterTable { get => "server_statistics"; }
+
+        /// <inheritdoc/>
+        public string CounterColumn { get => "user_count"; }
     }
 }

@@ -22,7 +22,7 @@ const ExpandableNavMenu : React.FunctionComponent<ExpandableNavMenuProps> = prop
     return isExpanded ? 
         <div className="expanded-nav-menu">
             <div className="invisible-dismissal" onClick={() => setExpanded(false)}/>
-            <Button className="expanded-nav-search-spaces" icon type="primary" onClick={(e) => history.push("/spaces/search")} tooltip={props.localizations["TOOLTIP_SEARCH_SPACES"]([])}><FontAwesomeIcon icon={faSearch}/></Button>
+            {/*<Button className="expanded-nav-search-spaces" icon type="primary" onClick={(e) => history.push("/spaces/search")} tooltip={props.localizations["TOOLTIP_SEARCH_SPACES"]([])}><FontAwesomeIcon icon={faSearch}/></Button>*/}
             <Button className="expanded-nav-add-spaces" icon type="primary" onClick={(e) => { setExpanded(false); props.showCreateSpaceModal(); }} tooltip={props.localizations["TOOLTIP_ADD_SPACE"]([])}><FontAwesomeIcon icon={faPlus}/></Button>
             <Button className="expanded-nav-join-spaces" icon type="primary" onClick={(e) => { setExpanded(false); props.showJoinSpaceModal(); }} tooltip={props.localizations["TOOLTIP_JOIN_SPACE"]([])}><FontAwesomeIcon icon={faCompressAlt}/></Button>
         </div> :

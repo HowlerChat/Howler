@@ -46,20 +46,5 @@ namespace Howler.Services.Controllers.V1
             this._logger = logger;
             this._spaceInteractionService = spaceInteractionService;
         }
-
-        /// <summary>
-        /// Retrieves a list of channels for a given space.
-        /// </summary>
-        /// <param name="spaceId">A space identifier.</param>
-        /// <returns>A list of channels.</returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ChannelInfoResponse>), 200)]
-        public ActionResult GetChannelList(string spaceId)
-        {
-            var channels = this._spaceInteractionService
-                .GetChannelsForSpace(spaceId);
-
-            return this.Ok();
-        }
     }
 }

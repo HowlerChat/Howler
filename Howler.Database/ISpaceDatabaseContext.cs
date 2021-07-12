@@ -21,6 +21,11 @@ namespace Howler.Database
         IQueryable<Space> Spaces { get; }
 
         /// <summary>
+        /// Gets the SpaceVanityUrls.
+        /// </summary>
+        IQueryable<SpaceVanityUrl> SpaceVanityUrls { get; }
+
+        /// <summary>
         /// Gets the Channels.
         /// </summary>
         IQueryable<Channel> Channels { get; }

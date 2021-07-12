@@ -1,0 +1,18 @@
+@import '../sass/variables.scss';
+
+.user-state-indicator {
+    font-size: 13px;
+    text-transform: capitalize;
+}
+
+.user-state-online::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background: #BCFFB6;
+    border-radius: 5px;
+    margin-right: 8px;
+    margin-top: -2px;
+    vertical-align: middle;
+}

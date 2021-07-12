@@ -1,5 +1,21 @@
 import { getConfig } from "../config/config";
 
+export const getServerToken = function(token: string) {
+    return () => fetch("https://gateway.howler.chat/oauth2/token",
+        {
+          method: "POST",
+          mode: "cors",
+          headers:
+          {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({"serverId": "3ec22786-bc0d-4adf-b1f7-69c65c00f162"})}).then(response => {
+            return response.json()
+          });
+}
+
 export const getSpace = function(spaceId: string, token: string) {
     return () => fetch(getConfig().howlerApiUrl + `/v1/spaces/${spaceId}`,
             {

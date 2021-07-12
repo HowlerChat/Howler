@@ -4,6 +4,7 @@ import './Input.scss';
 
 type InputProps = {
     placeholder?: string | undefined,
+    value?: string | undefined,
     onChange?: React.ChangeEventHandler<HTMLInputElement>
 }
 
