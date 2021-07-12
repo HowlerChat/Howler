@@ -33,7 +33,7 @@ export default class ChannelList extends React.PureComponent<ChannelListProps, {
                             mentions: "you"
                         },
                         {
-                            channelId: "00000000-0000-0000-0000-000000000003",
+                            channelId: "3ec22786-bc0d-4adf-b1f7-69c65c00f162",
                             channelName: "#general-en"
                         },
                         {

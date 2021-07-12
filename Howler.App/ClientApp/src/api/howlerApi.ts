@@ -15,6 +15,7 @@ export const getServerToken = function(token: string) {
             return response.json()
           });
 }
+
 export const getSpace = function(spaceId: string, token: string) {
     return () => fetch(getConfig().howlerApiUrl + `/v1/spaces/${spaceId}`,
             {

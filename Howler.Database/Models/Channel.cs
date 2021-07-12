@@ -14,16 +14,17 @@ namespace Howler.Database.Models
     /// The Channel data model.
     /// </summary>
     [Table("channels")]
-    public class Channel : IEntity<string>
+    public class Channel : IEntity<Tuple<string, string>>
     {
         /// <summary>
-        /// Gets or sets the channel identifier hash.
+        /// Gets or sets the channel identifier.
         /// </summary>
         [Column("channel_id")]
         public string? ChannelId { get; set; }
 
         /// <summary>
-        /// Gets or sets the space identifier hash.
+        /// Gets or sets the space identifier. Set to "direct" for direct
+        /// or group messaging.
         /// </summary>
         [Column("space_id")]
         public string? SpaceId { get; set; }
@@ -41,10 +42,10 @@ namespace Howler.Database.Models
         public string? ChannelTopic { get; set; }
 
         /// <summary>
-        /// Gets or sets the channel creator's user id.
+        /// Gets or sets the channel creator's member id.
         /// </summary>
-        [Column("user_id")]
-        public string? UserId { get; set; }
+        [Column("member_id")]
+        public string? MemberId { get; set; }
 
 #pragma warning disable SA1011
         /// <summary>
@@ -73,6 +74,9 @@ namespace Howler.Database.Models
         public DateTime ModifiedDate { get; set; }
 
         /// <inheritdoc/>
-        public string Key { get => this.ChannelId!; }
+        public Tuple<string, string> Key
+        {
+            get => new Tuple<string, string>(this.SpaceId!, this.ChannelId!);
+        }
     }
 }

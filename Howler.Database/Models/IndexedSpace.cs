@@ -1,4 +1,4 @@
-// <copyright file="Space.cs" company="Howler Team">
+// <copyright file="IndexedSpace.cs" company="Howler Team">
 // Copyright (c) Howler Team. All rights reserved.
 // Licensed under the Server Side Public License.
 // See LICENSE file in the project root for full license information.
@@ -11,11 +11,17 @@ namespace Howler.Database.Models
     using Cassandra.Mapping.Attributes;
 
     /// <summary>
-    /// The Space data model.
+    /// The IndexedSpace data model.
     /// </summary>
-    [Table("spaces")]
-    public class Space : IEntity<string>
+    [Table("indexed_spaces")]
+    public class IndexedSpace : IIncrementingCountEntity<Tuple<string, string>>
     {
+        /// <summary>
+        /// Gets or sets the hosting server id.
+        /// </summary>
+        [Column("server_id")]
+        public string? ServerId { get; set; }
+
         /// <summary>
         /// Gets or sets the space identifier.
         /// </summary>
@@ -41,12 +47,6 @@ namespace Howler.Database.Models
         public string? VanityUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the hosting server URL.
-        /// </summary>
-        [Column("server_url")]
-        public string? ServerUrl { get; set; }
-
-        /// <summary>
         /// Gets or sets the icon URL.
         /// </summary>
         [Column("icon_url")]
@@ -57,14 +57,6 @@ namespace Howler.Database.Models
         /// </summary>
         [Column("banner_url")]
         public string? BannerUrl { get; set; }
-
-#pragma warning disable SA1011
-        /// <summary>
-        /// Gets or sets the policy document.
-        /// </summary>
-        [Column("space_policy")]
-        public byte[]? SpacePolicy { get; set; }
-#pragma warning restore SA1011
 
         /// <summary>
         /// Gets or sets the space's creation date.
@@ -90,15 +82,16 @@ namespace Howler.Database.Models
         [Column("default_channel_id")]
         public string? DefaultChannelId { get; set; }
 
-#pragma warning disable SA1011
-        /// <summary>
-        /// Gets or sets the space's channel group list.
-        /// </summary>
-        [Column("channel_groups")]
-        public byte[]? ChannelGroups { get; set; }
-#pragma warning restore SA1011
+        /// <inheritdoc/>
+        public Tuple<string, string> Key
+        {
+            get => new Tuple<string, string>(this.ServerId!, this.SpaceId!);
+        }
 
         /// <inheritdoc/>
-        public string Key { get => this.SpaceId!; }
+        public string CounterTable { get => "indexed_space_statistics"; }
+
+        /// <inheritdoc/>
+        public string CounterColumn { get => "user_count"; }
     }
 }

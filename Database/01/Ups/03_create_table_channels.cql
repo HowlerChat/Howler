@@ -4,7 +4,7 @@ CREATE TABLE "howler"."channels"(
 	"channel_name" text,
 	"created_date" timestamp,
 	"modified_date" timestamp,
-	"user_id" ASCII,
+	"member_id" ASCII,
 	"encryption_method" ASCII,
 	"channel_policy" blob,
 	"channel_topic" text,

@@ -1,4 +1,4 @@
-CREATE TABLE "howler"."servers"(
+CREATE TABLE "howler_indexer"."servers"(
 	"server_id" ASCII,
 	"server_name" TEXT,
 	"description" TEXT,

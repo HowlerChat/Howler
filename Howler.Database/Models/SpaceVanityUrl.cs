@@ -13,7 +13,7 @@ namespace Howler.Database.Models
     /// <summary>
     /// The SpaceVanityUrl data model.
     /// </summary>
-    [Table("space_vanityurls")]
+    [Table("space_vanity_urls")]
     public class SpaceVanityUrl : IEntity<string>
     {
         /// <summary>
@@ -23,7 +23,7 @@ namespace Howler.Database.Models
         public string? VanityUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the space identifier hash.
+        /// Gets or sets the space identifier.
         /// </summary>
         [Column("space_id")]
         public string? SpaceId { get; set; }
