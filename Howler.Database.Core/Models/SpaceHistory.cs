@@ -13,7 +13,7 @@ namespace Howler.Database.Core.Models
     /// <summary>
     /// The SpaceHistory data model.
     /// </summary>
-    [Table("space_history")]
+    [Table("howler.space_history")]
     public class SpaceHistory : IEntity<Tuple<string, DateTime>>
     {
         /// <summary>

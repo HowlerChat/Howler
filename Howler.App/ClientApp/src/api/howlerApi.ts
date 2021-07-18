@@ -1,6 +1,6 @@
 import { getConfig } from "../config/config";
 
-export const getServerToken = function(token: string) {
+export const getServerToken = function(serverId: string, token: string) {
     return () => fetch("https://gateway.howler.chat/oauth2/token",
         {
           method: "POST",
@@ -11,7 +11,7 @@ export const getServerToken = function(token: string) {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token
           },
-          body: JSON.stringify({"serverId": "3ec22786-bc0d-4adf-b1f7-69c65c00f162"})}).then(response => {
+          body: JSON.stringify({"serverId": serverId})}).then(response => {
             return response.json()
           });
 }

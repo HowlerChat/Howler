@@ -17,6 +17,11 @@ type SpaceProps = {
 
 const Space : React.FunctionComponent<SpaceProps> = props => {
   let params = useParams<{spaceId: string, channelId: string}>();
+
+  if (props.spaces.length == 0) {
+    props.requestSpace(params.spaceId);
+  }
+
   let space = props.spaces.find(s => s.spaceId === params.spaceId) || props.spaces[0];
   console.log(space);
   return <div className="space-container">

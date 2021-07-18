@@ -13,7 +13,7 @@ namespace Howler.Database.Core.Models
     /// <summary>
     /// The Message data model.
     /// </summary>
-    [Table("messages")]
+    [Table("howler.messages")]
     public class Message : IEntity<Tuple<string, string, DateTime>>
     {
         /// <summary>

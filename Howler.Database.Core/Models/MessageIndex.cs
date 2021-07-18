@@ -13,7 +13,7 @@ namespace Howler.Database.Core.Models
     /// <summary>
     /// The MessageIndex data model.
     /// </summary>
-    [Table("messages_index")]
+    [Table("howler.messages_index")]
     public class MessageIndex : IEntity<string>
     {
         /// <summary>

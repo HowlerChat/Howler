@@ -13,7 +13,7 @@ namespace Howler.Database.Core.Models
     /// <summary>
     /// The ChannelMemberState data model.
     /// </summary>
-    [Table("channel_member_states")]
+    [Table("howler.channel_member_states")]
     public class ChannelMemberState : IEntity<Tuple<string, string, string>>
     {
         /// <summary>

@@ -13,7 +13,7 @@ namespace Howler.Database.Config.Models
     /// <summary>
     /// The UserSpaces data model.
     /// </summary>
-    [Table("user_spaces")]
+    [Table("howler_config.user_spaces")]
     public class UserSpaces : IEntity<string>
     {
         /// <summary>
