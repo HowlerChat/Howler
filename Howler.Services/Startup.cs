@@ -15,6 +15,9 @@ namespace Howler.Services
     using System.Text;
     using System.Threading.Tasks;
     using Howler.Database;
+    using Howler.Database.Config;
+    using Howler.Database.Core;
+    using Howler.Database.Indexer;
     using Howler.Services.Authorization;
     using Howler.Services.Hubs;
     using Howler.Services.InteractionServices;
@@ -170,11 +173,14 @@ namespace Howler.Services
         {
             services.AddSingleton<IDatabaseClient, CassandraClient>();
             services.AddScoped<
-                ISpaceDatabaseContext,
-                SpaceDatabaseContext>();
+                ICoreDatabaseContext,
+                CoreDatabaseContext>();
             services.AddScoped<
-                IFederationDatabaseContext,
-                FederationDatabaseContext>();
+                IIndexerDatabaseContext,
+                IndexerDatabaseContext>();
+            services.AddScoped<
+                IConfigDatabaseContext,
+                ConfigDatabaseContext>();
             services.AddScoped<
                 IAuthorizationService,
                 FederatedAuthorizationService>();

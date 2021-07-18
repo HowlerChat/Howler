@@ -11,6 +11,7 @@ namespace Howler.AuthGateway.Controllers
     using System.Linq;
     using Howler.AuthGateway.Models;
     using Howler.Database;
+    using Howler.Database.Indexer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -24,13 +25,13 @@ namespace Howler.AuthGateway.Controllers
     {
         private ISigningAlgorithm _signingAlgorithm;
 
-        private IFederationDatabaseContext _federatedDb;
+        private IIndexerDatabaseContext _indexerDatabaseContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GatewayController"/>
         /// class.
         /// </summary>
-        /// <param name="federatedDb">
+        /// <param name="indexerDatabaseContext">
         /// An injected instance of the database.
         /// </param>
         /// <param name="signingAlgorithm">
@@ -41,10 +42,10 @@ namespace Howler.AuthGateway.Controllers
         /// algorithms.
         /// </remarks>
         public GatewayController(
-            IFederationDatabaseContext federatedDb,
+            IIndexerDatabaseContext indexerDatabaseContext,
             ISigningAlgorithm signingAlgorithm)
         {
-            this._federatedDb = federatedDb;
+            this._indexerDatabaseContext = indexerDatabaseContext;
             this._signingAlgorithm = signingAlgorithm;
         }
 
@@ -71,7 +72,7 @@ namespace Howler.AuthGateway.Controllers
             var token = tokens.First().Split(' ').Last();
             var jwt = new Microsoft.IdentityModel.JsonWebTokens
                 .JsonWebToken(token);
-            var validatedServerId = this._federatedDb.Servers
+            var validatedServerId = this._indexerDatabaseContext.Servers
                 .Where(s => s.ServerId == request.ServerId)
                 .Select(s => s.ServerId)
                 .ToList()

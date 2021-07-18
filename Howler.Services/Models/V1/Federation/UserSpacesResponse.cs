@@ -19,7 +19,7 @@ namespace Howler.Services.Models.V1.Federation
         /// class.
         /// </summary>
         /// <param name="userSpaces">The source userspaces.</param>
-        public UserSpacesResponse(Database.Models.UserSpaces userSpaces)
+        public UserSpacesResponse(Database.Config.Models.UserSpaces userSpaces)
         {
             this.UserId = userSpaces.UserId;
             this.SpaceIds = userSpaces.SpaceIds;

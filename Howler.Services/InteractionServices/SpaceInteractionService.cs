@@ -13,7 +13,10 @@ namespace Howler.Services.InteractionServices
     using System.Text;
     using System.Threading.Tasks;
     using Howler.Database;
-    using Howler.Database.Models;
+    using Howler.Database.Core;
+    using Howler.Database.Core.Models;
+    using Howler.Database.Indexer;
+    using Howler.Database.Indexer.Models;
     using Howler.Services.Authorization;
     using Howler.Services.Models.V1.Channel;
     using Howler.Services.Models.V1.Errors;
@@ -28,7 +31,9 @@ namespace Howler.Services.InteractionServices
     {
         private ILogger<SpaceInteractionService> _logger;
 
-        private ISpaceDatabaseContext _spaceDatabaseContext;
+        private IIndexerDatabaseContext _indexerDatabaseContext;
+
+        private ICoreDatabaseContext _coreDatabaseContext;
 
         private IAuthorizationService _authorizationService;
 
@@ -37,19 +42,24 @@ namespace Howler.Services.InteractionServices
         /// <see cref="SpaceInteractionService"/> class.
         /// </summary>
         /// <param name="logger">An injected logger instance.</param>
-        /// <param name="spaceDatabaseContext">
-        /// An injected space database instance.
+        /// <param name="indexerDatabaseContext">
+        /// An injected federation database instance.
+        /// </param>
+        /// <param name="coreDatabaseContext">
+        /// An injected core database instance.
         /// </param>
         /// <param name="authorizationService">
         /// An injected authorization service.
         /// </param>
         public SpaceInteractionService(
             ILogger<SpaceInteractionService> logger,
-            ISpaceDatabaseContext spaceDatabaseContext,
+            IIndexerDatabaseContext indexerDatabaseContext,
+            ICoreDatabaseContext coreDatabaseContext,
             IAuthorizationService authorizationService)
         {
             this._logger = logger;
-            this._spaceDatabaseContext = spaceDatabaseContext;
+            this._indexerDatabaseContext = indexerDatabaseContext;
+            this._coreDatabaseContext = coreDatabaseContext;
             this._authorizationService = authorizationService;
         }
 
@@ -82,7 +92,7 @@ namespace Howler.Services.InteractionServices
                             new ValidationError("vanityUrl", "INVALID_URL"));
                     }
 
-                    var vanity = this._spaceDatabaseContext.SpaceVanityUrls
+                    var vanity = this._indexerDatabaseContext.SpaceVanityUrls
                         .Where(
                             v => v.VanityUrl == request.VanityUrl.Trim()
                             .ToLowerInvariant()).ToList().FirstOrDefault();
@@ -102,7 +112,7 @@ namespace Howler.Services.InteractionServices
             }
 
             if (Guid.TryParse(request.SpaceId, out Guid spaceId) &&
-                !this._spaceDatabaseContext.Spaces.Where(
+                !this._coreDatabaseContext.Spaces.Where(
                     s => s.SpaceId == request.SpaceId.ToLowerInvariant())
                     .ToList().Any())
             {
@@ -125,7 +135,7 @@ namespace Howler.Services.InteractionServices
                             })),
                 };
 
-                this._spaceDatabaseContext.Spaces.Add<Space, string>(space);
+                this._coreDatabaseContext.Spaces.Add<Space, string>(space);
 
                 if (request.VanityUrl != null)
                 {
@@ -135,17 +145,17 @@ namespace Howler.Services.InteractionServices
                             .ToLowerInvariant(),
                         SpaceId = request.SpaceId,
                     };
-                    this._spaceDatabaseContext.SpaceVanityUrls
+                    this._indexerDatabaseContext.SpaceVanityUrls
                         .Add<SpaceVanityUrl, string>(vanity);
                 }
 
-                this._spaceDatabaseContext.Channels
-                    .Add<Channel, string>(new Channel
+                this._coreDatabaseContext.Channels
+                    .Add<Channel, Tuple<string, string>>(new Channel
                 {
                     ChannelId = request.SpaceId,
                     SpaceId = request.SpaceId,
                     ChannelName = "general",
-                    UserId = this._authorizationService.User!.Subject,
+                    MemberId = this._authorizationService.User!.Subject,
                     CreatedDate = DateTime.UtcNow,
                     ModifiedDate = DateTime.UtcNow,
                 });
@@ -169,7 +179,7 @@ namespace Howler.Services.InteractionServices
         /// <inheritdoc/>
         public SpaceResponse? GetSpaceBySpaceId(string spaceId)
         {
-            var space = this._spaceDatabaseContext.Spaces.Where(
+            var space = this._coreDatabaseContext.Spaces.Where(
                 s => s.SpaceId == spaceId.ToLower())
                 .ToList().FirstOrDefault();
 
@@ -189,7 +199,7 @@ namespace Howler.Services.InteractionServices
         {
             if (request.SpaceId != null)
             {
-                var space = this._spaceDatabaseContext.Spaces.Where(
+                var space = this._coreDatabaseContext.Spaces.Where(
                     s => s.SpaceId == request.SpaceId.ToLower())
                     .ToList().FirstOrDefault();
 
@@ -220,7 +230,7 @@ namespace Howler.Services.InteractionServices
 
                 if (space != null)
                 {
-                    if (this._spaceDatabaseContext.Channels.Where(
+                    if (this._coreDatabaseContext.Channels.Where(
                         c => c.ChannelId == request.DefaultChannelId &&
                             c.SpaceId == space.SpaceId).ToList()
                             .FirstOrDefault() == null)
@@ -243,32 +253,32 @@ namespace Howler.Services.InteractionServices
                                     .ToLowerInvariant(),
                                 SpaceId = request.SpaceId,
                             };
-                            this._spaceDatabaseContext.SpaceVanityUrls
+                            this._indexerDatabaseContext.SpaceVanityUrls
                                 .Add<SpaceVanityUrl, string>(vanity);
                         }
                         else if (string.IsNullOrWhiteSpace(request.VanityUrl))
                         {
-                            var vanity = this._spaceDatabaseContext
+                            var vanity = this._indexerDatabaseContext
                                 .SpaceVanityUrls.Where(
                                     v => v.VanityUrl == space.VanityUrl)
                                 .ToList().FirstOrDefault();
 
                             if (vanity != null)
                             {
-                                this._spaceDatabaseContext.SpaceVanityUrls
+                                this._indexerDatabaseContext.SpaceVanityUrls
                                     .Remove<SpaceVanityUrl, string>(vanity);
                             }
                         }
                         else
                         {
-                            var vanity = this._spaceDatabaseContext
+                            var vanity = this._indexerDatabaseContext
                                 .SpaceVanityUrls.Where(
                                     v => v.VanityUrl == space.VanityUrl)
                                 .ToList().FirstOrDefault();
 
                             if (vanity != null)
                             {
-                                this._spaceDatabaseContext.SpaceVanityUrls
+                                this._indexerDatabaseContext.SpaceVanityUrls
                                     .Remove<SpaceVanityUrl, string>(vanity);
                             }
 
@@ -278,7 +288,7 @@ namespace Howler.Services.InteractionServices
                                     .ToLowerInvariant(),
                                 SpaceId = request.SpaceId,
                             };
-                            this._spaceDatabaseContext.SpaceVanityUrls
+                            this._indexerDatabaseContext.SpaceVanityUrls
                                 .Add<SpaceVanityUrl, string>(vanity);
                         }
                     }
@@ -294,7 +304,7 @@ namespace Howler.Services.InteractionServices
                     space.DefaultChannelId = request.DefaultChannelId ??
                         space.DefaultChannelId;
 
-                    this._spaceDatabaseContext.Spaces
+                    this._coreDatabaseContext.Spaces
                         .Update<Space, string>(space);
                     return new Models.Either<SpaceResponse?, ValidationError>(
                         new SpaceResponse(space));
