@@ -13,7 +13,7 @@ namespace Howler.Database.Indexer.Models
     /// <summary>
     /// The Server data model.
     /// </summary>
-    [Table("servers")]
+    [Table("howler_indexer.servers")]
     public class Server : IIncrementingCountEntity<string>
     {
         /// <summary>

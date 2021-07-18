@@ -51,6 +51,7 @@ type KnownAction = RequestSpaceAction | RequestingSpaceAction | ReceiveSpaceActi
 // TODO: const getAuthToken = (state: ApplicationState) => state.user.signInUserSession.accessToken.jwtToken;
 
 function* handleSpaceRequest(request: RequestSpaceAction) {
+    let state: any = yield select();
     yield put({type: 'REQUESTING_SPACE', spaceId: request.spaceId});
     let space: Body = yield call(getSpace(request.spaceId, request.token));
     let data: SpaceState = yield call(() => space.json());

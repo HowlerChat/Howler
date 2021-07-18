@@ -13,7 +13,7 @@ namespace Howler.Database.Config.Models
     /// <summary>
     /// The UserAuthorizers data model.
     /// </summary>
-    [Table("user_authorizers")]
+    [Table("howler_config.user_authorizers")]
     public class UserAuthorizers : IEntity<string>
     {
         /// <summary>

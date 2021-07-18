@@ -36,7 +36,7 @@ namespace Howler.Database.Core
             this._databaseClient.Session.ChangeKeyspace(
                 Environment.GetEnvironmentVariable("HOWLER_KEYSPACE_CORE") ??
                 throw new ArgumentNullException(
-                    "HOWLER_KEYSPACE_CONFIG is null. Please define it in" +
+                    "HOWLER_KEYSPACE_CORE is null. Please define it in" +
                     " your environment variables."));
             this._logger = logger;
         }

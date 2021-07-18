@@ -37,7 +37,7 @@ namespace Howler.Database.Indexer
                 Environment.GetEnvironmentVariable(
                     "HOWLER_KEYSPACE_INDEXER") ??
                 throw new ArgumentNullException(
-                    "HOWLER_KEYSPACE_CONFIG is null. Please define it in" +
+                    "HOWLER_KEYSPACE_INDEXER is null. Please define it in" +
                     " your environment variables."));
             this._logger = logger;
         }

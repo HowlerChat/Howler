@@ -12,7 +12,7 @@ namespace Howler.Database.Config.Models
     /// <summary>
     /// The UserConfig data model.
     /// </summary>
-    [Table("user_config")]
+    [Table("howler_config.user_config")]
     public class UserConfig : IEntity<string>
     {
         /// <summary>

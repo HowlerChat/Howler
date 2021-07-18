@@ -13,7 +13,7 @@ namespace Howler.Database.Indexer.Models
     /// <summary>
     /// The Blacklist data model.
     /// </summary>
-    [Table("blacklist")]
+    [Table("howler_indexer.blacklist")]
     public class Blacklist : IEntity<Tuple<string, string>>
     {
         /// <summary>

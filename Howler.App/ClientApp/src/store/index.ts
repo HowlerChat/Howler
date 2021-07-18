@@ -1,6 +1,7 @@
 import * as Spaces from './Spaces';
 import * as Localization from './Localization';
 import * as Connection from './Connection';
+import * as Servers from './Servers';
 import { all } from 'redux-saga/effects';
 
 // The top-level state object
@@ -17,6 +18,7 @@ export const reducers = {
     spaces: Spaces.reducer,
     localizations: Localization.reducer,
     connections: Connection.reducer,
+    servers: Servers.reducer,
 };
 
 export const rootSaga = function*() {

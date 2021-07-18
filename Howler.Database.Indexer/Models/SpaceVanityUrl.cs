@@ -13,7 +13,7 @@ namespace Howler.Database.Indexer.Models
     /// <summary>
     /// The SpaceVanityUrl data model.
     /// </summary>
-    [Table("space_vanity_urls")]
+    [Table("howler_indexer.space_vanity_urls")]
     public class SpaceVanityUrl : IEntity<string>
     {
         /// <summary>

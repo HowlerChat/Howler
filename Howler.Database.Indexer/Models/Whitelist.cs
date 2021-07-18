@@ -13,7 +13,7 @@ namespace Howler.Database.Indexer.Models
     /// <summary>
     /// The Whitelist data model.
     /// </summary>
-    [Table("whitelist")]
+    [Table("howler_indexer.whitelist")]
     public class Whitelist : IEntity<Tuple<string, string>>
     {
         /// <summary>

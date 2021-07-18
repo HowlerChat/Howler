@@ -13,7 +13,7 @@ namespace Howler.Database.Indexer.Models
     /// <summary>
     /// The SpaceInviteUrl data model.
     /// </summary>
-    [Table("space_invite_urls")]
+    [Table("howler_indexer.space_invite_urls")]
     public class SpaceInviteUrl : IIncrementingCountEntity<string>
     {
         /// <summary>

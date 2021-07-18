@@ -13,7 +13,7 @@ namespace Howler.Database.Indexer.Models
     /// <summary>
     /// The IndexedSpace data model.
     /// </summary>
-    [Table("indexed_spaces")]
+    [Table("howler_indexer.indexed_spaces")]
     public class IndexedSpace : IIncrementingCountEntity<Tuple<string, string>>
     {
         /// <summary>

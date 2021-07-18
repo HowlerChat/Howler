@@ -13,7 +13,7 @@ namespace Howler.Database.Core.Models
     /// <summary>
     /// The Space data model.
     /// </summary>
-    [Table("spaces")]
+    [Table("howler.spaces")]
     public class Space : IEntity<string>
     {
         /// <summary>

@@ -13,7 +13,7 @@ namespace Howler.Database.Core.Models
     /// <summary>
     /// The SpaceBan data model.
     /// </summary>
-    [Table("space_bans")]
+    [Table("howler.space_bans")]
     public class SpaceBan : IEntity<Tuple<string, string, DateTime>>
     {
         /// <summary>

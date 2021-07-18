@@ -13,7 +13,7 @@ namespace Howler.Database.Indexer.Models
     /// <summary>
     /// The UserProfile data model.
     /// </summary>
-    [Table("user_profiles")]
+    [Table("howler_indexer.user_profiles")]
     public class UserProfile : IEntity<string>
     {
         /// <summary>
