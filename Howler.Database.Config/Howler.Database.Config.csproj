@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <IsPackable>false</IsPackable>
+    <RuntimeIdentifiers>win10-x64;linux-musl-x64</RuntimeIdentifiers>
     <nullable>enable</nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <CodeAnalysisRuleSet>../Howler.Services/Howler.Services.ruleset</CodeAnalysisRuleSet>
@@ -14,25 +14,19 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+    <PackageReference Include="Menees.Analyzers" Version="2.0.6">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.3.0">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="CassandraCSharpEnhancedDriver" Version="3.17.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Howler.Services\Howler.Services.csproj" />
     <ProjectReference Include="..\Howler.Database\Howler.Database.csproj" />
-    <ProjectReference Include="..\Howler.Database.Indexer\Howler.Database.Indexer.csproj" />
-    <ProjectReference Include="..\Howler.Database.Core\Howler.Database.Core.csproj" />
-    <ProjectReference Include="..\Howler.Database.Config\Howler.Database.Config.csproj" />
   </ItemGroup>
-
 </Project>

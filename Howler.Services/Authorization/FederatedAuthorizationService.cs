@@ -12,6 +12,7 @@ namespace Howler.Services.Authorization
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Howler.Database;
+    using Howler.Database.Indexer;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;
 
@@ -20,7 +21,7 @@ namespace Howler.Services.Authorization
     {
         private IHttpContextAccessor _contextAccessor;
 
-        private IFederationDatabaseContext _databaseContext;
+        private IIndexerDatabaseContext _databaseContext;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -31,11 +32,11 @@ namespace Howler.Services.Authorization
         /// </param>
         /// <param name="databaseContext">
         /// An injected instance of the
-        /// <see cref="IFederationDatabaseContext"/>.
+        /// <see cref="IIndexerDatabaseContext"/>.
         /// </param>
         public FederatedAuthorizationService(
             IHttpContextAccessor httpContextAccessor,
-            IFederationDatabaseContext databaseContext)
+            IIndexerDatabaseContext databaseContext)
         {
             this._contextAccessor = httpContextAccessor;
             this._databaseContext = databaseContext;

@@ -11,7 +11,7 @@ namespace Howler.Services.Controllers.V1
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Howler.Database.Models;
+    using Howler.Database.Core.Models;
     using Howler.Services.InteractionServices;
     using Howler.Services.Models.V1.Errors;
     using Howler.Services.Models.V1.Space;

@@ -15,6 +15,7 @@ namespace Howler.AuthGateway
     using Howler.AuthGateway.CryptographyProviders;
     using Howler.AuthGateway.SigningAlgorithms;
     using Howler.Database;
+    using Howler.Database.Indexer;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -97,8 +98,8 @@ namespace Howler.AuthGateway
 
             services.AddScoped<ISigningAlgorithm, RS256SigningAlgorithm>();
             services.AddScoped<
-                IFederationDatabaseContext,
-                FederationDatabaseContext>();
+                IIndexerDatabaseContext,
+                IndexerDatabaseContext>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
                 {

@@ -64,11 +64,7 @@ namespace Howler.Database
 
             try
             {
-                this.Session = this._cluster.Connect(
-                    Environment.GetEnvironmentVariable("HOWLER_KEYSPACE") ??
-                    throw new ArgumentNullException(
-                        "HOWLER_KEYSPACE is null. Please define it in your" +
-                        " environment variables."));
+                this.Session = this._cluster.Connect();
             }
             catch (NoHostAvailableException e)
             {

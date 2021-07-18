@@ -35,6 +35,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Howler.Database\Howler.Database.csproj" />
+    <ProjectReference Include="..\Howler.Database.Indexer\Howler.Database.Indexer.csproj" />
   </ItemGroup>
   
   <ItemGroup>

@@ -8,6 +8,8 @@
 namespace Howler.Services.Tests
 {
     using System;
+    using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using Howler.Services.InteractionServices;
     using Howler.Services.Tests.Authorization;
@@ -19,6 +21,51 @@ namespace Howler.Services.Tests
     /// </summary>
     public class SpaceInteractionServiceUnitTests
     {
+
+        private static MockAuthorizationService validAuthorizationService =
+            new MockAuthorizationService(
+                true,
+                new Services.Authorization.AuthorizedUser(
+                    new ClaimsPrincipal(
+                        new List<ClaimsIdentity>
+                        {
+                            new ClaimsIdentity(new List<Claim>
+                            {
+                                new Claim("sub", Guid.NewGuid().ToString()),
+                                new Claim(
+                                    "device_key",
+                                    Guid.NewGuid().ToString()),
+                                new Claim(
+                                    "event_id",
+                                    Guid.NewGuid().ToString()),
+                                new Claim("scope", "openid"),
+                                new Claim(
+                                    "auth_time", 
+                                    DateTimeOffset.UtcNow
+                                        .ToUnixTimeSeconds().ToString()),
+                                new Claim(
+                                    "iat", 
+                                    DateTimeOffset.UtcNow
+                                        .ToUnixTimeSeconds().ToString()),
+                                new Claim("aud", "https://howler.chat"),
+                                new Claim(
+                                    "exp", 
+                                    DateTimeOffset.UtcNow.AddDays(1)
+                                        .ToUnixTimeSeconds().ToString()),
+                                new Claim(
+                                    "iss",
+                                    "https://gateway.howler.chat"),
+                                new Claim("jti", Guid.NewGuid().ToString()),
+                                new Claim(
+                                    "client_id",
+                                    Guid.NewGuid().ToString()),
+                                new Claim(
+                                    "username",
+                                    Guid.NewGuid().ToString()),
+                            })
+                        }
+                    )));
+
         /// <summary>
         /// SpaceInteractionService will authorize creation when tokens are
         /// valid.
@@ -27,11 +74,11 @@ namespace Howler.Services.Tests
         public async Task
             SpaceInteractionServiceAuthorizesCreationWithValidTokens()
         {
-            // setup
-            var validAuthorizationService = new MockAuthorizationService(true);
             var spaceInteractionService = new SpaceInteractionService(
                 LoggerFactory.Create((config) => {})
                     .CreateLogger<SpaceInteractionService>(),
+                null!, // TODO: add mocks for IConfig/IndexerDBC
+                null!,
                 validAuthorizationService);
 
             // actions
@@ -55,10 +102,12 @@ namespace Howler.Services.Tests
         {
             // setup
             var invalidAuthorizationService =
-                new MockAuthorizationService(false);
+                new MockAuthorizationService(false, null);
             var spaceInteractionService = new SpaceInteractionService(
                 LoggerFactory.Create((config) => {})
                     .CreateLogger<SpaceInteractionService>(),
+                null!, // TODO: add mocks for IConfig/IndexerDBC
+                null!,
                 invalidAuthorizationService);
 
             // actions

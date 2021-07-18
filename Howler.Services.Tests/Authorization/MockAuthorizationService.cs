@@ -8,7 +8,7 @@
 namespace Howler.Services.Tests.Authorization
 {
     using System.Threading.Tasks;
-    using Howler.Services.InteractionServices;
+    using Howler.Services.Authorization;
 
     /// <summary>
     /// Defines a simple authoriztion service with control of authorization
@@ -18,6 +18,8 @@ namespace Howler.Services.Tests.Authorization
     {
         private bool _isAuthorized = true;
 
+        private AuthorizedUser? _authorizedUser = null;
+
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="MockAuthorizationService"/> class.
@@ -26,8 +28,17 @@ namespace Howler.Services.Tests.Authorization
         /// A boolean value indicating whether or not calls will be
         /// authorized.
         /// </param>
-        public MockAuthorizationService(bool isAuthorized) =>
-            this._isAuthorized = isAuthorized;
+        /// <param name="authorizedUser">
+        /// The authorized user to mock out.
+        /// </param>
+        public MockAuthorizationService(
+            bool isAuthorized,
+            AuthorizedUser? authorizedUser) =>
+            (this._isAuthorized, this._authorizedUser) =
+            (isAuthorized, authorizedUser);
+
+        /// <inheritdoc/>
+        public AuthorizedUser? User => this._authorizedUser;
 
         /// <inheritdoc/>
         public async Task<bool> IsAuthorizedAsync(string operation) =>

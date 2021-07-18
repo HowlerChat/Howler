@@ -12,7 +12,10 @@ namespace Howler.Services.InteractionServices
     using System.Linq;
     using System.Threading.Tasks;
     using Howler.Database;
-    using Howler.Database.Models;
+    using Howler.Database.Config;
+    using Howler.Database.Config.Models;
+    using Howler.Database.Core;
+    using Howler.Database.Indexer;
     using Howler.Services.Authorization;
     using Howler.Services.Models.V1.Federation;
     using Howler.Services.Models.V1.Space;
@@ -25,7 +28,11 @@ namespace Howler.Services.InteractionServices
     {
         private ILogger<SpaceInteractionService> _logger;
 
-        private IFederationDatabaseContext _federationDatabaseContext;
+        private IConfigDatabaseContext _configDatabaseContext;
+
+        private IIndexerDatabaseContext _indexerDatabaseContext;
+
+        private ICoreDatabaseContext _coreDatabaseContext;
 
         private IAuthorizationService _authorizationService;
 
@@ -34,19 +41,29 @@ namespace Howler.Services.InteractionServices
         /// <see cref="FederationInteractionService"/> class.
         /// </summary>
         /// <param name="logger">An injected logger instance.</param>
-        /// <param name="federationDatabaseContext">
+        /// <param name="configDatabaseContext">
+        /// An injected config database instance.
+        /// </param>
+        /// <param name="indexerDatabaseContext">
         /// An injected federation database instance.
+        /// </param>
+        /// <param name="coreDatabaseContext">
+        /// An injected core database instance.
         /// </param>
         /// <param name="authorizationService">
         /// An injected authorization service.
         /// </param>
         public FederationInteractionService(
             ILogger<SpaceInteractionService> logger,
-            IFederationDatabaseContext federationDatabaseContext,
+            IConfigDatabaseContext configDatabaseContext,
+            IIndexerDatabaseContext indexerDatabaseContext,
+            ICoreDatabaseContext coreDatabaseContext,
             IAuthorizationService authorizationService)
         {
             this._logger = logger;
-            this._federationDatabaseContext = federationDatabaseContext;
+            this._configDatabaseContext = configDatabaseContext;
+            this._indexerDatabaseContext = indexerDatabaseContext;
+            this._coreDatabaseContext = coreDatabaseContext;
             this._authorizationService = authorizationService;
         }
 
@@ -58,7 +75,7 @@ namespace Howler.Services.InteractionServices
             {
                 if (this._authorizationService.User != null)
                 {
-                    var userSpaces = this._federationDatabaseContext.UserSpaces
+                    var userSpaces = this._configDatabaseContext.UserSpaces
                         .Where(us => us.UserId ==
                             this._authorizationService.User.Subject.ToLower())
                         .ToList().FirstOrDefault();
@@ -81,7 +98,7 @@ namespace Howler.Services.InteractionServices
             {
                 if (this._authorizationService.User != null)
                 {
-                    var userSpaces = this._federationDatabaseContext.UserSpaces
+                    var userSpaces = this._configDatabaseContext.UserSpaces
                         .Where(us => us.UserId ==
                             this._authorizationService.User.Subject.ToLower())
                         .ToList().FirstOrDefault();
@@ -97,12 +114,12 @@ namespace Howler.Services.InteractionServices
                                     spaceId.ToLower());
                             }
 
-                            this._federationDatabaseContext.UserSpaces
+                            this._configDatabaseContext.UserSpaces
                                 .Update<UserSpaces, string>(userSpaces);
                         }
                         else
                         {
-                            userSpaces = new Database.Models.UserSpaces
+                            userSpaces = new Database.Config.Models.UserSpaces
                             {
                                 UserId = this._authorizationService.User
                                     .Subject.ToLower(),
@@ -112,7 +129,7 @@ namespace Howler.Services.InteractionServices
                                 },
                             };
 
-                            this._federationDatabaseContext.UserSpaces
+                            this._configDatabaseContext.UserSpaces
                                 .Add<UserSpaces, string>(userSpaces);
                         }
                     }
@@ -129,7 +146,7 @@ namespace Howler.Services.InteractionServices
                 if (this._authorizationService.User != null)
                 {
                     var spaceVanityUrl =
-                        this._federationDatabaseContext.SpaceVanityUrls
+                        this._indexerDatabaseContext.SpaceVanityUrls
                         .Where(
                             s => s.VanityUrl == url.ToLowerInvariant())
                         .ToList().FirstOrDefault();
@@ -138,7 +155,7 @@ namespace Howler.Services.InteractionServices
                     {
                         // TODO: when federation support is live this will
                         // need tweaking, sort of.
-                        var space = this._federationDatabaseContext.Spaces
+                        var space = this._coreDatabaseContext.Spaces
                             .Where(s => s.SpaceId == spaceVanityUrl.SpaceId)
                             .ToList().First();
                         return new SpaceResponse(space);

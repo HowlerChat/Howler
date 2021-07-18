@@ -21,7 +21,7 @@ namespace Howler.Services.Models.V1.Space
         /// class.
         /// </summary>
         /// <param name="space">The source space.</param>
-        public SpaceResponse(Database.Models.Space space)
+        public SpaceResponse(Database.Core.Models.Space space)
         {
             this.SpaceId = space.SpaceId;
             this.SpaceName = space.SpaceName;

@@ -1,5 +1,7 @@
 # Howler
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/HowlerChat/Howler)
+
 Howler is a project designed for open learning of the architecture and components of a chat service like Discord. See the latest tickets on our public JIRA tracker: https://howler.atlassian.net/jira/software/c/projects/HOWL/issues/?filter=allissues
 
 Keep track of the design prototypes: https://www.figma.com/file/OOycgY2cQPJ0SdbCbRQ0Os/Howler-App?node-id=0%3A1
