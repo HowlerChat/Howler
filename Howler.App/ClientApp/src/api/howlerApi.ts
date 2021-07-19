@@ -1,31 +1,19 @@
 import { getConfig } from "../config/config";
 
-export const getServerToken = function(serverId: string, token: string) {
-    return () => fetch("https://gateway.howler.chat/oauth2/token",
-        {
-          method: "POST",
-          mode: "cors",
-          headers:
-          {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + token
-          },
-          body: JSON.stringify({"serverId": serverId})}).then(response => {
-            return response.json()
-          });
+export type Space = {
+    spaceId: string;
+    spaceName: string;
+    description: string;
+    vanityUrl: string;
+    serverUrl: string;
+    createdDate: Date;
+    modifiedDate: Date;
 }
 
-export const getSpace = function(spaceId: string, token: string) {
-    return () => fetch(getConfig().howlerApiUrl + `/v1/spaces/${spaceId}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-};
+// -----------------
+// APIs
+export const getSpace = (spaceId: string) =>
+    wrapRequestForServer<Space>(wrapGetRequest(`/spaces/${spaceId}`));
 
 export const getLocalization = function(langId: string) {
     return () => {
@@ -66,4 +54,42 @@ export const getLocalization = function(langId: string) {
             }
         };
     };
+}
+
+const wrapRequestForServer = function<T>(wrapRequestCreator: (token: string) => () => Promise<T>) {
+    return (getTokenForServer: (serverId: string) => string) =>
+        (serverId: string) => {
+            const token = getTokenForServer(serverId);
+            return wrapRequestCreator(token);
+        };
+}
+
+const wrapGetRequest = function<T>(path: string) {
+    return (token: string) => () => fetch(getConfig().howlerApiUrl + `/${getConfig().apiVersion}` + path,
+    {
+        method: 'GET',
+        mode: "cors",
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }).then(response => {
+        return response.json() as Promise<T>;
+    });
+}
+
+const wrapPostRequest = function<T>(path: string, body: any) {
+    return (token: string) => () => fetch(getConfig().howlerApiUrl + `/${getConfig().apiVersion}` + path,
+    {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+    }).then(response => {
+        return response.json() as Promise<T>;
+    });
 }

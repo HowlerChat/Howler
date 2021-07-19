@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 import { call, put, select, takeEvery, takeLatest, takeLeading } from 'redux-saga/effects';
-import { getServerToken } from '../api/howlerApi';
+import { getServerToken } from '../api/gatewayApi';
 import { ApplicationState, AppThunkAction } from './';
 
 // -----------------
@@ -41,8 +41,6 @@ type KnownAction = RequestServerTokenAction | RequestingServerTokenAction | Rece
 // ----------------
 // SAGAS - The declarative transaction flows for interacting with the store.
 
-// TODO: const getAuthToken = (state: ApplicationState) => state.user.signInUserSession.accessToken.jwtToken;
-
 function* handleServerTokenRequest(request: RequestServerTokenAction) {
     let state: ServersState = yield select(s => s.servers as ServersState);
     
@@ -67,7 +65,6 @@ export const spaceSagas = {
 export const actionCreators = {
     requestServerToken: (spaceId: string, token: string) => ({ type: 'REQUEST_SERVER_TOKEN', spaceId, token } as RequestServerTokenAction)
 };
-
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
