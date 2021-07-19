@@ -1,13 +1,12 @@
 import { Action, Reducer } from 'redux';
 import { call, put, select, takeEvery, takeLatest, takeLeading } from 'redux-saga/effects';
-import { getLocalization, getServerToken, getSpace } from '../api/howlerApi';
+import { getLocalization, getSpace } from '../api/howlerApi';
 import { connect } from '../api/howlerSocket';
 import * as signalR from '@microsoft/signalr';
-import { ApplicationState, AppThunkAction } from './';
+import { ApplicationState, AppThunkAction, callServer } from './';
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
-
 export interface ConnectionInfoState {
     isConnecting: boolean;
     connection?: signalR.HubConnection;
@@ -18,10 +17,9 @@ export interface ConnectionInfoState {
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
-
 interface RequestConnectionAction {
     type: 'REQUEST_CONNECTION';
-    token: string;
+    serverId: string;
 }
 
 interface RequestingConnectionAction {
@@ -56,8 +54,7 @@ type KnownAction = RequestConnectionAction | RequestingConnectionAction | Reconn
 
 function* handleConnectionRequest(request: RequestConnectionAction) {
     yield put({type: 'REQUESTING_CONNECTION'});
-    let token: string = yield call(getServerToken(request.token))
-    let response: { connection: signalR.HubConnection, error: any } = yield call(connect(token));
+    let response: { connection: signalR.HubConnection, error: any } = yield callServer(request.serverId, connect);
     
     if (response.error != null)
     {
@@ -79,7 +76,7 @@ export const connectionSagas = {
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
 
 export const actionCreators = {
-    requestConnection: (token: string) => ({ type: 'REQUEST_CONNECTION', token } as RequestConnectionAction),
+    requestConnection: (serverId: string) => ({ type: 'REQUEST_CONNECTION', serverId } as RequestConnectionAction),
     updateUserSpaces: (userSpaces: { userId: string, spaceIds: string[] }) => ({ type: 'UPDATE_USER_SPACES', userSpaces } as UpdateUserSpacesAction),
 };
 

@@ -18,11 +18,7 @@ import Connecting from './components/Connecting';
 import './sass/custom.scss';
 import JoinSpaceModal from './components/modals/JoinSpaceModal';
 
-type AppProps = typeof Localization.actionCreators & typeof Connection.actionCreators &
-{
-    localizations: LocalizationInfoState | undefined,
-    connections: ConnectionInfoState | undefined,
-};
+type AppProps = typeof Localization.actionCreators & typeof Connection.actionCreators & ApplicationState;
 
 const App: React.FunctionComponent<AppProps> = (props) => {
     const [authState, setAuthState] = React.useState<AuthState>();
@@ -50,9 +46,9 @@ const App: React.FunctionComponent<AppProps> = (props) => {
             </> :
             <>
                 <Route exact path='/'>
-                    <Redirect to={'/spaces/' + props.connections.userSpaces[user.attributes.sub][0] + "/" + props.connections.userSpaces[user.attributes.sub][0]} />
+                    <Redirect to={'/servers/' + props.configs[user.attributes.sub].serverIds[0] + '/spaces/' + props.configs[user.attributes.sub].spaceIds[0] + "/" + props.configs[user.attributes.sub].spaceIds[0]} />
                 </Route>
-                <Route exact path='/spaces/:spaceId/:channelId' component={(props: any) => <Layout><Space {...props} setAuthState={setAuthState} user={user} /></Layout>} />
+                <Route exact path='/servers/:serverId/spaces/:spaceId/:channelId' component={(props: any) => <Layout><Space {...props} setAuthState={setAuthState} user={user} /></Layout>} />
                 <Route exact path='/qrauth/:id' component={(props: any) => <QRScan {...props}/>} />
             </> :
             <div className="login-pane">
@@ -93,6 +89,6 @@ const App: React.FunctionComponent<AppProps> = (props) => {
 };
 
 export default connect(
-    (state: ApplicationState) => { return { localizations: state.localizations, connections: state.connections }; },
+    (state: ApplicationState) => { return {...state}; },
     { ...Localization.actionCreators, ...Connection.actionCreators }
 )(App);

@@ -16,10 +16,10 @@ type SpaceProps = {
 } & typeof Spaces.actionCreators & Spaces.SpacesState;
 
 const Space : React.FunctionComponent<SpaceProps> = props => {
-  let params = useParams<{spaceId: string, channelId: string}>();
+  let params = useParams<{serverId: string, spaceId: string, channelId: string}>();
 
   if (props.spaces.length == 0) {
-    props.requestSpace(params.spaceId);
+    props.requestSpace(params.serverId, params.spaceId);
   }
 
   let space = props.spaces.find(s => s.spaceId === params.spaceId) || props.spaces[0];

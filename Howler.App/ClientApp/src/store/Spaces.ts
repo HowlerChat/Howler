@@ -1,34 +1,23 @@
 import { Action, Reducer } from 'redux';
 import { call, put, select, takeEvery, takeLatest, takeLeading } from 'redux-saga/effects';
-import { getSpace } from '../api/howlerApi';
-import { ApplicationState, AppThunkAction } from './';
+import { getSpace, Space } from '../api/howlerApi';
+import { ApplicationState, AppThunkAction, callServer } from './';
+import { ServersState } from './Servers';
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
-
-export interface SpaceState {
-    spaceId: string;
-    spaceName: string;
-    description: string;
-    vanityUrl: string;
-    serverUrl: string;
-    createdDate: Date;
-    modifiedDate: Date;
-}
-
 export interface SpacesState {
     isLoading: boolean;
-    spaces: SpaceState[];
+    spaces: Space[];
 }
 
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
-
 interface RequestSpaceAction {
     type: 'REQUEST_SPACE';
+    serverId: string;
     spaceId: string;
-    token: string;
 }
 
 interface RequestingSpaceAction {
@@ -38,7 +27,7 @@ interface RequestingSpaceAction {
 
 interface ReceiveSpaceAction {
     type: 'RECEIVE_SPACE';
-    space: SpaceState;
+    space: Space;
 }
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
@@ -47,15 +36,10 @@ type KnownAction = RequestSpaceAction | RequestingSpaceAction | ReceiveSpaceActi
 
 // ----------------
 // SAGAS - The declarative transaction flows for interacting with the store.
-
-// TODO: const getAuthToken = (state: ApplicationState) => state.user.signInUserSession.accessToken.jwtToken;
-
 function* handleSpaceRequest(request: RequestSpaceAction) {
-    let state: any = yield select();
     yield put({type: 'REQUESTING_SPACE', spaceId: request.spaceId});
-    let space: Body = yield call(getSpace(request.spaceId, request.token));
-    let data: SpaceState = yield call(() => space.json());
-    yield put({type: 'RECEIVE_SPACE', space: data });
+    let space: Space = yield callServer(request.serverId, getSpace(request.spaceId))
+    yield put({type: 'RECEIVE_SPACE', space });
 }
 
 export const spaceSagas = {
@@ -68,13 +52,11 @@ export const spaceSagas = {
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
 
 export const actionCreators = {
-    requestSpace: (spaceId: string, token: string) => ({ type: 'REQUEST_SPACE', spaceId, token } as RequestSpaceAction)
+    requestSpace: (serverId: string, spaceId: string) => ({ type: 'REQUEST_SPACE', serverId, spaceId } as RequestSpaceAction)
 };
-
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
-
 const unloadedState: SpacesState = { spaces: [], isLoading: false };
 
 export const reducer: Reducer<SpacesState> = (state: SpacesState | undefined, incomingAction: Action): SpacesState => {
