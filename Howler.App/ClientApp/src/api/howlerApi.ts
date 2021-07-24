@@ -6,8 +6,74 @@ export type Space = {
     description: string;
     vanityUrl: string;
     serverUrl: string;
+    iconUrl: string;
+    bannerUrl: string;
+    userId: string;
+    defaultChannelId: string;
     createdDate: Date;
     modifiedDate: Date;
+};
+
+export type Channel = {
+    channelId: string;
+    spaceId: string;
+    channelName: string;
+    channelTopic: string;
+    memberId: string;
+    encryptionMethod: string;
+    createdDate: Date;
+    modifiedDate: Date;
+};
+
+export type Message = {
+    channelId: string;
+    epoch: string;
+    spaceId: string;
+    messageId: string;
+    digestAlgorithm: string;
+    nonce: string;
+    createdDate: Date;
+    modifiedDate: Date;
+    lastModifiedHash: string;
+    content: PostMessage|EventMessage|EmbedMessage;
+    reactions: Reaction[];
+    mentions: Mentions;
+};
+
+export type PostMessage = {
+    senderId: string;
+    type: "post";
+    text: string;
+    repliesToMessageId?: string;
+};
+
+export type EventMessage = {
+    type: "event";
+    text: string;
+    repliesToMessageId?: string;
+};
+
+export type EmbedMessage = {
+    senderId: string;
+    type: "embed";
+    videoUrl: string;
+    width?: string;
+    height?: string;
+    repliesToMessageId?: string;
+};
+
+export type Reaction = {
+    emojiId: string;
+    spaceId: string;
+    emojiName: string;
+    count: number;
+    memberIds: string[];
+}
+
+export type Mentions = {
+    memberIds: string[];
+    roleIds: string[];
+    channelIds: string[];
 }
 
 // -----------------

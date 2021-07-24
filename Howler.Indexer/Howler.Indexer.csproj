@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RuntimeIdentifiers>win10-x64;linux-musl-x64</RuntimeIdentifiers>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <nullable>enable</nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <CodeAnalysisRuleSet>../Howler.Services/Howler.Services.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AWSProjectType>Lambda</AWSProjectType>
+    <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="../Howler.Services/Menees.Analyzers.Settings.xml" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Menees.Analyzers" Version="2.0.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="6.0.1" />
+    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.7.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="System.Security.Cryptography.Csp" Version="4.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Howler.Database\Howler.Database.csproj" />
+    <ProjectReference Include="..\Howler.Database.Indexer\Howler.Database.Indexer.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ResolvedFileToPublish Include="../Howler.Database/AmazonRootCA1.pem">
+      <RelativePath>AmazonRootCA1.pem</RelativePath>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </ResolvedFileToPublish>
+  </ItemGroup>
+</Project>

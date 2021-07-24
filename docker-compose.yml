@@ -11,7 +11,31 @@ services:
     environment:
       - "ASPNETCORE_ENVIRONMENT=Development"
       - "HOWLER_CASSANDRA_ENDPOINT=cassandra"
-      - "HOWLER_KEYSPACE=howler"
+      - "HOWLER_KEYSPACE_CORE=howler"
+      - "HOWLER_ENVIRONMENT=dev"
+      - "HOWLER_SCOPE=openid"
+  indexer:
+    build:
+      context: .
+      dockerfile: indexer.Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "HOWLER_CASSANDRA_ENDPOINT=cassandra"
+      - "HOWLER_KEYSPACE_INDEXER=howler_indexer"
+      - "HOWLER_ENVIRONMENT=dev"
+      - "HOWLER_SCOPE=openid" 
+  config:
+    build:
+      context: .
+      dockerfile: config.Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "HOWLER_CASSANDRA_ENDPOINT=cassandra"
+      - "HOWLER_KEYSPACE_CONFIG=howler_config"
       - "HOWLER_ENVIRONMENT=dev"
       - "HOWLER_SCOPE=openid"
   ui:
@@ -26,6 +50,12 @@ services:
       dockerfile: authgateway.Dockerfile
     ports:
       - "7000:7000"
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "HOWLER_CASSANDRA_ENDPOINT=cassandra"
+      - "HOWLER_KEYSPACE_INDEXER=howler_indexer"
+      - "HOWLER_ENVIRONMENT=dev"
+      - "HOWLER_SCOPE=openid"
   redis:
     image: redis
   cassandra:
