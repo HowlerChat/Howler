@@ -4,10 +4,11 @@ import {faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment-timezone';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './Channel.scss';
+import { Message } from '../api/howlerApi';
 
 type ChannelProps = { space: any, channelId: string } & RouteComponentProps<{ spaceId: string, channelId: string }>;
 
-class Channel extends React.PureComponent<ChannelProps, { pendingMessage: string, messages: { timestamp: string, id: string, content: { senderId: string, type: "post"|"event", text: string | string[] }|{ senderId: string, type: "embed", videoUrl: string, width?: string, height?: string}}[]}> {
+class Channel extends React.PureComponent<ChannelProps, { pendingMessage: string, messages: Message[]}> {
     mapSenderToUser(senderId: string) {
         return {
             "@<00000000-0000-0000-0000-000000000000>": {

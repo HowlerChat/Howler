@@ -18,6 +18,7 @@ namespace Howler.Services
     using Howler.Database.Config;
     using Howler.Database.Core;
     using Howler.Database.Indexer;
+    using Howler.Services.Attachments;
     using Howler.Services.Authorization;
     using Howler.Services.Hubs;
     using Howler.Services.InteractionServices;
@@ -69,6 +70,7 @@ namespace Howler.Services
                 });
             this.ConfigureAuthorization(services);
             this.ConfigureDatabase(services);
+            this.ConfigureAttachmentStore(services);
             services.AddScoped<
                 ISpaceInteractionService,
                 SpaceInteractionService>();
@@ -184,6 +186,25 @@ namespace Howler.Services
             services.AddScoped<
                 IAuthorizationService,
                 FederatedAuthorizationService>();
+        }
+
+        private void ConfigureAttachmentStore(IServiceCollection services)
+        {
+            var environment = Environment
+                .GetEnvironmentVariable("HOWLER_ENVIRONMENT");
+
+            if (environment == "dev")
+            {
+                services.AddScoped<
+                    IAttachmentService,
+                    FileAttachmentService>();
+            }
+            else
+            {
+                services.AddScoped<
+                    IAttachmentService,
+                    S3AttachmentService>();
+            }
         }
 
         private void ConfigureSwagger(IServiceCollection services)

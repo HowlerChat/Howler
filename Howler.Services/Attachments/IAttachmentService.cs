@@ -19,15 +19,24 @@ namespace Howler.Services.Attachments
         /// Retrieves an attachment url by its id.
         /// </summary>
         /// <param name="attachmentId">The attachment id to look up.</param>
-        /// <returns>The signed url.</returns>
+        /// <returns>The file url.</returns>
         Task<string> GetAttachmentUrlAsync(string attachmentId);
 
         /// <summary>
-        /// Uploads an attachment.
+        /// Uploads an attachment to be committed.
         /// </summary>
         /// <param name="attachmentId">The attachment id to store for.</param>
         /// <param name="file">The file stream to upload.</param>
-        /// <returns>The signed url.</returns>
-        Task<string> PutAttachmentAsync(string attachmentId, Stream file);
+        /// <returns>The uncommitted file url.</returns>
+        Task<string> StageAttachmentAsync(string attachmentId, Stream file);
+
+        /// <summary>
+        /// Commits the uploaded attachment to be available.
+        /// </summary>
+        /// <param name="attachmentId">
+        /// The attachment id to be committed.
+        /// </param>
+        /// <returns>The committed file url.</returns>
+        Task<string> CommitAttachmentAsync(string attachmentId);
     }
 }
