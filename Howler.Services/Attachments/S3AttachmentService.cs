@@ -40,7 +40,7 @@ namespace Howler.Services.Attachments
         }
 
         /// <inheritdoc/>
-        public async Task<string> PutAttachmentAsync(
+        public async Task<string> StageAttachmentAsync(
             string attachmentId,
             Stream file)
         {
@@ -52,7 +52,34 @@ namespace Howler.Services.Attachments
                 {
                     InputStream = file,
                     BucketName = bucket,
-                    Key = "attachments/" + attachmentId,
+                    Key = "uncommitted/" + attachmentId,
+                });
+
+            if (result.HttpStatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var host = Environment
+                    .GetEnvironmentVariable("HOWLER_FILE_HOST");
+                return $"{host}/uncommitted/{attachmentId}";
+            }
+
+            throw new InvalidDataException(
+                $"S3 returned ({result.HttpStatusCode}): " +
+                JsonConvert.SerializeObject(result.ResponseMetadata));
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> CommitAttachmentAsync(string attachmentId)
+        {
+            var bucket = Environment
+                .GetEnvironmentVariable("HOWLER_FILE_BUCKET");
+
+            var result = await this._s3Client.CopyObjectAsync(
+                new Amazon.S3.Model.CopyObjectRequest
+                {
+                    SourceBucket = bucket,
+                    DestinationBucket = bucket,
+                    SourceKey = "uncommitted/" + attachmentId,
+                    DestinationKey = "attachments/" + attachmentId,
                 });
 
             if (result.HttpStatusCode == System.Net.HttpStatusCode.OK)
