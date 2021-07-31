@@ -14,6 +14,7 @@ namespace Howler.Services
     using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
+    using FileMagic;
     using Howler.Database;
     using Howler.Database.Config;
     using Howler.Database.Core;
@@ -192,6 +193,8 @@ namespace Howler.Services
         {
             var environment = Environment
                 .GetEnvironmentVariable("HOWLER_ENVIRONMENT");
+            services.AddSingleton<IFileTypeDetector, FileTypeDetector>();
+            services.AddScoped<IAttachmentFilter, FileMetadataFilter>();
 
             if (environment == "dev")
             {

@@ -76,5 +76,9 @@ namespace Howler.Database.Core
         /// <inheritdoc/>
         public IQueryable<SpaceMember> SpaceMembers =>
             new Table<SpaceMember>(this._databaseClient.Session);
+
+        /// <inheritdoc/>
+        public IQueryable<Attachment> Attachments =>
+            new Table<Attachment>(this._databaseClient.Session);
     }
 }

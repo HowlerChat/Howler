@@ -20,8 +20,12 @@ namespace Howler.Services.Attachments
         /// returns true.
         /// </summary>
         /// <param name="attachmentId">The attachment identifier.</param>
+        /// <param name="memberId">The member identifier.</param>
         /// <param name="file">The file stream.</param>
         /// <returns>True if permitted.</returns>
-        Task<bool> EvaluateAttachment(string attachmentId, Stream file);
+        Task<bool> EvaluateAttachment(
+            string attachmentId,
+            string memberId,
+            Stream file);
     }
 }
