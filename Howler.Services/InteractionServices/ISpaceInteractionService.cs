@@ -7,10 +7,8 @@
 
 namespace Howler.Services.InteractionServices
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Howler.Services.Models;
-    using Howler.Services.Models.V1.Channel;
     using Howler.Services.Models.V1.Errors;
     using Howler.Services.Models.V1.Space;
 
@@ -33,9 +31,10 @@ namespace Howler.Services.InteractionServices
         /// </summary>
         /// <param name="request">The request to create a space.</param>
         /// <returns>
-        /// A completed <see cref="Either{SpaceResponse, ValidationError}"/>.
+        /// A completed
+        /// <see cref="Either{ErrorResponse, SpaceResponse}"/>.
         /// </returns>
-        Task<Either<SpaceResponse, ValidationError>> CreateSpaceAsync(
+        Task<Either<ErrorResponse, SpaceResponse>> CreateSpaceAsync(
             CreateOrUpdateSpaceRequest request);
 
         /// <summary>
@@ -43,9 +42,10 @@ namespace Howler.Services.InteractionServices
         /// </summary>
         /// <param name="request">The request to update a space.</param>
         /// <returns>
-        /// A completed <see cref="Either{SpaceResponse, ValidationError}"/>.
+        /// A completed
+        /// <see cref="Either{ValidationErrorResponse, SpaceResponse}"/>.
         /// </returns>
-        Either<SpaceResponse?, ValidationError> UpdateSpace(
+        Either<ErrorResponse, SpaceResponse?> UpdateSpace(
             CreateOrUpdateSpaceRequest request);
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace Howler.Services.InteractionServices
         /// </summary>
         /// <param name="spaceId">The identifier of the space.</param>
         /// <returns>
-        /// Returns null if successful, or a validation error.
+        /// Returns null if successful, or an error.
         /// </returns>
-        ValidationError? DeleteSpaceBySpaceId(string spaceId);
+        ErrorResponse? DeleteSpaceBySpaceId(string spaceId);
     }
 }

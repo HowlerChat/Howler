@@ -78,7 +78,9 @@ namespace Howler.Services.Controllers.V1
         /// <returns>A response indicating success or failure.</returns>
         [HttpPut]
         [ProducesResponseType(typeof(SpaceResponse), 200)]
-        [ProducesResponseType(typeof(ValidationError), 400)]
+        [ProducesResponseType(
+            typeof(ValidationErrorResponse),
+            400)]
         [ProducesResponseType(401)]
         public async Task<ActionResult> CreateAsync(
             CreateOrUpdateSpaceRequest request)
@@ -104,7 +106,7 @@ namespace Howler.Services.Controllers.V1
         /// <returns>A response indicating success or failure.</returns>
         [HttpPut("{spaceId}")]
         [ProducesResponseType(typeof(SpaceResponse), 200)]
-        [ProducesResponseType(typeof(ValidationError), 400)]
+        [ProducesResponseType(typeof(ValidationErrorResponse), 400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         public ActionResult Update(
@@ -114,7 +116,7 @@ namespace Howler.Services.Controllers.V1
             if (spaceId != request.SpaceId)
             {
                 return this.BadRequest(
-                    new ValidationError("spaceId", "INVALID_SPACE_ID"));
+                    new ValidationErrorResponse("spaceId", "INVALID_SPACE_ID"));
             }
 
             var space = this._spaceInteractionService.UpdateSpace(request);

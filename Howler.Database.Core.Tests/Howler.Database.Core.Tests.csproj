@@ -19,4 +19,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../Howler.Database.Core/Howler.Database.Core.csproj" />
+  </ItemGroup>
+
 </Project>

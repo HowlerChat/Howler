@@ -16,10 +16,6 @@ namespace Howler.Services.Controllers.V1
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using Howler.Services.Attachments;
-    using Howler.Services.InteractionServices;
-    using Howler.Services.Models.V1.Channel;
-    using Howler.Services.Models.V1.Errors;
-    using Howler.Services.Models.V1.Space;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -231,6 +227,7 @@ namespace Howler.Services.Controllers.V1
                         // TODO: gross, fix.
                         return filter.EvaluateAttachment(
                             computedHash,
+                            subject,
                             newMs).Result;
                     }
                 });

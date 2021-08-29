@@ -60,5 +60,10 @@ namespace Howler.Database.Core
         /// Gets the SpaceMembers.
         /// </summary>
         IQueryable<SpaceMember> SpaceMembers { get; }
+
+        /// <summary>
+        /// Gets the Attachments.
+        /// </summary>
+        IQueryable<Attachment> Attachments { get; }
     }
 }

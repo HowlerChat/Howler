@@ -1,4 +1,4 @@
-// <copyright file="ValidationError.cs" company="Howler Team">
+// <copyright file="ValidationErrorResponse.cs" company="Howler Team">
 // Copyright (c) Howler Team. All rights reserved.
 // Licensed under the Server Side Public License.
 // See LICENSE file in the project root for full license information.
@@ -12,11 +12,13 @@ namespace Howler.Services.Models.V1.Errors
     /// <summary>
     /// Captures a standardized validation error response.
     /// </summary>
-    public class ValidationError
+    public class ValidationErrorResponse : ErrorResponse
     {
+        private const string CODE = "VALIDATION_ERROR";
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValidationError"/>
-        /// class.
+        /// Initializes a new instance of the
+        /// <see cref="ValidationErrorResponse"/> class.
         /// </summary>
         /// <param name="propertyName">
         /// The name of the property failing validation.
@@ -27,10 +29,11 @@ namespace Howler.Services.Models.V1.Errors
         /// <param name="additionalInfo">
         /// Any additional information to accompany the validation error.
         /// </param>
-        public ValidationError(
+        public ValidationErrorResponse(
             string propertyName,
             string propertyErrorCode,
             Dictionary<string, string>? additionalInfo = null)
+            : base(CODE)
         {
             this.PropertyName = propertyName;
             this.PropertyErrorCode = propertyErrorCode;
