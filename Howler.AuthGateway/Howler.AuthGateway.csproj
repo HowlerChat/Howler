@@ -27,7 +27,7 @@
     </PackageReference>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="6.0.1" />
     <PackageReference Include="AWSSDK.KeyManagementService" Version="3.7.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="System.Security.Cryptography.Csp" Version="4.0.0" />
