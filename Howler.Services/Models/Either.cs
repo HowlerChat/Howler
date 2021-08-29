@@ -7,6 +7,8 @@
 
 namespace Howler.Services.Models
 {
+    using System;
+
     /// <summary>
     /// A class intended to hold either a value of the
     /// <typeparamref name="TLeft"/> type or the <typeparamref name="TRight"/>
@@ -51,5 +53,44 @@ namespace Howler.Services.Models
         /// <param name="either">The value to convert.</param>
         public static implicit operator TRight?(
             Either<TLeft, TRight> either) => either.Right;
+
+        /// <summary>Performs a fold operation over the either.</summary>
+        /// <param name="foldLeft">The binding when left is set.</param>
+        /// <param name="foldRight">The binding when right is set.</param>
+        /// <typeparam name="TL">The new left type.</typeparam>
+        /// <typeparam name="TR">The new right type.</typeparam>
+        /// <returns>The folded either.</returns>
+        /// <remarks>
+        /// For traditional monadic evaluations with right bias, use
+        /// <see cref="Map{TR}"/>.
+        /// </remarks>
+        public Either<TL, TR> Fold<TL, TR>(
+            Func<TLeft, Either<TL, TR>> foldLeft,
+            Func<TRight, Either<TL, TR>> foldRight) =>
+            this.Left != null ?
+                foldLeft(this.Left) :
+                this.Right != null ?
+                    foldRight(this.Right) :
+
+                    // This should not be possible without reflection.
+                    throw new ArgumentNullException("neither");
+
+        /// <summary>
+        /// Performs a right fold operation.
+        /// </summary>
+        /// <param name="func">The fold operation.</param>
+        /// <typeparam name="TR">The new right type.</typeparam>
+        /// <returns>
+        /// Either the original left, or the right-folded either.
+        /// </returns>
+        public Either<TLeft, TR> Map<TR>(
+            Func<TRight, Either<TLeft, TR>> func) =>
+            this.Left != null ?
+                new Either<TLeft, TR>(this.Left) :
+                this.Right != null ?
+                    func(this.Right) :
+
+                    // This should not be possible without reflection.
+                    throw new ArgumentNullException("neither");
     }
 }

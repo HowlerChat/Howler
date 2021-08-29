@@ -11,7 +11,9 @@ namespace Howler.Services.Tests
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Howler.Database.Core.Tests;
     using Howler.Services.InteractionServices;
+    using Howler.Services.Models.V1.Errors;
     using Howler.Services.Tests.Authorization;
     using Microsoft.Extensions.Logging;
     using Xunit;
@@ -77,19 +79,20 @@ namespace Howler.Services.Tests
             var spaceInteractionService = new SpaceInteractionService(
                 LoggerFactory.Create((config) => {})
                     .CreateLogger<SpaceInteractionService>(),
-                null!, // TODO: add mocks for IConfig/IndexerDBC
                 null!,
+                new MockCoreDatabaseContext(),
                 validAuthorizationService);
 
             // actions
             var result = await spaceInteractionService.CreateSpaceAsync(
                 new Models.V1.Space.CreateOrUpdateSpaceRequest
                 {
-                    SpaceId = "asdf"
+                    SpaceId = "00000000-0000-0000-0000-000000000000"
                 });
 
             // assertions
-            Assert.Null(result.Right?.PropertyErrorCode);
+            Assert.Null(
+                (result.Left as ValidationErrorResponse)?.PropertyErrorCode);
         }
 
         /// <summary>
@@ -118,7 +121,9 @@ namespace Howler.Services.Tests
                 });
 
             // assertions
-            Assert.Equal("INVALID_SCOPE", result.Right?.PropertyErrorCode);
+            Assert.Equal(
+                "INVALID_SCOPE",
+                (result.Left as ValidationErrorResponse)?.PropertyErrorCode);
         }
     }
 }

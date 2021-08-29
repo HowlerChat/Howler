@@ -54,6 +54,7 @@ type KnownAction = RequestConnectionAction | RequestingConnectionAction | Reconn
 
 function* handleConnectionRequest(request: RequestConnectionAction) {
     yield put({type: 'REQUESTING_CONNECTION'});
+    let spaces: { [userId: string]: string[] } = yield select(s => s.connections.userSpaces as { [userId: string]: string[] });
     let response: { connection: signalR.HubConnection, error: any } = yield callServer(request.serverId, connect);
     
     if (response.error != null)
@@ -62,6 +63,7 @@ function* handleConnectionRequest(request: RequestConnectionAction) {
     }
     else
     {
+        response.connection.send("SubscribeToSpacesAndChannel", Object.keys(spaces), "", "")
         yield put({type: 'RECEIVE_CONNECTION', connection: response.connection});
     }
 }

@@ -17,6 +17,7 @@ namespace Howler.Services.InteractionServices
     using Howler.Database.Core.Models;
     using Howler.Database.Indexer;
     using Howler.Database.Indexer.Models;
+    using Howler.Services.Addressing;
     using Howler.Services.Authorization;
     using Howler.Services.Models.V1.Channel;
     using Howler.Services.Models.V1.Errors;
@@ -67,31 +68,22 @@ namespace Howler.Services.InteractionServices
         /// <remarks>
         /// TODO: need to incorporate server registry.
         /// </remarks>
-        public async Task<Models.Either<SpaceResponse, ValidationError>>
+        public async Task<Models.Either<ErrorResponse, SpaceResponse>>
             CreateSpaceAsync(CreateOrUpdateSpaceRequest request)
         {
             if (!await this._authorizationService
                 .IsAuthorizedAsync("create_space"))
             {
-                return new Models.Either<SpaceResponse, ValidationError>(
-                    new ValidationError("authorization", "INVALID_SCOPE"));
+                return new Models.Either<ErrorResponse, SpaceResponse>(
+                        new ValidationErrorResponse(
+                            "authorization",
+                            "INVALID_SCOPE"));
             }
 
-            try
+            if (!string.IsNullOrEmpty(request.VanityUrl))
             {
-                if (!string.IsNullOrEmpty(request.VanityUrl))
+                var vanityUrl = VanityUrl.Parse(request.VanityUrl).Map(url =>
                 {
-                    var uri = new Uri(request.VanityUrl);
-                    if (
-                        uri.Host != "howler.gg" ||
-                        uri.Scheme != "https" ||
-                        !uri.IsDefaultPort)
-                    {
-                        return new Models
-                            .Either<SpaceResponse, ValidationError>(
-                            new ValidationError("vanityUrl", "INVALID_URL"));
-                    }
-
                     var vanity = this._indexerDatabaseContext.SpaceVanityUrls
                         .Where(
                             v => v.VanityUrl == request.VanityUrl.Trim()
@@ -99,16 +91,21 @@ namespace Howler.Services.InteractionServices
 
                     if (vanity != null)
                     {
-                        return new Models
-                            .Either<SpaceResponse, ValidationError>(
-                            new ValidationError("vanityUrl", "ALREADY_TAKEN"));
+                        return new Models.Either<ErrorResponse, VanityUrl>(
+                            new ValidationErrorResponse(
+                                "vanityUrl",
+                                "ALREADY_TAKEN"));
                     }
+
+                    return new Models.Either<ErrorResponse, VanityUrl>(
+                        url);
+                });
+
+                if (vanityUrl.Left != null)
+                {
+                    return new Models.Either<ErrorResponse, SpaceResponse>(
+                        vanityUrl.Left);
                 }
-            }
-            catch (UriFormatException)
-            {
-                return new Models.Either<SpaceResponse, ValidationError>(
-                    new ValidationError("vanityUrl", "INVALID_URL"));
             }
 
             if (Guid.TryParse(request.SpaceId, out Guid spaceId) &&
@@ -160,20 +157,22 @@ namespace Howler.Services.InteractionServices
                     ModifiedDate = DateTime.UtcNow,
                 });
 
-                return new Models.Either<SpaceResponse, ValidationError>(
-                    new SpaceResponse(space));
+                return new Models.Either<ErrorResponse, SpaceResponse>(
+                        new SpaceResponse(space));
             }
             else
             {
-                return new Models.Either<SpaceResponse, ValidationError>(
-                    new ValidationError("spaceId", "INVALID_SPACE_ID"));
+                return new Models.Either<ErrorResponse, SpaceResponse>(
+                        new ValidationErrorResponse(
+                            "spaceId",
+                            "INVALID_SPACE_ID"));
             }
         }
 
         /// <inheritdoc/>
-        public ValidationError? DeleteSpaceBySpaceId(string spaceId)
+        public ErrorResponse? DeleteSpaceBySpaceId(string spaceId)
         {
-            return new ValidationError("spaceId", "INVALID_SPACE_ID");
+            return new ValidationErrorResponse("spaceId", "INVALID_SPACE_ID");
         }
 
         /// <inheritdoc/>
@@ -194,7 +193,7 @@ namespace Howler.Services.InteractionServices
         }
 
         /// <inheritdoc/>
-        public Models.Either<SpaceResponse?, ValidationError> UpdateSpace(
+        public Models.Either<ErrorResponse, SpaceResponse?> UpdateSpace(
             CreateOrUpdateSpaceRequest request)
         {
             if (request.SpaceId != null)
@@ -214,8 +213,8 @@ namespace Howler.Services.InteractionServices
                             !uri.IsDefaultPort)
                         {
                             return new Models
-                                .Either<SpaceResponse?, ValidationError>(
-                                new ValidationError(
+                                .Either<ErrorResponse, SpaceResponse?>(
+                                new ValidationErrorResponse(
                                     "vanityUrl",
                                     "INVALID_URL"));
                         }
@@ -223,9 +222,10 @@ namespace Howler.Services.InteractionServices
                 }
                 catch (UriFormatException)
                 {
-                    return new Models
-                        .Either<SpaceResponse?, ValidationError>(
-                        new ValidationError("vanityUrl", "INVALID_URL"));
+                    return new Models.Either<ErrorResponse, SpaceResponse?>(
+                        new ValidationErrorResponse(
+                            "vanityUrl",
+                            "INVALID_URL"));
                 }
 
                 if (space != null)
@@ -235,9 +235,8 @@ namespace Howler.Services.InteractionServices
                             c.SpaceId == space.SpaceId).ToList()
                             .FirstOrDefault() == null)
                     {
-                        return new Models
-                            .Either<SpaceResponse?, ValidationError>(
-                            new ValidationError(
+                        return new Models.Either<ErrorResponse, SpaceResponse?>(
+                            new ValidationErrorResponse(
                                 "defaultChannelId",
                                 "INVALID_ID"));
                     }
@@ -306,13 +305,44 @@ namespace Howler.Services.InteractionServices
 
                     this._coreDatabaseContext.Spaces
                         .Update<Space, string>(space);
-                    return new Models.Either<SpaceResponse?, ValidationError>(
+                    return new Models.Either<ErrorResponse, SpaceResponse?>(
                         new SpaceResponse(space));
                 }
             }
 
-            return new Models.Either<SpaceResponse?, ValidationError>(
+            return new Models.Either<ErrorResponse, SpaceResponse?>(
                 (SpaceResponse?)null);
         }
+
+#pragma warning disable SA1615
+        /// <summary>
+        /// Adds or updates a message id as the unread status of a channel
+        /// member state.
+        /// </summary>
+        /// <param name="channelId">The channelId to set.</param>
+        /// <param name="messageId">The messageId to set.</param>
+        public async Task AddUnreadChannelMemberState(
+            string channelId,
+            string messageId)
+        {
+            await Task.Run(() =>
+            {
+                var channelMembers = this._coreDatabaseContext.ChannelMembers
+                    .Where(cm => cm.ChannelId == channelId)
+                    .ToList();
+
+                // TODO: Bulk insert
+                foreach (var channelMember in channelMembers)
+                {
+                    this._coreDatabaseContext.ChannelMemberStates.Add<
+                        ChannelMemberState,
+                        Tuple<string, string, string>>(
+                        new ChannelMemberState
+                        {
+                        });
+                }
+            });
+        }
+#pragma warning restore SA1615
     }
 }
