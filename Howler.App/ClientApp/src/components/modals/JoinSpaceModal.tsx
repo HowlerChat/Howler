@@ -7,20 +7,21 @@ import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import SpaceIcon from '../SpaceIcon';
 import { ApplicationState } from '../../store';
 import * as Localization from '../../store/Localization';
-import * as Connection from '../../store/Connection';
+import * as Servers from '../../store/Servers';
 import { connect } from 'react-redux';
 import './JoinSpaceModal.scss';
 import { HubConnection } from '@microsoft/signalr';
 import { useHistory } from 'react-router';
 
 type JoinSpaceModalProps = {
+    serverId: string,
     visible: boolean,
     onClose: () => void
-} & typeof Localization.actionCreators & Localization.LocalizationInfoState & Connection.ConnectionInfoState;
+} & typeof Localization.actionCreators & Localization.LocalizationInfoState & Servers.ServersState;
 
 const JoinSpaceModal : React.FunctionComponent<JoinSpaceModalProps> = props => {
     let [space, setSpace] = React.useState<{ iconUrl: string, name: string, spaceId: string } | undefined>(undefined);
-    let connection = props.connection as HubConnection;
+    let connection = props.servers[props.serverId].connection as HubConnection;
     let history = useHistory();
 
     const lookupSpace = (url: string) => {
@@ -58,6 +59,6 @@ const JoinSpaceModal : React.FunctionComponent<JoinSpaceModalProps> = props => {
 }
 
 export default connect(
-    (state: ApplicationState) => { return {...state.localizations, ...state.connections} as Localization.LocalizationInfoState & Connection.ConnectionInfoState; },
+    (state: ApplicationState) => { return {...state.localizations, ...state.servers} as Localization.LocalizationInfoState & Servers.ServersState; },
     Localization.actionCreators
 )(JoinSpaceModal);
