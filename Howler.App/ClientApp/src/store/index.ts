@@ -1,16 +1,14 @@
 import * as Spaces from './Spaces';
 import * as Localization from './Localization';
-import * as Connection from './Connection';
 import * as Servers from './Servers';
 import * as Configs from './Configs';
-import { all, call, select } from 'redux-saga/effects';
+import { all, call, put, select } from 'redux-saga/effects';
 import { ServersState } from './Servers';
 
 // The top-level state object
 export interface ApplicationState {
     spaces: Spaces.SpacesState | undefined;
     localizations: Localization.LocalizationInfoState | undefined;
-    connections: Connection.ConnectionInfoState | undefined;
     servers: Servers.ServersState | undefined;
     configs: Configs.ConfigState;
 }
@@ -21,14 +19,13 @@ export interface ApplicationState {
 export const reducers = {
     spaces: Spaces.reducer,
     localizations: Localization.reducer,
-    connections: Connection.reducer,
     servers: Servers.reducer,
 };
 
 export const rootSaga = function*() {
     yield all([
+        Servers.serversSagas.watchServerTokenRequests(),
         Spaces.spaceSagas.watchSpaceRequests(),
-        Connection.connectionSagas.watchConnectionRequests(),
         Localization.localizationSagas.watchLocalizationInfoRequests(),
     ]);
 };
@@ -40,12 +37,12 @@ export interface AppThunkAction<TAction> {
 }
 
 const selectTokenForServer = (state: ApplicationState) => 
-    (serverId: string) => (state.servers as ServersState).tokens[serverId];
+    (serverId: string) => (state.servers as ServersState).servers[serverId].token;
 
 export function* callServer<T>(
     serverId: string,
     callForServer: (getTokenForServer: (serverId: string) => string) => (serverId: string) => () => Promise<T>,
 ) {
     let getTokenForServer = selectTokenForServer(yield select());
-    yield call(callForServer(getTokenForServer)(serverId));
+    return (yield call(callForServer(getTokenForServer)(serverId))) as T;
 }

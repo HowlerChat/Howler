@@ -23,7 +23,6 @@ const Space : React.FunctionComponent<SpaceProps> = props => {
   }
 
   let space = props.spaces.find(s => s.spaceId === params.spaceId) || props.spaces[0];
-  console.log(space);
   return <div className="space-container">
     <div className="space-container-channels">
       <ChannelList space={space} channelId={params.channelId} />
