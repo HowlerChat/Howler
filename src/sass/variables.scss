@@ -1,0 +1,48 @@
+$brand-color: #3b1549;
+$secondary-brand-color: #44285a;
+$tertiary-brand-color: #070115;
+$quarternary-brand-color: #3b285a;
+$middle-gradient-color: mix($brand-color, $secondary-brand-color, 95%);
+
+$brand-highlight-color: #3c2559;
+$secondary-brand-highlight-color: #6b5589;
+$tertiary-brand-highlight-color: #1d1125;
+$quarternary-brand-highlight-color: #59386a;
+
+$primary-action-color: #a200ff;
+$secondary-action-color: #ea5def;
+$tertiary-action-color: #ef9a5d;
+$inaction-color: #2E2E2E;
+$danger-action-color: #A01919;
+
+$primary-action-highlight-color: #bf10ff;
+$secondary-action-highlight-color: #ff6dd6;
+$tertiary-action-highlight-color: #ff9b6d;
+$danger-action-highlight-color: #B02929;
+
+// Breakpoints
+$tablet: "(min-width: 450px)";
+$mid-point: "(min-width: 620px)";
+$desktop: "(min-width: 768px)";
+
+.invisible-dismissal {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 1001;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invisible-dark {
+    background-color: rgba(0,0,0,.6);
+}
+
+.right {
+    float: right;
+}

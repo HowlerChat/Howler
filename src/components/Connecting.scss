@@ -1,0 +1,48 @@
+@import '../sass/variables.scss';
+
+.connecting-splash {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 1001;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.connecting-icon {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-size: 120%;
+    //background-size: cover;
+    animation: iconspin 1s infinite;
+    //animation-timing-function: cubic-bezier(0.6, -0.6, 0.3, 1.75);
+    border-radius:50px;
+}
+
+.connecting-message {
+    margin-top: 10px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+@keyframes iconspin {
+  0% {
+    // transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+
+  70% {
+    // transform: scale(1);
+    box-shadow: 0 0 100px 100px rgba(255, 255, 255, 0);
+  }
+
+  100% {
+    // transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}

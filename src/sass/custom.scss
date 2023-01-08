@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+@import './variables.scss';
+
+a {
+    color: $primary-action-color;
+}
+
+code {
+    color: #E01A76;
+}
+
+.btn-primary {
+    color: $brand-color;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+body, html {
+    background: $brand-color;
+    color: #fff;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 65vh;
+    background: $tertiary-brand-color;
+}
+
+.login-pane {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.sign-in {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.sign-in-header {
+    font-size: 2em;
+}
+
+.sign-in-info {
+    margin-top: 8pt;
+    font-size: .75em;
+    margin-bottom: 2pt;
+}
+
+.seed-phrase {
+    padding: 6pt;
+    background: #fff;
+    border-radius: 6pt;
+}
+
+.seed-phrase-input {
+    width: 100%;
+    border: 0;
+    resize: none;
+    color: #000;
+    font-family: monospace;
+    font-size: 8pt;
+}
+
+.sign-in-buttons {
+    margin-top: 12pt;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.sign-in-buttons .howler-button {
+    width: 100pt;
+    position: relative;
+}
