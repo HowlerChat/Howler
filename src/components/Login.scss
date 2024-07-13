@@ -1,0 +1,19 @@
+.sign-in .sign-in-title img {
+  width: 100px;
+}
+
+.sign-in-title {
+  font-size: 24pt;
+}
+
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100vh;
+}
+
+.hidden {
+  display: none;
+}

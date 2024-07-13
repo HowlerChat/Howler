@@ -1,0 +1,43 @@
+@import '../sass/variables.scss';
+
+.channels-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 260px;
+    z-index: 0;
+    margin-right: -10px;
+    scrollbar-width: none;
+    flex-grow: 1;
+
+    a {
+        color: #fff;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+}
+
+.channels-list::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.space-header {
+    padding: 8px 25px 8px 15px;
+    font-weight: 700;
+    text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.8);
+    font-size: 18px;
+    background-image: url('../../public/shipyard.png');
+    background-size: 300px 160px;
+    background-position-x: -20px;
+    border-top-left-radius: 10px;
+    margin-right: -10px;
+    height: 120px;
+    width: 260px;
+}
+
+.space-context-menu-toggle-button {
+    float: right;
+    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.8));
+}
